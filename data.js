@@ -214,3 +214,20 @@ const MO_KHO_Y_TUONG = {
   honNhan:  'che giấu quan hệ, không công khai, khép kín',
   kienTung: 'bị giam giữ, mất tự do, đình chỉ công tác'
 };
+
+const HAO_VI_Y_TUONG = {
+  1: { khongGian: 'Sàn, nền đất, móng nhà, tầng trệt', coThe: 'Bàn chân, ngón chân' },
+  2: { khongGian: 'Cửa nhà, phòng khách, quê quán', coThe: 'Chân, cẳng chân, đầu gối' },
+  3: { khongGian: 'Giường, bàn, cửa trong, buồng', coThe: 'Đùi, hông, thắt lưng, rốn' },
+  4: { khongGian: 'Cửa sổ, cửa lớn, ngõ, ngoài cổng', coThe: 'Bụng, ngực, sườn, nách' },
+  5: { khongGian: 'Đường cái, thủ đô, lãnh đạo, phòng sếp', coThe: 'Cổ, họng, mặt, mắt, mũi' },
+  6: { khongGian: 'Trần nhà, nóc, tổ tiên, vùng sâu xa', coThe: 'Đầu, tóc, não, đỉnh đầu' }
+};
+
+const NGU_HANH_Y_TUONG = {
+  'Kim': 'vật bằng kim loại, sắt thép, xe cộ, máy móc, dao kiếm, tiền bạc, trang sức',
+  'Mộc': 'cây cối, gỗ, giấy, quần áo, gió, sấm, phong hàn',
+  'Thủy': 'nước, sông biển, mưa, chất lỏng, máu, rượu, mực, sự lạnh lẽo',
+  'Hỏa': 'lửa, ánh sáng, điện, viêm nhiệt, nóng nảy, khói bụi',
+  'Thổ': 'đất đá, gạch ngói, đường đi, đê đập, sưng vù, khối u'
+};

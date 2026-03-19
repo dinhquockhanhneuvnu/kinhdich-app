@@ -20,9 +20,13 @@ function init() {
     const sel = document.getElementById(id);
     sel.innerHTML = '<option value="">—</option>' + DC_LIST.map(c => `<option value="${c}">${c}</option>`).join('');
   });
-  // Default date = today
+  // Default date = today (Local Timezone)
   const today = new Date();
-  document.getElementById('duong-lich').value = today.toISOString().split('T')[0];
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  document.getElementById('duong-lich').value = `${yyyy}-${mm}-${dd}`;
+  convertToAmLich(); // Auto-select Can Chi based on today's date
   renderHaoInputs();
   // Auto-update on select change
   ['thang-can','thang-chi','ngay-can','ngay-chi'].forEach(id => {
@@ -267,7 +271,10 @@ function anQue() {
     // NGUYỆT KIẾN
     if (nk === hao.diaChi) { hao.diemVS += 3; hao.nhanXetVS.push('Nguyệt Kiến (Cực vượng)'); }
     else if (LUC_XUNG[nk] === hao.diaChi) { hao.diemVS -= 2; hao.nhanXetVS.push('Nguyệt Phá (Xung vỡ)'); }
-    else if (LUC_HOP[nk] === hao.diaChi) { hao.diemVS += 2; hao.nhanXetVS.push('Nguyệt Hợp'); }
+    else if (LUC_HOP[nk] === hao.diaChi) {
+      if (NGU_HANH_KHAC[nh] === hh) { hao.diemVS -= 2; hao.nhanXetVS.push('Nguyệt Khắc (Trong hợp có khắc)'); }
+      else { hao.diemVS += 2; hao.nhanXetVS.push('Nguyệt Hợp'); }
+    }
     else if (NGU_HANH_SINH[nh] === hh) { hao.diemVS += 2; hao.nhanXetVS.push('Nguyệt Sinh'); }
     else if (nh === hh) { hao.diemVS += 3; hao.nhanXetVS.push('Nguyệt Vượng (Tỷ hòa)'); }
     else if (NGU_HANH_KHAC[nh] === hh) { hao.diemVS -= 2; hao.nhanXetVS.push('Nguyệt Khắc'); }
@@ -282,7 +289,10 @@ function anQue() {
         hao.diemVS -= 2; hao.nhanXetVS.push('Nhật Phá (Nhật Xung Hào Suy)');
       }
     }
-    else if (LUC_HOP[nt] === hao.diaChi) { hao.diemVS += 2; hao.nhanXetVS.push('Nhật Hợp'); }
+    else if (LUC_HOP[nt] === hao.diaChi) {
+      if (NGU_HANH_KHAC[nth] === hh) { hao.diemVS -= 2; hao.nhanXetVS.push('Nhật Khắc (Trong hợp có khắc)'); }
+      else { hao.diemVS += 2; hao.nhanXetVS.push('Nhật Hợp'); }
+    }
     else if (NGU_HANH_SINH[nth] === hh) { hao.diemVS += 2; hao.nhanXetVS.push('Nhật Sinh'); }
     else if (nth === hh) { hao.diemVS += 3; hao.nhanXetVS.push('Nhật Vượng (Tỷ hòa)'); }
     else if (NGU_HANH_KHAC[nth] === hh) { hao.diemVS -= 2; hao.nhanXetVS.push('Nhật Khắc'); }
@@ -565,12 +575,28 @@ function runPhanTichPhuc(phiHao, phuc) {
 
   // Nguyệt Kiến
   if (nk === phuc.diaChi) { diemPhuc += 3; nhanXetPhuc.push('Nguyệt Kiến (Cực vượng)'); }
+  else if (LUC_XUNG[nk] === phuc.diaChi) { diemPhuc -= 2; nhanXetPhuc.push('Nguyệt Phá (Xung vỡ)'); }
+  else if (LUC_HOP[nk] === phuc.diaChi) {
+    if (NGU_HANH_KHAC[nh] === phucHanh) { diemPhuc -= 2; nhanXetPhuc.push('Nguyệt Khắc (Trong hợp có khắc)'); }
+    else { diemPhuc += 2; nhanXetPhuc.push('Nguyệt Hợp'); }
+  }
   else if (NGU_HANH_SINH[nh] === phucHanh) { diemPhuc += 2; nhanXetPhuc.push('Nguyệt Sinh'); }
   else if (nh === phucHanh) { diemPhuc += 3; nhanXetPhuc.push('Nguyệt Vượng (Tỷ hòa)'); }
   else if (NGU_HANH_KHAC[nh] === phucHanh) { diemPhuc -= 2; nhanXetPhuc.push('Nguyệt Khắc'); }
 
   // Nhật Thần
   if (nt === phuc.diaChi) { diemPhuc += 3; nhanXetPhuc.push('Nhật Kiến (Cực vượng)'); }
+  else if (LUC_XUNG[nt] === phuc.diaChi) {
+    if (diemPhuc >= 1) { // Lộ Phục
+      diemPhuc += 1.5; nhanXetPhuc.push('Nhật Xung (Lộ Phục - Điềm lành)');
+    } else {
+      diemPhuc -= 2; nhanXetPhuc.push('Nhật Phá (Nhật Xung Hào Suy)');
+    }
+  }
+  else if (LUC_HOP[nt] === phuc.diaChi) {
+    if (NGU_HANH_KHAC[nth] === phucHanh) { diemPhuc -= 2; nhanXetPhuc.push('Nhật Khắc (Trong hợp có khắc)'); }
+    else { diemPhuc += 2; nhanXetPhuc.push('Nhật Hợp'); }
+  }
   else if (NGU_HANH_SINH[nth] === phucHanh) { diemPhuc += 2; nhanXetPhuc.push('Nhật Sinh'); }
   else if (nth === phucHanh) { diemPhuc += 3; nhanXetPhuc.push('Nhật Vượng (Tỷ hòa)'); }
   else if (NGU_HANH_KHAC[nth] === phucHanh) { diemPhuc -= 2; nhanXetPhuc.push('Nhật Khắc'); }
@@ -618,7 +644,10 @@ function runPhanTichPhuc(phiHao, phuc) {
   nhanXetPhuc.push('DT Phục Tàng (-2 cơ bản)');
 
   const vs = getMucDoVuongSuy(diemPhuc, nhanXetPhuc);
-
+  state.vuongSuyDT = vs;
+  state.haoVaiTro = []; // Phục thần không xét Nguyên Kỵ Cừu trên mặt quẻ
+  state.finalScore = diemPhuc; // Lưu điểm cuối để render Thủ Tượng
+  
   // Ứng kỳ
   const goiY = [];
   goiY.push({
@@ -646,6 +675,7 @@ function runPhanTichPhuc(phiHao, phuc) {
   } else {
     catHung = '🟠 Tiểu Hung'; detail = 'DT Phục Tàng, bình bình không lâu dài'; cls = 'hung';
   }
+  state.finalCatHung = catHung;
 
   const catHungEl = document.getElementById('cat-hung-result');
   const chiTiet = [];
@@ -658,6 +688,7 @@ function runPhanTichPhuc(phiHao, phuc) {
   if (catHungEl) catHungEl.innerHTML = `<div class="cat-hung-result ${cls}"><div class="cat-label">${catHung}</div><div class="cat-note">${detail}</div><div style="font-size:0.63rem;color:#4a5a70;margin-top:0.2rem">Điểm Phục Thần: ${diemPhuc.toFixed(1)}</div>${chiTietHtml}</div>`;
 
   // Render vượng suy
+  state.vuongSuyDT = vs;
   renderVuongSuy(vs);
 
   // NKC: không có hào hiện nên render Phi-Phục info
@@ -788,6 +819,9 @@ function runPhanTich(haoIndex) {
     const vt = phanLoaiThan(dtHanh, DC_HANH[hao.diaChi]);
     return { ...hao, vaiTro: vt };
   });
+
+  state.vuongSuyDT = vs;
+  state.haoVaiTro = haoVaiTro;
 
   const canhBao = [];
   // DT Tuần Không
@@ -976,6 +1010,9 @@ function renderCatHung(dt, haoVaiTro, vs) {
   else if (score >= -2) { catHung = '🟠 Tiểu Hung'; detail = 'Dụng Thần suy nhược, cần cẩn thận'; cls = 'hung'; }
   else { catHung = '🔴 Đại Hung'; detail = 'Dụng Thần cực suy, việc khó thành'; cls = 'hung'; }
 
+  state.finalScore = score;
+  state.finalCatHung = catHung;
+
   const chiTietHtml = chiTiet.length > 0
     ? `<ul class="cat-hung-chitiet">${chiTiet.map(c => `<li>${c}</li>`).join('')}</ul>`
     : '';
@@ -1130,8 +1167,82 @@ function luuQue() {
   localStorage.setItem('lucHaoHistory', JSON.stringify(history.slice(0, 50)));
   alert('✅ Đã lưu quẻ thành công!');
 }
-function inQue() { window.print(); }
+function xuatPrompt() {
+  let dt = null;
+  if (state.dungThanHao === 'phuc' && state.dungThanPhucData) {
+    dt = state.dungThanPhucData.phuc;
+    dt.viTri = 'phuc';
+  } else if (typeof state.dungThanHao === 'number') {
+    dt = state.hao6[state.dungThanHao];
+  }
 
+  if (!dt) {
+    alert('Vui lòng chọn Dụng Thần trước để app tính toán lực lượng!');
+    return;
+  }
+  const cauHoi = prompt('Bạn đang muốn hỏi cụ thể về vấn đề gì?\\n(Ví dụ: Hỏi về bệnh tật của cha, cầu tài, kiện cáo...)');
+  if (!cauHoi) return;
+  
+  const userNote = document.getElementById('ghi-chu') ? document.getElementById('ghi-chu').value : '';
+
+  const haos = state.hao6.map(h => {
+    const dongStr = h.laDong ? ` (Động ➔ Biến thành ${h.bienLucThan} ${h.bienDC} - Hành ${DC_HANH[h.bienDC]})` : (h.laAmDong ? ' (Ám Động)' : '');
+    const tkStr = h.laTuanKhong ? ' [Tuần Không]' : '';
+    const moStr = h.laNhapMo ? ' [Nhập Mộ]' : '';
+    const vaiTro = state.haoVaiTro && state.haoVaiTro[h.viTri] ? state.haoVaiTro[h.viTri].vaiTro : '';
+    const vtStr = vaiTro && vaiTro !== 'Bình thường' ? ` - Vai trò: ${vaiTro}` : '';
+    
+    // Tìm Phục Thần nếu có ẩn dưới hào này
+    const phuc = state.phucThan ? state.phucThan.find(p => p.viTri === h.viTri) : null;
+    const phucStr = phuc ? `\\n   ↳ [Phục Thần ẩn giấu]: ${phuc.lucThan} ${phuc.diaChi} (Hành ${DC_HANH[phuc.diaChi]})` : '';
+
+    return `Hào ${h.viTri}: ${h.lucThan} ${h.diaChi} (Hành ${DC_HANH[h.diaChi]}) - Lâm ${h.lucThanTen}${dongStr}${tkStr}${moStr}${vtStr}${phucStr}`;
+  }).reverse().join('\\n');
+
+  let dtStr = '';
+  if (dt.viTri === 'phuc') {
+    dtStr = `Dụng Thần (Phục Tàng): ${dt.lucThan} ${dt.diaChi} (Hành ${DC_HANH[dt.diaChi]}). Lực lượng: ${state.vuongSuyDT.diem.toFixed(1)} điểm - Mức độ: ${state.vuongSuyDT.mucDo}\\n[Chi tiết đánh giá]: ${state.vuongSuyDT.nhanXet.join('; ')}`;
+  } else {
+    dtStr = `Dụng Thần: Hào ${dt.viTri} ${dt.lucThan} ${dt.diaChi} (Hành ${DC_HANH[dt.diaChi]}). Lực lượng: ${state.vuongSuyDT.diem.toFixed(1)} điểm - Mức độ: ${state.vuongSuyDT.mucDo}\\n[Chi tiết đánh giá]: ${state.vuongSuyDT.nhanXet.join('; ')}`;
+  }
+
+  const cacThan = (state.haoVaiTro || []).filter(h => h && h.vaiTro !== 'Dụng Thần' && h.vaiTro !== 'Bình thường').map(h => {
+    return `${h.vaiTro}: Hào ${h.viTri} ${h.lucThan} ${h.diaChi} - Lực lượng: ${h.diemVS} điểm\\n[Chi tiết đánh giá]: ${h.nhanXetVS.join('; ')}`;
+  }).join('\\n\\n');
+
+  const text = `Tôi cần bạn đóng vai một chuyên gia Dịch Lý Lục Hào (theo trường phái Lưu Xương Minh) để luận giải giúp tôi quẻ sau:
+
+1. THÔNG TIN CƠ BẢN:
+- Câu hỏi sự việc: ${cauHoi}
+- Ghi chú thêm từ người gieo: ${userNote || 'Không có'}
+- Thời gian gieo: Ngày ${state.chiNgay} (Hành ${DC_HANH[state.chiNgay]}), Tháng ${state.chiThang} (Hành ${DC_HANH[state.chiThang]})
+- Quẻ chính: ${state.banQue.ten} (Cung ${state.banQue.cung}) — [Ngoại quái: ${state.banQue.ngoai_quat} | Nội quái: ${state.banQue.noi_quat}]
+- Quẻ biến: ${state.chiQue ? state.chiQue.ten + ' — [Ngoại quái: ' + state.chiQue.ngoai_quat + ' | Nội quái: ' + state.chiQue.noi_quat + ']' : 'Không có (Quẻ tĩnh)'}
+- Hào Thể: H${state.banQue.the_hao} | Hào Ứng: H${state.banQue.ung_hao}
+- Tuần Không: ${state.tuanKhong.join(', ')}
+
+2. CẤU TRÚC 6 HÀO (Từ Hào 6 trên cùng xuống Hào 1):
+${haos}
+
+3. PHÂN TÍCH LỰC LƯỢNG & VAI TRÒ (Đã được phần mềm tính toán sẵn Điểm Vượng Suy):
+${dtStr}
+
+BỘ MÁY TÁC ĐỘNG (Nguyên Kỵ Cừu Tiết):
+${cacThan ? cacThan : 'Không có Nguyên/Kỵ/Cừu thần phát động (Quẻ tĩnh hoặc không có hào liên quan).'}
+
+4. YÊU CẦU LUẬN GIẢI:
+Dựa trên Vượng Suy, sinh khắc của hệ thống Nguyên/Kỵ Thần đã tính ở trên, kết hợp 3 quy luật (Tham sinh quên khắc, Tham hợp quên sinh, Vì sinh mà thiệt) đối với Hào Động, và hệ thống Thủ Tượng (Hào vị, Ngũ hành, Lục thần), bạn hãy:
+- "Dựng lại hiện trường" chi tiết sự việc đang diễn ra (ghép tượng hào vị, đồ vật ngũ hành, tính chất lục thần). Phân tích từng hào động ảnh hưởng thế nào đến sự việc.
+- Kết luận Cát hay Hung.
+- Đưa ra Ứng kỳ (thời điểm cụ thể sẽ xảy ra sự việc hoặc kết quả).`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    alert('✅ Đã copy toàn bộ Data Quẻ vào Clipboard!\\n\\nBây giờ bạn có thể Paste (Dán) nội dung vào ChatGPT hoặc Claude để nhờ AI luận giải chi tiết.');
+  }).catch(err => {
+    console.error('Lỗi copy:', err);
+    alert('Lỗi khi copy. Vui lòng cấp quyền Clipboard cho trình duyệt và thử lại!');
+  });
+}
 // === BƯỚC THỦ TƯỢNG: Tự động luận nghĩa quẻ ===
 function sinhLuanNghia(dt, haoVaiTro, vs) {
   const doan = [];
@@ -1140,9 +1251,19 @@ function sinhLuanNghia(dt, haoVaiTro, vs) {
   const lucThanInfo = LUC_THAN_Y_TUONG[lucThanTen];
   const loaiViec = document.getElementById('loai-viec')?.value || '';
 
+  // Helper: Lấy thông tin Hào vị + Ngũ hành
+  const getCanhTuong = (viTri, hanh) => {
+    if (viTri === 'phuc') return ''; // Phục thần không có hào vị
+    const hv = HAO_VI_Y_TUONG[viTri];
+    const nh = NGU_HANH_Y_TUONG[hanh];
+    if (!hv || !nh) return '';
+    return `*(Tại H${viTri}: ${hv.khongGian}/${hv.coThe} — mang hành ${hanh}: ${nh})*`;
+  };
+
   // === 1. MỞ ĐẦU: Dụng Thần & Lục Thần ===
   const dtLucThan = dt.lucThan; // Lục Thân
-  let moDau = `Dụng Thần là **${dtLucThan}** (${dt.diaChi} ${dtHanh}), hào ${dt.viTri}`;
+  const dtCanhTuong = getCanhTuong(dt.viTri, dtHanh);
+  let moDau = `Dụng Thần là **${dtLucThan}** (${dt.diaChi} ${dtHanh}), hào ${dt.viTri} ${dtCanhTuong}`;
   if (lucThanInfo) {
     moDau += `, lâm **${lucThanTen}** ${lucThanInfo.icon}`;
   }
@@ -1203,9 +1324,12 @@ function sinhLuanNghia(dt, haoVaiTro, vs) {
     const tt = danhGiaTrangThai(nt);
     const ltInfo = LUC_THAN_Y_TUONG[nt.lucThanTen];
     const ltHint = ltInfo ? ` (${ltInfo.icon} ${nt.lucThanTen})` : '';
+    const ntHanh = DC_HANH[nt.diaChi];
+    const canhTuong = getCanhTuong(nt.viTri, ntHanh);
+
     if (tt.huuDung) {
       const hdCheck = nt.bienDC ? kiemTraHoiDau(nt.diaChi, nt.bienDC) : null;
-      let text = `💚 Nguyên Thần ${nt.lucThan} H${nt.viTri}${ltHint} vượng động → ${TUONG_SINH_Y_TUONG.haoDong}`;
+      let text = `💚 Nguyên Thần ${nt.lucThan} H${nt.viTri}${ltHint} vượng động ${canhTuong} → ${TUONG_SINH_Y_TUONG.haoDong}`;
       if (hdCheck && hdCheck.loai.includes('sinh')) text += `. Lại ${TUONG_SINH_Y_TUONG.hoiDau}`;
       doan.push(text + '.');
     } else if (tt.voLuc) {
@@ -1217,14 +1341,17 @@ function sinhLuanNghia(dt, haoVaiTro, vs) {
     const tt = danhGiaTrangThai(ky);
     const ltInfo = LUC_THAN_Y_TUONG[ky.lucThanTen];
     const ltHint = ltInfo ? ` (${ltInfo.icon} ${ky.lucThanTen})` : '';
+    const kyHanh = DC_HANH[ky.diaChi];
+    const canhTuong = getCanhTuong(ky.viTri, kyHanh);
+
     // Tham Sinh Quên Khắc
     const ntHuuDung = nguyenThans.filter(n => danhGiaTrangThai(n).huuDung);
     if ((ky.laDong || ky.laAmDong) && ntHuuDung.length > 0) {
-      doan.push(`🔄 Kỵ Thần ${ky.lucThan} H${ky.viTri}${ltHint} — Tham Sinh Quên Khắc: ban đầu bị cản trở nhưng có người hòa giải, cuối cùng thành.`);
+      doan.push(`🔄 Kỵ Thần ${ky.lucThan} H${ky.viTri}${ltHint} ${canhTuong} — Tham Sinh Quên Khắc: ban đầu bị cản trở nhưng có người hòa giải, cuối cùng thành.`);
     } else if (tt.huuDung) {
       let hungText = TUONG_KHAC_Y_TUONG.kyKhacDT;
       if (ltInfo && ltInfo.hung) hungText += `. ${ltInfo.icon} ${ky.lucThanTen}: ${ltInfo.hung}`;
-      doan.push(`⚡ Kỵ Thần ${ky.lucThan} H${ky.viTri}${ltHint} vượng động khắc DT — ${hungText}.`);
+      doan.push(`⚡ Kỵ Thần ${ky.lucThan} H${ky.viTri}${ltHint} vượng động ${canhTuong} khắc DT — ${hungText}.`);
     } else if (tt.voLuc) {
       doan.push(`✅ Kỵ Thần ${ky.lucThan} H${ky.viTri}${ltHint} vô lực — kẻ cản trở suy yếu, không gây hại.`);
     }
@@ -1232,26 +1359,30 @@ function sinhLuanNghia(dt, haoVaiTro, vs) {
 
   cuuThans.forEach(cuu => {
     const tt = danhGiaTrangThai(cuu);
+    const canhTuong = getCanhTuong(cuu.viTri, DC_HANH[cuu.diaChi]);
     if (tt.huuDung) {
-      doan.push(`💀 Cừu Thần ${cuu.lucThan} H${cuu.viTri} động — khắc Nguyên Thần (cắt nguồn trợ) đồng thời sinh Kỵ Thần (bơm sức cho kẻ thù). Tình huống nguy hiểm gấp bội.`);
+      doan.push(`💀 Cừu Thần ${cuu.lucThan} H${cuu.viTri} động ${canhTuong} — khắc Nguyên Thần (cắt nguồn trợ) đồng thời sinh Kỵ Thần (bơm sức cho kẻ thù). Tình huống nguy hiểm gấp bội.`);
     }
   });
 
   tietThans.forEach(tiet => {
     const tt = danhGiaTrangThai(tiet);
+    const canhTuong = getCanhTuong(tiet.viTri, DC_HANH[tiet.diaChi]);
     if (tt.huuDung && tiet.diemVS >= 2) {
-      doan.push(`🩸 Tiết Thần ${tiet.lucThan} H${tiet.viTri} vượng động — Vì Sinh mà Thiệt: dù DT có lực nhưng bị tiết khí nghiêm trọng, kiếm được bao nhiêu hao bấy nhiêu.`);
+      doan.push(`🩸 Tiết Thần ${tiet.lucThan} H${tiet.viTri} vượng động ${canhTuong} — Vì Sinh mà Thiệt: dù DT có lực nhưng bị tiết khí nghiêm trọng, kiếm được bao nhiêu hao bấy nhiêu.`);
     }
   });
 
   // === 6. KẾT LUẬN ===
-  const catHung = vs.diem >= 2 ? 'Cát' : vs.diem >= 0 ? 'Bình' : 'Hung';
-  if (catHung === 'Cát') {
-    doan.push(`🏁 **Kết luận: CÁT** — Dụng Thần vượng tướng, mưu sự thuận lợi, sự việc có khả năng thành công.`);
-  } else if (catHung === 'Bình') {
-    doan.push(`🏁 **Kết luận: BÌNH** — Lực lượng cân bằng, kết quả còn chờ thời cơ, cần xem ứng kỳ.`);
+  const catHung = state.finalCatHung || (vs.diem >= 2 ? 'Cát' : vs.diem >= 0 ? 'Bình' : 'Hung');
+  const finalScore = state.finalScore !== undefined ? state.finalScore : vs.diem;
+
+  if (catHung.includes('Cát')) {
+    doan.push(`🏁 **Kết luận: ${catHung}** — Tổng lực lượng (bao gồm tương tác sinh khắc trong quẻ) đạt ${finalScore.toFixed(1)} điểm. Mưu sự thuận lợi, sự việc có khả năng thành công.`);
+  } else if (catHung.includes('Bình') || catHung.includes('Phục Tàng')) {
+    doan.push(`🏁 **Kết luận: ${catHung}** — Tổng lực lượng đạt ${finalScore.toFixed(1)} điểm. Dụng thần ở thế giằng co hoặc tiềm ẩn, kết quả còn chờ thời cơ, cần xem ứng kỳ.`);
   } else {
-    doan.push(`🏁 **Kết luận: HUNG** — Dụng Thần suy nhược, bị khắc chế mạnh. Mưu sự khó thành, cần cẩn trọng.`);
+    doan.push(`🏁 **Kết luận: ${catHung}** — Tổng lực lượng bị đè nén/xung phá còn ${finalScore.toFixed(1)} điểm. Mưu sự khó thành, nhiều cản trở, cần hết sức thận trọng.`);
   }
 
   return doan;
