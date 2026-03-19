@@ -1,0 +1,216 @@
+// ==========================================
+// DỮ LIỆU CỐT LÕI - KINH DỊCH LỤC HÀO
+// ==========================================
+
+const CAN_LIST = ['Giáp','Ất','Bính','Đinh','Mậu','Kỷ','Canh','Tân','Nhâm','Quý'];
+const DC_LIST = ['Tý','Sửu','Dần','Mão','Thìn','Tị','Ngọ','Mùi','Thân','Dậu','Tuất','Hợi'];
+
+const NGU_HANH_SINH = {'Kim':'Thủy','Thủy':'Mộc','Mộc':'Hỏa','Hỏa':'Thổ','Thổ':'Kim'};
+const NGU_HANH_KHAC = {'Kim':'Mộc','Mộc':'Thổ','Thổ':'Thủy','Thủy':'Hỏa','Hỏa':'Kim'};
+
+const DC_HANH = {
+  'Tý':'Thủy','Sửu':'Thổ','Dần':'Mộc','Mão':'Mộc',
+  'Thìn':'Thổ','Tị':'Hỏa','Ngọ':'Hỏa','Mùi':'Thổ',
+  'Thân':'Kim','Dậu':'Kim','Tuất':'Thổ','Hợi':'Thủy'
+};
+const CAN_HANH = {
+  'Giáp':'Mộc','Ất':'Mộc','Bính':'Hỏa','Đinh':'Hỏa',
+  'Mậu':'Thổ','Kỷ':'Thổ','Canh':'Kim','Tân':'Kim','Nhâm':'Thủy','Quý':'Thủy'
+};
+
+const LUC_HOP = {
+  'Tý':'Sửu','Sửu':'Tý','Dần':'Hợi','Hợi':'Dần',
+  'Mão':'Tuất','Tuất':'Mão','Thìn':'Dậu','Dậu':'Thìn',
+  'Tị':'Thân','Thân':'Tị','Ngọ':'Mùi','Mùi':'Ngọ'
+};
+const LUC_XUNG = {
+  'Tý':'Ngọ','Ngọ':'Tý','Sửu':'Mùi','Mùi':'Sửu',
+  'Dần':'Thân','Thân':'Dần','Mão':'Dậu','Dậu':'Mão',
+  'Thìn':'Tuất','Tuất':'Thìn','Tị':'Hợi','Hợi':'Tị'
+};
+const NHAP_MO = {'Kim':'Sửu','Mộc':'Mùi','Thủy':'Thìn','Hỏa':'Tuất','Thổ':'Thìn'};
+const TIEN_THAN = {'Hợi':'Tý', 'Dần':'Mão', 'Tị':'Ngọ', 'Thân':'Dậu', 'Sửu':'Thìn', 'Thìn':'Mùi', 'Mùi':'Tuất', 'Tuất':'Sửu'};
+const THOAI_THAN = {'Tý':'Hợi', 'Mão':'Dần', 'Ngọ':'Tị', 'Dậu':'Thân', 'Thìn':'Sửu', 'Sửu':'Tuất', 'Tuất':'Mùi', 'Mùi':'Thìn'};
+
+const TUAN_KHONG = {
+  'Giáp Tý':['Tuất','Hợi'],'Giáp Tuất':['Thân','Dậu'],
+  'Giáp Thân':['Ngọ','Mùi'],'Giáp Ngọ':['Thìn','Tị'],
+  'Giáp Thìn':['Dần','Mão'],'Giáp Dần':['Tý','Sửu']
+};
+
+const LUC_THAN_ORDER = ['Thanh Long','Chu Tước','Câu Trần','Đằng Xà','Bạch Hổ','Huyền Vũ'];
+const LUC_THAN_START = {
+  'Giáp':0,'Ất':0,'Bính':1,'Đinh':1,'Mậu':2,'Kỷ':3,'Canh':4,'Tân':4,'Nhâm':5,'Quý':5
+};
+
+const CUNG_HANH = {
+  'Càn':'Kim','Đoài':'Kim','Ly':'Hỏa','Chấn':'Mộc',
+  'Tốn':'Mộc','Khảm':'Thủy','Cấn':'Thổ','Khôn':'Thổ'
+};
+const QUAI_MAP = {
+  '111':'Càn','110':'Đoài','101':'Ly','100':'Chấn',
+  '011':'Tốn','010':'Khảm','001':'Cấn','000':'Khôn'
+};
+
+const GOI_Y_DUNG_THAN = {
+  'tai-loc':'Thê Tài','cong-danh-nam':'Quan Quỷ','cong-danh-nu':'Tử Tôn',
+  'hon-nhan-nam':'Thê Tài','hon-nhan-nu':'Quan Quỷ','con-cai':'Tử Tôn',
+  'benh-tat':'Quan Quỷ','kien-tung':'Quan Quỷ','van-thu':'Phụ Mẫu',
+  'xuat-hanh':'Phụ Mẫu','tim-nguoi':'Tử Tôn','nha-cua':'Phụ Mẫu'
+};
+
+// === 60 CAN CHI CYCLE ===
+const GIAP_TY_60 = [];
+for (let i = 0; i < 60; i++) {
+  GIAP_TY_60.push(CAN_LIST[i % 10] + ' ' + DC_LIST[i % 12]);
+}
+
+function getTuanKhongFromCanChi(canNgay, chiNgay) {
+  const canIdx = CAN_LIST.indexOf(canNgay);
+  const chiIdx = DC_LIST.indexOf(chiNgay);
+  if (canIdx < 0 || chiIdx < 0) return [];
+  // Find position in 60 cycle
+  let pos = -1;
+  for (let i = 0; i < 60; i++) {
+    if (i % 10 === canIdx && i % 12 === chiIdx) { pos = i; break; }
+  }
+  if (pos < 0) return [];
+  const gapStart = Math.floor(pos / 10) * 10;
+  // The 2 DC not used in this Giáp Tuần
+  const tk1 = DC_LIST[(gapStart % 12 + 10) % 12];
+  const tk2 = DC_LIST[(gapStart % 12 + 11) % 12];
+  return [tk1, tk2];
+}
+
+// === BẢNG 64 QUẺ ===
+const QUE_64 = [
+  // CÀNG CUNG (Kim)
+  {id:1,ten:'Càn Vi Thiên',noi_quat:'Càn',ngoai_quat:'Càn',cung:'Càn',thu_tu:1,the_hao:6,ung_hao:3,dia_chi:['Tý','Dần','Thìn','Ngọ','Thân','Tuất']},
+  {id:2,ten:'Thiên Phong Cấu',noi_quat:'Tốn',ngoai_quat:'Càn',cung:'Càn',thu_tu:2,the_hao:1,ung_hao:4,dia_chi:['Sửu','Hợi','Dậu','Ngọ','Thân','Tuất']},
+  {id:3,ten:'Thiên Sơn Độn',noi_quat:'Cấn',ngoai_quat:'Càn',cung:'Càn',thu_tu:3,the_hao:2,ung_hao:5,dia_chi:['Thìn','Ngọ','Thân','Ngọ','Thân','Tuất']},
+  {id:4,ten:'Thiên Địa Bĩ',noi_quat:'Khôn',ngoai_quat:'Càn',cung:'Càn',thu_tu:4,the_hao:3,ung_hao:6,dia_chi:['Mùi','Tị','Mão','Ngọ','Thân','Tuất']},
+  {id:5,ten:'Phong Địa Quan',noi_quat:'Khôn',ngoai_quat:'Tốn',cung:'Càn',thu_tu:5,the_hao:4,ung_hao:1,dia_chi:['Mùi','Tị','Mão','Mùi','Tị','Mão']},
+  {id:6,ten:'Sơn Địa Bác',noi_quat:'Khôn',ngoai_quat:'Cấn',cung:'Càn',thu_tu:6,the_hao:5,ung_hao:2,dia_chi:['Mùi','Tị','Mão','Tuất','Tý','Dần']},
+  {id:7,ten:'Hỏa Địa Tấn',noi_quat:'Khôn',ngoai_quat:'Ly',cung:'Càn',thu_tu:7,the_hao:4,ung_hao:1,dia_chi:['Mùi','Tị','Mão','Dậu','Mùi','Tị']},
+  {id:8,ten:'Hỏa Thiên Đại Hữu',noi_quat:'Càn',ngoai_quat:'Ly',cung:'Càn',thu_tu:8,the_hao:3,ung_hao:6,dia_chi:['Tý','Dần','Thìn','Dậu','Mùi','Tị']},
+  // ĐOÀI CUNG (Kim)
+  {id:9,ten:'Đoài Vi Trạch',noi_quat:'Đoài',ngoai_quat:'Đoài',cung:'Đoài',thu_tu:1,the_hao:6,ung_hao:3,dia_chi:['Tị','Mão','Sửu','Hợi','Dậu','Mùi']},
+  {id:10,ten:'Trạch Thủy Khốn',noi_quat:'Khảm',ngoai_quat:'Đoài',cung:'Đoài',thu_tu:2,the_hao:1,ung_hao:4,dia_chi:['Dần','Thìn','Ngọ','Hợi','Dậu','Mùi']},
+  {id:11,ten:'Trạch Địa Tụy',noi_quat:'Khôn',ngoai_quat:'Đoài',cung:'Đoài',thu_tu:3,the_hao:2,ung_hao:5,dia_chi:['Mùi','Tị','Mão','Hợi','Dậu','Mùi']},
+  {id:12,ten:'Trạch Sơn Hàm',noi_quat:'Cấn',ngoai_quat:'Đoài',cung:'Đoài',thu_tu:4,the_hao:3,ung_hao:6,dia_chi:['Thìn','Ngọ','Thân','Hợi','Dậu','Mùi']},
+  {id:13,ten:'Thủy Sơn Kiển',noi_quat:'Cấn',ngoai_quat:'Khảm',cung:'Đoài',thu_tu:5,the_hao:4,ung_hao:1,dia_chi:['Thìn','Ngọ','Thân','Thân','Tuất','Tý']},
+  {id:14,ten:'Địa Sơn Khiêm',noi_quat:'Cấn',ngoai_quat:'Khôn',cung:'Đoài',thu_tu:6,the_hao:5,ung_hao:2,dia_chi:['Thìn','Ngọ','Thân','Sửu','Hợi','Dậu']},
+  {id:15,ten:'Lôi Sơn Tiểu Quá',noi_quat:'Cấn',ngoai_quat:'Chấn',cung:'Đoài',thu_tu:7,the_hao:4,ung_hao:1,dia_chi:['Thìn','Ngọ','Thân','Ngọ','Thân','Tuất']},
+  {id:16,ten:'Lôi Trạch Quy Muội',noi_quat:'Đoài',ngoai_quat:'Chấn',cung:'Đoài',thu_tu:8,the_hao:3,ung_hao:6,dia_chi:['Tị','Mão','Sửu','Ngọ','Thân','Tuất']},
+  // LY CUNG (Hỏa)
+  {id:17,ten:'Ly Vi Hỏa',noi_quat:'Ly',ngoai_quat:'Ly',cung:'Ly',thu_tu:1,the_hao:6,ung_hao:3,dia_chi:['Mão','Sửu','Hợi','Dậu','Mùi','Tị']},
+  {id:18,ten:'Hỏa Sơn Lữ',noi_quat:'Cấn',ngoai_quat:'Ly',cung:'Ly',thu_tu:2,the_hao:1,ung_hao:4,dia_chi:['Thìn','Ngọ','Thân','Dậu','Mùi','Tị']},
+  {id:19,ten:'Hỏa Phong Đỉnh',noi_quat:'Tốn',ngoai_quat:'Ly',cung:'Ly',thu_tu:3,the_hao:2,ung_hao:5,dia_chi:['Sửu','Hợi','Dậu','Dậu','Mùi','Tị']},
+  {id:20,ten:'Hỏa Thủy Vị Tế',noi_quat:'Khảm',ngoai_quat:'Ly',cung:'Ly',thu_tu:4,the_hao:3,ung_hao:6,dia_chi:['Dần','Thìn','Ngọ','Dậu','Mùi','Tị']},
+  {id:21,ten:'Sơn Thủy Mông',noi_quat:'Khảm',ngoai_quat:'Cấn',cung:'Ly',thu_tu:5,the_hao:4,ung_hao:1,dia_chi:['Dần','Thìn','Ngọ','Tuất','Tý','Dần']},
+  {id:22,ten:'Phong Thủy Hoán',noi_quat:'Khảm',ngoai_quat:'Tốn',cung:'Ly',thu_tu:6,the_hao:5,ung_hao:2,dia_chi:['Dần','Thìn','Ngọ','Mùi','Tị','Mão']},
+  {id:23,ten:'Thiên Thủy Tụng',noi_quat:'Khảm',ngoai_quat:'Càn',cung:'Ly',thu_tu:7,the_hao:4,ung_hao:1,dia_chi:['Dần','Thìn','Ngọ','Ngọ','Thân','Tuất']},
+  {id:24,ten:'Thiên Hỏa Đồng Nhân',noi_quat:'Ly',ngoai_quat:'Càn',cung:'Ly',thu_tu:8,the_hao:3,ung_hao:6,dia_chi:['Mão','Sửu','Hợi','Ngọ','Thân','Tuất']},
+  // CHẤN CUNG (Mộc)
+  {id:25,ten:'Chấn Vi Lôi',noi_quat:'Chấn',ngoai_quat:'Chấn',cung:'Chấn',thu_tu:1,the_hao:6,ung_hao:3,dia_chi:['Tý','Dần','Thìn','Ngọ','Thân','Tuất']},
+  {id:26,ten:'Lôi Địa Dự',noi_quat:'Khôn',ngoai_quat:'Chấn',cung:'Chấn',thu_tu:2,the_hao:1,ung_hao:4,dia_chi:['Mùi','Tị','Mão','Ngọ','Thân','Tuất']},
+  {id:27,ten:'Lôi Thủy Giải',noi_quat:'Khảm',ngoai_quat:'Chấn',cung:'Chấn',thu_tu:3,the_hao:2,ung_hao:5,dia_chi:['Dần','Thìn','Ngọ','Ngọ','Thân','Tuất']},
+  {id:28,ten:'Lôi Phong Hằng',noi_quat:'Tốn',ngoai_quat:'Chấn',cung:'Chấn',thu_tu:4,the_hao:3,ung_hao:6,dia_chi:['Sửu','Hợi','Dậu','Ngọ','Thân','Tuất']},
+  {id:29,ten:'Địa Phong Thăng',noi_quat:'Tốn',ngoai_quat:'Khôn',cung:'Chấn',thu_tu:5,the_hao:4,ung_hao:1,dia_chi:['Sửu','Hợi','Dậu','Sửu','Hợi','Dậu']},
+  {id:30,ten:'Thủy Phong Tỉnh',noi_quat:'Tốn',ngoai_quat:'Khảm',cung:'Chấn',thu_tu:6,the_hao:5,ung_hao:2,dia_chi:['Sửu','Hợi','Dậu','Thân','Tuất','Tý']},
+  {id:31,ten:'Trạch Phong Đại Quá',noi_quat:'Tốn',ngoai_quat:'Đoài',cung:'Chấn',thu_tu:7,the_hao:4,ung_hao:1,dia_chi:['Sửu','Hợi','Dậu','Hợi','Dậu','Mùi']},
+  {id:32,ten:'Trạch Lôi Tùy',noi_quat:'Chấn',ngoai_quat:'Đoài',cung:'Chấn',thu_tu:8,the_hao:3,ung_hao:6,dia_chi:['Tý','Dần','Thìn','Hợi','Dậu','Mùi']},
+  // TỐN CUNG (Mộc)
+  {id:33,ten:'Tốn Vi Phong',noi_quat:'Tốn',ngoai_quat:'Tốn',cung:'Tốn',thu_tu:1,the_hao:6,ung_hao:3,dia_chi:['Sửu','Hợi','Dậu','Mùi','Tị','Mão']},
+  {id:34,ten:'Phong Thiên Tiểu Súc',noi_quat:'Càn',ngoai_quat:'Tốn',cung:'Tốn',thu_tu:2,the_hao:1,ung_hao:4,dia_chi:['Tý','Dần','Thìn','Mùi','Tị','Mão']},
+  {id:35,ten:'Phong Hỏa Gia Nhân',noi_quat:'Ly',ngoai_quat:'Tốn',cung:'Tốn',thu_tu:3,the_hao:2,ung_hao:5,dia_chi:['Mão','Sửu','Hợi','Mùi','Tị','Mão']},
+  {id:36,ten:'Phong Lôi Ích',noi_quat:'Chấn',ngoai_quat:'Tốn',cung:'Tốn',thu_tu:4,the_hao:3,ung_hao:6,dia_chi:['Tý','Dần','Thìn','Mùi','Tị','Mão']},
+  {id:37,ten:'Thiên Lôi Vô Vọng',noi_quat:'Chấn',ngoai_quat:'Càn',cung:'Tốn',thu_tu:5,the_hao:4,ung_hao:1,dia_chi:['Tý','Dần','Thìn','Ngọ','Thân','Tuất']},
+  {id:38,ten:'Hỏa Lôi Phệ Hạp',noi_quat:'Chấn',ngoai_quat:'Ly',cung:'Tốn',thu_tu:6,the_hao:5,ung_hao:2,dia_chi:['Tý','Dần','Thìn','Dậu','Mùi','Tị']},
+  {id:39,ten:'Sơn Lôi Di',noi_quat:'Chấn',ngoai_quat:'Cấn',cung:'Tốn',thu_tu:7,the_hao:4,ung_hao:1,dia_chi:['Tý','Dần','Thìn','Tuất','Tý','Dần']},
+  {id:40,ten:'Sơn Phong Cổ',noi_quat:'Tốn',ngoai_quat:'Cấn',cung:'Tốn',thu_tu:8,the_hao:3,ung_hao:6,dia_chi:['Sửu','Hợi','Dậu','Tuất','Tý','Dần']},
+  // KHẢM CUNG (Thủy)
+  {id:41,ten:'Khảm Vi Thủy',noi_quat:'Khảm',ngoai_quat:'Khảm',cung:'Khảm',thu_tu:1,the_hao:6,ung_hao:3,dia_chi:['Dần','Thìn','Ngọ','Thân','Tuất','Tý']},
+  {id:42,ten:'Thủy Trạch Tiết',noi_quat:'Đoài',ngoai_quat:'Khảm',cung:'Khảm',thu_tu:2,the_hao:1,ung_hao:4,dia_chi:['Tị','Mão','Sửu','Thân','Tuất','Tý']},
+  {id:43,ten:'Thủy Lôi Truân',noi_quat:'Chấn',ngoai_quat:'Khảm',cung:'Khảm',thu_tu:3,the_hao:2,ung_hao:5,dia_chi:['Tý','Dần','Thìn','Thân','Tuất','Tý']},
+  {id:44,ten:'Thủy Hỏa Ký Tế',noi_quat:'Ly',ngoai_quat:'Khảm',cung:'Khảm',thu_tu:4,the_hao:3,ung_hao:6,dia_chi:['Mão','Sửu','Hợi','Thân','Tuất','Tý']},
+  {id:45,ten:'Trạch Hỏa Cách',noi_quat:'Ly',ngoai_quat:'Đoài',cung:'Khảm',thu_tu:5,the_hao:4,ung_hao:1,dia_chi:['Mão','Sửu','Hợi','Hợi','Dậu','Mùi']},
+  {id:46,ten:'Lôi Hỏa Phong',noi_quat:'Ly',ngoai_quat:'Chấn',cung:'Khảm',thu_tu:6,the_hao:5,ung_hao:2,dia_chi:['Mão','Sửu','Hợi','Ngọ','Thân','Tuất']},
+  {id:47,ten:'Địa Hỏa Minh Di',noi_quat:'Ly',ngoai_quat:'Khôn',cung:'Khảm',thu_tu:7,the_hao:4,ung_hao:1,dia_chi:['Mão','Sửu','Hợi','Sửu','Hợi','Dậu']},
+  {id:48,ten:'Địa Thủy Sư',noi_quat:'Khảm',ngoai_quat:'Khôn',cung:'Khảm',thu_tu:8,the_hao:3,ung_hao:6,dia_chi:['Dần','Thìn','Ngọ','Sửu','Hợi','Dậu']},
+  // CẤN CUNG (Thổ)
+  {id:49,ten:'Cấn Vi Sơn',noi_quat:'Cấn',ngoai_quat:'Cấn',cung:'Cấn',thu_tu:1,the_hao:6,ung_hao:3,dia_chi:['Thìn','Ngọ','Thân','Tuất','Tý','Dần']},
+  {id:50,ten:'Sơn Hỏa Bí',noi_quat:'Ly',ngoai_quat:'Cấn',cung:'Cấn',thu_tu:2,the_hao:1,ung_hao:4,dia_chi:['Mão','Sửu','Hợi','Tuất','Tý','Dần']},
+  {id:51,ten:'Sơn Thiên Đại Súc',noi_quat:'Càn',ngoai_quat:'Cấn',cung:'Cấn',thu_tu:3,the_hao:2,ung_hao:5,dia_chi:['Tý','Dần','Thìn','Tuất','Tý','Dần']},
+  {id:52,ten:'Sơn Trạch Tổn',noi_quat:'Đoài',ngoai_quat:'Cấn',cung:'Cấn',thu_tu:4,the_hao:3,ung_hao:6,dia_chi:['Tị','Mão','Sửu','Tuất','Tý','Dần']},
+  {id:53,ten:'Hỏa Trạch Khuê',noi_quat:'Đoài',ngoai_quat:'Ly',cung:'Cấn',thu_tu:5,the_hao:4,ung_hao:1,dia_chi:['Tị','Mão','Sửu','Dậu','Mùi','Tị']},
+  {id:54,ten:'Thiên Trạch Lý',noi_quat:'Đoài',ngoai_quat:'Càn',cung:'Cấn',thu_tu:6,the_hao:5,ung_hao:2,dia_chi:['Tị','Mão','Sửu','Ngọ','Thân','Tuất']},
+  {id:55,ten:'Phong Trạch Trung Phu',noi_quat:'Đoài',ngoai_quat:'Tốn',cung:'Cấn',thu_tu:7,the_hao:4,ung_hao:1,dia_chi:['Tị','Mão','Sửu','Mùi','Tị','Mão']},
+  {id:56,ten:'Phong Sơn Tiệm',noi_quat:'Cấn',ngoai_quat:'Tốn',cung:'Cấn',thu_tu:8,the_hao:3,ung_hao:6,dia_chi:['Thìn','Ngọ','Thân','Mùi','Tị','Mão']},
+  // KHÔN CUNG (Thổ)
+  {id:57,ten:'Khôn Vi Địa',noi_quat:'Khôn',ngoai_quat:'Khôn',cung:'Khôn',thu_tu:1,the_hao:6,ung_hao:3,dia_chi:['Mùi','Tị','Mão','Sửu','Hợi','Dậu']},
+  {id:58,ten:'Địa Lôi Phục',noi_quat:'Chấn',ngoai_quat:'Khôn',cung:'Khôn',thu_tu:2,the_hao:1,ung_hao:4,dia_chi:['Tý','Dần','Thìn','Sửu','Hợi','Dậu']},
+  {id:59,ten:'Địa Trạch Lâm',noi_quat:'Đoài',ngoai_quat:'Khôn',cung:'Khôn',thu_tu:3,the_hao:2,ung_hao:5,dia_chi:['Tị','Mão','Sửu','Sửu','Hợi','Dậu']},
+  {id:60,ten:'Địa Thiên Thái',noi_quat:'Càn',ngoai_quat:'Khôn',cung:'Khôn',thu_tu:4,the_hao:3,ung_hao:6,dia_chi:['Tý','Dần','Thìn','Sửu','Hợi','Dậu']},
+  {id:61,ten:'Lôi Thiên Đại Tráng',noi_quat:'Càn',ngoai_quat:'Chấn',cung:'Khôn',thu_tu:5,the_hao:4,ung_hao:1,dia_chi:['Tý','Dần','Thìn','Ngọ','Thân','Tuất']},
+  {id:62,ten:'Trạch Thiên Quyết',noi_quat:'Càn',ngoai_quat:'Đoài',cung:'Khôn',thu_tu:6,the_hao:5,ung_hao:2,dia_chi:['Tý','Dần','Thìn','Hợi','Dậu','Mùi']},
+  {id:63,ten:'Thủy Thiên Nhu',noi_quat:'Càn',ngoai_quat:'Khảm',cung:'Khôn',thu_tu:7,the_hao:4,ung_hao:1,dia_chi:['Tý','Dần','Thìn','Thân','Tuất','Tý']},
+  {id:64,ten:'Thủy Địa Tỉ',noi_quat:'Khôn',ngoai_quat:'Khảm',cung:'Khôn',thu_tu:8,the_hao:3,ung_hao:6,dia_chi:['Mùi','Tị','Mão','Thân','Tuất','Tý']}
+];
+
+// ==========================================
+// THỦ TƯỢNG — DỮ LIỆU LUẬN NGHĨA QUẺ
+// (Trích từ Giáo Trình Lưu Xương Minh)
+// ==========================================
+
+const LUC_THAN_Y_TUONG = {
+  'Thanh Long': { icon:'🐉', cat:'Hỷ sự, tiền tài, quý nhân, hôn sự, thai sản', hung:'Tửu sắc, đánh bạc, mê hoa luyến sắc', tinhCach:'Thông minh, thanh tú, tao nhã, hòa khí' },
+  'Chu Tước':   { icon:'🐦', cat:'Văn tài, thư tín, tin tức, giỏi ngôn từ', hung:'Cãi vã, kiện tụng, phỉ báng, cháy nổ, thị phi', tinhCach:'Nói nhiều, nhiệt tình, nóng nảy' },
+  'Câu Trần':   { icon:'🪝', cat:'Bất động sản, đất đai, nông nghiệp, ổn định', hung:'Giam giữ, kìm hãm, chậm trễ, kiện tụng', tinhCach:'Bảo thủ, chậm chạp, thành thực, cứng nhắc' },
+  'Đằng Xà':    { icon:'🐍', cat:'', hung:'Lo lắng, ác mộng, lừa đảo, ma quỷ, rắn, đa nghi', tinhCach:'Xảo trá, khó đoán, kỳ quái, thủ đoạn' },
+  'Bạch Hổ':    { icon:'🐅', cat:'Kiên cường, quân nhân, quyết đoán, quyền thế', hung:'Tang sự, phẫu thuật, đổ máu, tai nạn, hung ác', tinhCach:'Dũng mãnh, hào sảng, nóng nảy' },
+  'Huyền Vũ':   { icon:'🐢', cat:'Thông minh, mưu kế, huyền học', hung:'Trộm cắp, lừa đảo, ngoại tình, dâm dục, lén lút', tinhCach:'Đa trí, âm trầm, u uất' }
+};
+
+const TUONG_SINH_Y_TUONG = {
+  nhatNguyet: 'được cấp trên/quý nhân hỗ trợ, chính sách thuận lợi',
+  haoDong:    'có người chủ động trợ giúp, ủng hộ',
+  haoTinh:    'được giúp đỡ thụ động, ngồi không hưởng thành quả',
+  hoiDau:     'đang phát triển, bất ngờ được trợ lực, thành công',
+  lienHoan:   'ban đầu bị cản trở nhưng có người hòa giải, cuối cùng thành'
+};
+
+const TUONG_KHAC_Y_TUONG = {
+  nhatKhacDT: 'chính sách bất lợi, lãnh đạo phản đối, sức ép từ hoàn cảnh',
+  nhatKhacKT: 'cấp trên giúp dẹp bỏ kẻ xấu, giải quyết khó khăn',
+  kyKhacDT:   'bị cản trở, phản đối mạnh, bầu không khí căng thẳng',
+  dtKhacKy:   'vượt qua khó khăn, giải quyết chướng ngại'
+};
+
+const TUONG_XUNG_Y_TUONG = {
+  nhatXungSuy: 'bị đả kích mạnh từ cấp trên, can thiệp ép buộc',
+  amDong:      'có quý nhân ngầm giúp đỡ (không công khai)',
+  haoXung:     'bị tấn công, phá hoại kế hoạch, quấy rối'
+};
+
+const LUC_HOP_Y_TUONG = {
+  hopKhoi: 'được đề bạt, nâng giá trị, ưu ái che chở',
+  hopBan:  'bị kìm hãm, cấm đoán, sự việc đình trệ',
+  haoHop:  'tâm đầu ý hợp, vướng mắc tình cảm, dây dưa không rời'
+};
+
+const TUAN_KHONG_LUC_THAN = {
+  'Thê Tài': 'không nhận được tiền, thiếu vốn, bị phong tỏa; Nam: vợ vắng',
+  'Quan Quỷ': 'không thăng tiến, thất nghiệp; Bệnh: chưa phát',
+  'Phụ Mẫu': 'nhà trống, hợp đồng vô hiệu, không giấy phép',
+  'Tử Tôn': 'không con cái, thuốc không hiệu quả',
+  'Huynh Đệ': 'không anh em bên cạnh, ít cạnh tranh'
+};
+
+const MO_KHO_Y_TUONG = {
+  taiVan:   'tiền bị kẹt, đóng băng vốn, tiền gửi tiết kiệm',
+  benhTat:  'bệnh viện, hôn mê, nằm liệt; suy cực = mồ mả',
+  hopTac:   'lừa gạt, che giấu, tồn kho, đối tác tránh mặt',
+  honNhan:  'che giấu quan hệ, không công khai, khép kín',
+  kienTung: 'bị giam giữ, mất tự do, đình chỉ công tác'
+};

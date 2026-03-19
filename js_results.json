@@ -1,0 +1,262 @@
+[
+  {
+    "index": 1,
+    "params": "8,8,8,8,8,8",
+    "name": "Khôn Vi Địa",
+    "dia_chi": [
+      "Mùi",
+      "Tị",
+      "Mão",
+      "Sửu",
+      "Hợi",
+      "Dậu"
+    ]
+  },
+  {
+    "index": 2,
+    "params": "7,7,7,7,7,7",
+    "name": "Càn Vi Thiên",
+    "dia_chi": [
+      "Tý",
+      "Dần",
+      "Thìn",
+      "Ngọ",
+      "Thân",
+      "Tuất"
+    ]
+  },
+  {
+    "index": 3,
+    "params": "7,8,7,8,7,8",
+    "name": "Thủy Hỏa Ký Tế",
+    "dia_chi": [
+      "Mão",
+      "Sửu",
+      "Hợi",
+      "Thân",
+      "Tuất",
+      "Tý"
+    ]
+  },
+  {
+    "index": 4,
+    "params": "8,7,8,7,8,7",
+    "name": "Hỏa Thủy Vị Tế",
+    "dia_chi": [
+      "Dần",
+      "Thìn",
+      "Ngọ",
+      "Dậu",
+      "Mùi",
+      "Tị"
+    ]
+  },
+  {
+    "index": 5,
+    "params": "8,8,8,7,7,7",
+    "name": "Thiên Địa Bĩ",
+    "dia_chi": [
+      "Mùi",
+      "Tị",
+      "Mão",
+      "Ngọ",
+      "Thân",
+      "Tuất"
+    ]
+  },
+  {
+    "index": 6,
+    "params": "7,7,7,8,8,8",
+    "name": "Địa Thiên Thái",
+    "dia_chi": [
+      "Tý",
+      "Dần",
+      "Thìn",
+      "Sửu",
+      "Hợi",
+      "Dậu"
+    ]
+  },
+  {
+    "index": 7,
+    "params": "8,8,7,7,8,7",
+    "name": "Hỏa Sơn Lữ",
+    "dia_chi": [
+      "Thìn",
+      "Ngọ",
+      "Thân",
+      "Dậu",
+      "Mùi",
+      "Tị"
+    ]
+  },
+  {
+    "index": 8,
+    "params": "7,8,8,7,7,8",
+    "name": "Trạch Lôi Tùy",
+    "dia_chi": [
+      "Tý",
+      "Dần",
+      "Thìn",
+      "Hợi",
+      "Dậu",
+      "Mùi"
+    ]
+  },
+  {
+    "index": 9,
+    "params": "6,7,8,9,7,6",
+    "name": "Trạch Thủy Khốn",
+    "dia_chi": [
+      "Dần",
+      "Thìn",
+      "Ngọ",
+      "Hợi",
+      "Dậu",
+      "Mùi"
+    ]
+  },
+  {
+    "index": 10,
+    "params": "6,9,6,9,6,9",
+    "name": "Hỏa Thủy Vị Tế",
+    "dia_chi": [
+      "Dần",
+      "Thìn",
+      "Ngọ",
+      "Dậu",
+      "Mùi",
+      "Tị"
+    ]
+  },
+  {
+    "index": 11,
+    "params": "9,6,9,6,9,6",
+    "name": "Thủy Hỏa Ký Tế",
+    "dia_chi": [
+      "Mão",
+      "Sửu",
+      "Hợi",
+      "Thân",
+      "Tuất",
+      "Tý"
+    ]
+  },
+  {
+    "index": 12,
+    "params": "6,8,7,9,8,7",
+    "name": "Hỏa Sơn Lữ",
+    "dia_chi": [
+      "Thìn",
+      "Ngọ",
+      "Thân",
+      "Dậu",
+      "Mùi",
+      "Tị"
+    ]
+  },
+  {
+    "index": 13,
+    "params": "7,9,8,7,6,8",
+    "name": "Lôi Trạch Quy Muội",
+    "dia_chi": [
+      "Tị",
+      "Mão",
+      "Sửu",
+      "Ngọ",
+      "Thân",
+      "Tuất"
+    ]
+  },
+  {
+    "index": 14,
+    "params": "8,6,9,8,7,6",
+    "name": "Thủy Sơn Kiển",
+    "dia_chi": [
+      "Thìn",
+      "Ngọ",
+      "Thân",
+      "Thân",
+      "Tuất",
+      "Tý"
+    ]
+  },
+  {
+    "index": 15,
+    "params": "9,7,6,8,9,7",
+    "name": "Phong Trạch Trung Phu",
+    "dia_chi": [
+      "Tị",
+      "Mão",
+      "Sửu",
+      "Mùi",
+      "Tị",
+      "Mão"
+    ]
+  },
+  {
+    "index": 16,
+    "params": "7,7,8,8,7,8",
+    "name": "Thủy Trạch Tiết",
+    "dia_chi": [
+      "Tị",
+      "Mão",
+      "Sửu",
+      "Thân",
+      "Tuất",
+      "Tý"
+    ]
+  },
+  {
+    "index": 17,
+    "params": "8,7,7,8,8,7",
+    "name": "Sơn Phong Cổ",
+    "dia_chi": [
+      "Sửu",
+      "Hợi",
+      "Dậu",
+      "Tuất",
+      "Tý",
+      "Dần"
+    ]
+  },
+  {
+    "index": 18,
+    "params": "6,6,9,9,6,9",
+    "name": "Hỏa Sơn Lữ",
+    "dia_chi": [
+      "Thìn",
+      "Ngọ",
+      "Thân",
+      "Dậu",
+      "Mùi",
+      "Tị"
+    ]
+  },
+  {
+    "index": 19,
+    "params": "9,9,6,6,9,9",
+    "name": "Phong Trạch Trung Phu",
+    "dia_chi": [
+      "Tị",
+      "Mão",
+      "Sửu",
+      "Mùi",
+      "Tị",
+      "Mão"
+    ]
+  },
+  {
+    "index": 20,
+    "params": "7,7,7,8,8,7",
+    "name": "Sơn Thiên Đại Súc",
+    "dia_chi": [
+      "Tý",
+      "Dần",
+      "Thìn",
+      "Tuất",
+      "Tý",
+      "Dần"
+    ]
+  }
+]
