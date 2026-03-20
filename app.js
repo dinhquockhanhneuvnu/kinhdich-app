@@ -16,6 +16,7 @@ function init() {
   document.getElementById('duong-lich').value = `${yyyy}-${mm}-${dd}`;
   convertToAmLich(); // Auto-select Can Chi based on today's date
   renderHaoInputs();
+  setMethod('coin');
   // Auto-update on select change
   ['thang-can','thang-chi','ngay-can','ngay-chi'].forEach(id => {
     document.getElementById(id).addEventListener('change', updateStep1);
@@ -77,15 +78,16 @@ function toggleCoin(hao, idx, el) {
 }
 
 // === DIRECT INPUT METHOD ===
-function toggleInputMethod() {
-  const methodOptions = document.getElementsByName('input_method');
-  let isDirect = false;
-  for (let r of methodOptions) {
-    if (r.checked && r.value === 'direct') {
-      isDirect = true;
-      break;
-    }
+function setMethod(method) {
+  // Update UI buttons
+  const btnCoin = document.getElementById('btn-method-coin');
+  const btnDirect = document.getElementById('btn-method-direct');
+  if (btnCoin && btnDirect) {
+    btnCoin.classList.toggle('active', method === 'coin');
+    btnDirect.classList.toggle('active', method === 'direct');
   }
+
+  const isDirect = method === 'direct';
   
   document.getElementById('hint-coin').style.display = isDirect ? 'none' : 'block';
   document.getElementById('hint-direct').style.display = isDirect ? 'block' : 'none';
@@ -95,7 +97,20 @@ function toggleInputMethod() {
     const dg = document.getElementById(`group-direct-${h}`);
     if (cg) cg.style.display = isDirect ? 'none' : 'flex';
     if (dg) dg.style.display = isDirect ? 'flex' : 'none';
+    
+    // Nếu chuyển sang Direct, update preview một lần cho chắc
+    if (isDirect) updateDirect(h);
   }
+}
+
+// Cũ, để lại để tránh break nếu có chỗ gọi, nhưng chuyển sang dùng setMethod
+function toggleInputMethod() {
+  const methodOptions = document.getElementsByName('input_method');
+  let val = 'coin';
+  for (let r of methodOptions) {
+    if (r.checked) { val = r.value; break; }
+  }
+  setMethod(val);
 }
 
 function updateDirect(hao) {
@@ -129,7 +144,7 @@ function updateDirect(hao) {
   // Save new score
   state.haoScores[hao - 1] = total;
   
-  // Update result label
+  // Update result label & Mini preview
   const info = getScoreInfo(total);
   const resultEl = document.getElementById(`result-${hao}`);
   if (resultEl) {
@@ -139,6 +154,12 @@ function updateDirect(hao) {
       <span class="result-label">${info.label}</span>
     `;
   }
+
+  // Cập nhật phần xem trước mini (Preview)
+  const ps = document.getElementById(`preview-symbol-${hao}`);
+  const pl = document.getElementById(`preview-label-${hao}`);
+  if (ps) ps.innerHTML = renderHaoSymbol(total);
+  if (pl) pl.innerText = info.label;
 
   // Highlight row
   const row = document.getElementById(`hao-row-${hao}`);

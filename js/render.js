@@ -2,30 +2,45 @@ function renderHaoInputs() {
   const container = document.getElementById('hao-inputs');
   let html = '';
   for (let h = 6; h >= 1; h--) {
-    const label = h === 6 ? 'Thượng' : h === 5 ? 'Ngũ' : h === 4 ? 'Tứ' : h === 3 ? 'Tam' : h === 2 ? 'Nhị' : 'Sơ';
+    const label = h === 6 ? 'THƯỢNG' : h === 5 ? 'NGŨ' : h === 4 ? 'TỨ' : h === 3 ? 'TAM' : h === 2 ? 'NHỊ' : 'SƠ';
     const total = 6; // Mặc định 3 sấp = 6
     state.haoScores[h - 1] = total;
     const info = getScoreInfo(total);
 
     html += `<div class="hao-row selected" id="hao-row-${h}">
-      <label>Hào ${h}<br><small>(${label})</small></label>
+      <label>Hào ${h}<small>(${label})</small></label>
       
+      <!-- Phương pháp Gieo Xu (Coins) -->
       <div class="coin-group" id="group-coin-${h}">
         <div class="coin" id="coin-${h}-0" onclick="toggleCoin(${h},0,this)" title="Click để lật xu"></div>
         <div class="coin" id="coin-${h}-1" onclick="toggleCoin(${h},1,this)" title="Click để lật xu"></div>
         <div class="coin" id="coin-${h}-2" onclick="toggleCoin(${h},2,this)" title="Click để lật xu"></div>
       </div>
 
-      <div class="direct-group" id="group-direct-${h}" style="display:none; flex:1; align-items:center; gap:1.2rem;">
-         <label style="cursor:pointer; display:flex; align-items:center; gap:0.3rem">
-            <input type="radio" name="am_duong_${h}" id="rad-am-${h}" value="am" checked onchange="updateDirect(${h})"> Âm
-         </label>
-         <label style="cursor:pointer; display:flex; align-items:center; gap:0.3rem">
-            <input type="radio" name="am_duong_${h}" id="rad-duong-${h}" value="duong" onchange="updateDirect(${h})"> Dương
-         </label>
-         <label style="cursor:pointer; display:flex; align-items:center; gap:0.3rem; margin-left:auto; color:var(--text); font-weight:700">
-            <input type="checkbox" id="chk-dong-${h}" checked onchange="updateDirect(${h})"> Động
-         </label>
+      <!-- Phương pháp Nhập Trực Tiếp (Direct) -->
+      <div class="direct-input-group" id="group-direct-${h}" style="display:none;">
+        <div class="custom-radio-group">
+          <label class="custom-radio">
+            <input type="radio" name="am_duong_${h}" id="rad-am-${h}" value="am" checked onchange="updateDirect(${h})">
+            <span class="radio-dot"></span> Âm
+          </label>
+          <label class="custom-radio">
+            <input type="radio" name="am_duong_${h}" id="rad-duong-${h}" value="duong" onchange="updateDirect(${h})">
+            <span class="radio-dot"></span> Dương
+          </label>
+        </div>
+
+        <div class="custom-checkbox-group">
+          <label class="custom-checkbox">
+            <input type="checkbox" id="chk-dong-${h}" checked onchange="updateDirect(${h})">
+            <span class="checkbox-box"></span> Động
+          </label>
+        </div>
+
+        <div class="direct-preview">
+          <div class="direct-preview-symbol" id="preview-symbol-${h}">${renderHaoSymbol(total)}</div>
+          <div class="direct-preview-label" id="preview-label-${h}">${info.label}</div>
+        </div>
       </div>
 
       <div class="hao-result" id="result-${h}">
