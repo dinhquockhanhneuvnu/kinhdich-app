@@ -780,7 +780,7 @@ width: 48px;
 height: 48px;
 border-radius: 50%;
 cursor: pointer;
-background-image: url("matsap.png");
+background-image: url("../matsap.png");
 background-size: cover;
 background-position: center;
 border: 2px solid var(--border-2);
@@ -809,7 +809,7 @@ transform: scale(1.1);
 border-color: var(--border-3);
       }
       .coin.ngua {
-background-image: url("matngua.png");
+background-image: url("../matngua.png");
 border-color: var(--gold);
       }
       .coin.ngua::after {
