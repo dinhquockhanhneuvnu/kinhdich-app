@@ -99,7 +99,7 @@ function sinhLuanNghia(dt, haoVaiTro, vs) {
       doan.push(text + ".");
     } else if (tt.voLuc) {
       doan.push(
-        ` Nguyên Thần ${nt.lucThan} H${nt.viTri}${ltHint} vô lực — nguồn trợ giúp bị cắt đứt.`,
+        `- Nguyên Thần ${nt.lucThan} H${nt.viTri}${ltHint} vô lực — nguồn trợ giúp bị cắt đứt.`,
       );
     }
   });
@@ -115,18 +115,18 @@ function sinhLuanNghia(dt, haoVaiTro, vs) {
     const ntHuuDung = nguyenThans.filter((n) => danhGiaTrangThai(n).huuDung);
     if ((ky.laDong || ky.laAmDong) && ntHuuDung.length > 0) {
       doan.push(
-        ` Kỵ Thần ${ky.lucThan} H${ky.viTri}${ltHint} ${canhTuong} — Tham Sinh Quên Khắc: ban đầu bị cản trở nhưng có người hòa giải, cuối cùng thành.`,
+        `- Kỵ Thần ${ky.lucThan} H${ky.viTri}${ltHint} ${canhTuong} — Tham Sinh Quên Khắc: ban đầu bị cản trở nhưng có người hòa giải, cuối cùng thành.`,
       );
     } else if (tt.huuDung) {
       let hungText = TUONG_KHAC_Y_TUONG.kyKhacDT;
       if (ltInfo && ltInfo.hung)
         hungText += `. ${ltInfo.icon} ${ky.lucThanTen}: ${ltInfo.hung}`;
       doan.push(
-        `⚡ Kỵ Thần ${ky.lucThan} H${ky.viTri}${ltHint} vượng động ${canhTuong} khắc DT — ${hungText}.`,
+        `- Kỵ Thần ${ky.lucThan} H${ky.viTri}${ltHint} vượng động ${canhTuong} khắc DT — ${hungText}.`,
       );
     } else if (tt.voLuc) {
       doan.push(
-        ` Kỵ Thần ${ky.lucThan} H${ky.viTri}${ltHint} vô lực — kẻ cản trở suy yếu, không gây hại.`,
+        `- Kỵ Thần ${ky.lucThan} H${ky.viTri}${ltHint} vô lực — kẻ cản trở suy yếu, không gây hại.`,
       );
     }
   });
@@ -136,7 +136,7 @@ function sinhLuanNghia(dt, haoVaiTro, vs) {
     const canhTuong = getCanhTuong(cuu.viTri, DC_HANH[cuu.diaChi]);
     if (tt.huuDung) {
       doan.push(
-        ` Cừu Thần ${cuu.lucThan} H${cuu.viTri} động ${canhTuong} — khắc Nguyên Thần (cắt nguồn trợ) đồng thời sinh Kỵ Thần (bơm sức cho kẻ thù). Tình huống nguy hiểm gấp bội.`,
+        `- Cừu Thần ${cuu.lucThan} H${cuu.viTri} động ${canhTuong} — khắc Nguyên Thần (cắt nguồn trợ) đồng thời sinh Kỵ Thần (bơm sức cho kẻ thù). Tình huống nguy hiểm gấp bội.`,
       );
     }
   });
@@ -146,7 +146,7 @@ function sinhLuanNghia(dt, haoVaiTro, vs) {
     const canhTuong = getCanhTuong(tiet.viTri, DC_HANH[tiet.diaChi]);
     if (tt.huuDung && tiet.diemVS >= 2) {
       doan.push(
-        ` Tiết Thần ${tiet.lucThan} H${tiet.viTri} vượng động ${canhTuong} — Vì Sinh mà Thiệt: dù DT có lực nhưng bị tiết khí nghiêm trọng, kiếm được bao nhiêu hao bấy nhiêu.`,
+        `- Tiết Thần ${tiet.lucThan} H${tiet.viTri} vượng động ${canhTuong} — Vì Sinh mà Thiệt: dù DT có lực nhưng bị tiết khí nghiêm trọng, kiếm được bao nhiêu hao bấy nhiêu.`,
       );
     }
   });

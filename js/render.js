@@ -143,6 +143,54 @@ function renderBangQue() {
     row.onclick = () => chonDungThan(i);
     tbody.appendChild(row);
   }
+  
+  // Hiển thị tượng quẻ mini ở cột trái
+  renderMiniQue();
+}
+
+function renderMiniQue() {
+  const container = document.getElementById('mini-que-container');
+  if (!container) return;
+  container.style.display = 'flex';
+
+  const banSymbol = document.getElementById('mini-ban-symbol');
+  const banName = document.getElementById('mini-ban-name');
+  const chiSymbol = document.getElementById('mini-chi-symbol');
+  const chiName = document.getElementById('mini-chi-name');
+  const arrow = document.querySelector('.mini-que-arrow');
+
+  // Quẻ Chủ
+  if (banSymbol) {
+    banSymbol.innerHTML = state.hao6.map((h, i) => {
+      const score = state.haoScores[i];
+      let banScore = score;
+      if (score === 9) banScore = 7;
+      if (score === 6) banScore = 8;
+      return `<div class="mini-hao">${renderHaoSymbol(banScore)}</div>`;
+    }).reverse().join('');
+  }
+  if (banName) banName.textContent = state.banQue.ten;
+
+  // Quẻ Biến
+  if (state.chiQue) {
+    if (chiSymbol) {
+      chiSymbol.innerHTML = state.hao6.map((h, i) => {
+        const score = h.laDong ? h.bienScore : state.haoScores[i];
+        let finalScore = score;
+        if (score === 9) finalScore = 7;
+        if (score === 6) finalScore = 8;
+        return `<div class="mini-hao">${renderHaoSymbol(finalScore)}</div>`;
+      }).reverse().join('');
+    }
+    if (chiName) chiName.textContent = state.chiQue.ten;
+    if (arrow) arrow.style.display = 'block';
+    if (chiSymbol && chiSymbol.parentElement) chiSymbol.parentElement.style.display = 'flex';
+  } else {
+    if (chiSymbol) chiSymbol.innerHTML = '';
+    if (chiName) chiName.textContent = '';
+    if (arrow) arrow.style.display = 'none';
+    if (chiSymbol && chiSymbol.parentElement) chiSymbol.parentElement.style.display = 'none';
+  }
 }
 
 function renderDungThanButtons() {
