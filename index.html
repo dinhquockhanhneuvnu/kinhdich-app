@@ -1572,32 +1572,6 @@
       }
 
       /* ===================================== */
-      /*            RESPONSIVE                 */
-      /* ===================================== */
-      @media (max-width: 1200px) {
-        .setup-strip {
-          grid-template-columns: 1fr;
-        }
-        .sidebar-strip {
-          grid-template-columns: 1fr;
-        }
-        .bento > * {
-          grid-column: span 12 !important;
-        }
-      }
-      @media (max-width: 768px) {
-        html {
-          font-size: 13px;
-        }
-        .topbar {
-          padding: 0 1rem;
-          gap: 1rem;
-          height: 60px;
-        }
-        .topbar-pills {
-          display: none;
-        }
-        /* ===================================== */
       /*           TOAST NOTIFICATIONS         */
       /* ===================================== */
       .toast-container {
@@ -1648,7 +1622,42 @@
       }
       .toast-close:hover { opacity: 1; }
 
-      .page {
+      /* ===================================== */
+      /*            RESPONSIVE                 */
+      /* ===================================== */
+      @media (max-width: 1200px) {
+        .setup-strip {
+          grid-template-columns: 1fr;
+        }
+        .sidebar-strip {
+          grid-template-columns: 1fr;
+        }
+        .bento > * {
+          grid-column: span 12 !important;
+        }
+      }
+      @media (max-width: 768px) {
+        html {
+          font-size: 13px;
+        }
+        .topbar {
+          padding: 0 1rem;
+          gap: 1rem;
+          height: 60px;
+        }
+        .topbar-pills {
+          display: none;
+        }
+        .toast-container {
+          top: 1rem;
+          right: 1rem;
+          left: 1rem;
+        }
+        .toast {
+          min-width: auto;
+          width: 100%;
+        }
+        .page {
           padding: 1rem;
           gap: 1.2rem;
         }
