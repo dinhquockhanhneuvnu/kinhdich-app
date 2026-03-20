@@ -650,17 +650,18 @@
         user-select: none;
         position: relative;
         transform-style: preserve-3d;
+        margin-bottom: 22px;
       }
       .coin::after {
         content: "S";
         position: absolute;
-        bottom: 5px;
+        bottom: -22px;
         left: 50%;
         transform: translateX(-50%);
         font-size: 0.75rem;
-        font-weight: 800;
-        color: rgba(255, 255, 255, 0.85);
-        text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        font-weight: 700;
+        color: var(--text-2);
+        text-shadow: none;
       }
       .coin:hover {
         transform: scale(1.1);
@@ -672,8 +673,8 @@
       }
       .coin.ngua::after {
         content: "N";
-        color: rgba(0, 0, 0, 0.7);
-        text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+        color: var(--gold);
+        text-shadow: none;
       }
       .coin:active {
         transform: scale(0.9);
@@ -820,18 +821,6 @@
       }
       .bang-que tr.row-nhap-mo td:first-child {
         box-shadow: inset 4px 0 0 var(--gold);
-      }
-      .bang-que tr.row-dung-than td {
-        background: rgba(244, 63, 94, 0.12);
-      }
-      .bang-que tr.row-nguyen-than td {
-        background: rgba(34, 197, 94, 0.1);
-      }
-      .bang-que tr.row-ky-than td {
-        background: rgba(239, 68, 68, 0.1);
-      }
-      .bang-que tr.row-cuu-than td {
-        background: rgba(245, 158, 11, 0.1);
       }
 
       /* Lục Thần Colors — bright, no glow */

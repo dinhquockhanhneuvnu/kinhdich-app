@@ -383,15 +383,7 @@ function renderThoiDiem(list) {
 }
 
 function highlightBangQue(haoVaiTro) {
-  document.querySelectorAll('.bang-que tbody tr').forEach(tr => {
-    tr.classList.remove('row-dung-than','row-nguyen-than','row-ky-than','row-cuu-than');
-    const idx = parseInt(tr.dataset.haoIdx);
-    const h = haoVaiTro[idx];
-    if (h && h.vaiTro === 'Dụng Thần') tr.classList.add('row-dung-than');
-    else if (h && h.vaiTro === 'Nguyên Thần') tr.classList.add('row-nguyen-than');
-    else if (h && h.vaiTro === 'Kỵ Thần') tr.classList.add('row-ky-than');
-    else if (h && h.vaiTro === 'Cừu Thần') tr.classList.add('row-cuu-than');
-  });
+  // Đã bỏ highlight background row theo yêu cầu để tránh nhòe / khó đọc.
 }
 
 // === BƯỚC 8: LƯU & IN ===
