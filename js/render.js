@@ -91,12 +91,12 @@ function renderBangQue() {
     const tkBadge = (hao.laTuanKhong && !hao.laAmDong) ? (isGK ? ' <span class="badge bdg-tk-g">TKg</span>' : ' <span class="badge bdg-tk">TK</span>') : "";
     const isVM = hao.laNhapMo && hao.nhanXetVS && hao.nhanXetVS.some(x=>x.includes("Vượng Mộ")); 
     const moBadge = hao.laNhapMo ? (isVM ? ' <span class="badge bdg-mo-v">Mv</span>' : ' <span class="badge bdg-mo">Mộ</span>') : "";
-    const nmBadge = hao.laNguyetMo ? ' <span class="badge" style="background:#1a1230;color:#a78bfa;border:1px solid #6d28d9;font-size:0.58rem" title="Nguyệt Mộ — chỉ mô tả trạng thái">NM</span>' : "";
-    const qcBadge = hao.laQuanChan ? ' <span class="badge" style="background:#1a1500;color:#f59e0b;border:1px solid #b45309;font-size:0.58rem" title="Hóa Quẩn Chân — ứng kỳ trễ">QC</span>' : "";
+    const nmBadge = hao.laNguyetMo ? ' <span class="badge bdg-nm" title="Nguyệt Mộ — chỉ mô tả trạng thái">NM</span>' : "";
+    const qcBadge = hao.laQuanChan ? ' <span class="badge bdg-qc" title="Hóa Quẩn Chân — ứng kỳ trễ">QC</span>' : "";
     const amBadge = hao.laAmDong ? ' <span class="badge bdg-am">ÁĐ</span>' : "";
     const phaBadge = hao.laNhatPha ? ' <span class="badge bdg-pha">Phá</span>' : "";
-    const tienBadge = hao.laTienThan ? ' <span class="badge" style="background:#0a1e0a;color:#57c255;border:1px solid #399837">Tiến</span>' : ""; 
-    const thoaiBadge = hao.laThoaiThan ? ' <span class="badge" style="background:#1e0808;color:#cc4444;border:1px solid #882222">Thoái</span>' : ""; 
+    const tienBadge = hao.laTienThan ? ' <span class="badge bdg-tien">Tiến</span>' : ""; 
+    const thoaiBadge = hao.laThoaiThan ? ' <span class="badge bdg-thoai">Thoái</span>' : ""; 
 
     const banQuaiHtml = `<div class="${getLucThanClass(hao.lucThan)}" style="font-weight:700;font-size:0.78rem;margin-bottom:2px">${hao.lucThan}</div><div style="font-size:0.73rem">${hao.diaChi} <span style="color:var(--text-3)">${hao.hanh}</span>${tkBadge}${moBadge}${nmBadge}${amBadge}${phaBadge}${qcBadge}</div><div class="hao-symbol" style="margin-top:3px">${renderHaoSymbol(state.haoScores[i])}</div>${phucThanHtml}`;
 

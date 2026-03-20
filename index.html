@@ -139,9 +139,35 @@
       [data-theme="light"] .result-score { color: var(--text); background: var(--surface-3); }
       [data-theme="light"] .result-symbol { color: var(--text); }
       [data-theme="light"] .section-head { color: var(--text); }
+      
+      /* Alerts, Badges & Tabs override for high contrast */
+      [data-theme="light"] .tab-btn.active-luan { color: var(--cyan); background: rgba(14, 116, 144, 0.1); }
+      [data-theme="light"] .tab-btn.active-tacgia { color: var(--gold); background: rgba(161, 98, 7, 0.1); }
+      
+      [data-theme="light"] .canh-bao-result.tot .cb-label { color: #16a34a; }
+      [data-theme="light"] .canh-bao-result.chu-y .cb-label { color: #d97706; }
+      [data-theme="light"] .canh-bao-result.xau .cb-label { color: #e11d48; }
+      [data-theme="light"] .canh-bao-result.trung-tinh .cb-label { color: #0284c7; }
+      [data-theme="light"] .canh-bao-result.dac-biet .cb-label { color: #9333ea; }
+      
       [data-theme="light"] .cat-hung-result .cat-label { color: var(--text); }
+      [data-theme="light"] .cat-hung-result.dai-cat .cat-label { color: #16a34a; }
+      [data-theme="light"] .cat-hung-result.cat .cat-label { color: #d97706; }
+      [data-theme="light"] .cat-hung-result.tieu-cat .cat-label { color: #16a34a; }
+      [data-theme="light"] .cat-hung-result.binh-hoa .cat-label { color: #9333ea; }
       [data-theme="light"] .cat-hung-result.hung .cat-label { color: #e11d48; }
+      
       [data-theme="light"] .cat-hung-chitiet li { border-bottom-color: rgba(0,0,0,0.06); color: var(--text-2); }
+      
+      [data-theme="light"] .bdg-tk-g { color: #16a34a; border-color: #16a34a; background: rgba(22, 163, 74, 0.1); }
+      [data-theme="light"] .bdg-mo-v { color: #16a34a; border-color: #16a34a; background: rgba(22, 163, 74, 0.1); }
+      [data-theme="light"] .bdg-mo { color: #d97706; border-color: #d97706; background: rgba(217, 119, 6, 0.1); }
+      [data-theme="light"] .bdg-am { color: #9333ea; border-color: #9333ea; background: rgba(147, 51, 234, 0.1); }
+      [data-theme="light"] .bdg-pha { color: #e11d48; border-color: #e11d48; background: rgba(225, 29, 72, 0.1); }
+      [data-theme="light"] .bdg-nm { color: #7e22ce; border-color: #7e22ce; background: rgba(126, 34, 206, 0.1); }
+      [data-theme="light"] .bdg-qc { color: #b45309; border-color: #b45309; background: rgba(180, 83, 9, 0.1); }
+      [data-theme="light"] .bdg-tien { color: #15803d; border-color: #15803d; background: rgba(21, 128, 61, 0.1); }
+      [data-theme="light"] .bdg-thoai { color: #be123c; border-color: #be123c; background: rgba(190, 18, 60, 0.1); }
       [data-theme="light"] .thu-tuong-line { border-bottom-color: rgba(0,0,0,0.06); }
       [data-theme="light"] .canh-bao-item { background: var(--canh-bao-bg); border-color: var(--border-1); }
       [data-theme="light"] .thoi-diem-item { background: var(--thoi-diem-bg); border-color: var(--border-1); }
@@ -871,6 +897,26 @@
         background: rgba(239, 68, 68, 0.2);
         color: #fca5a5;
         border: 1px solid #ef4444;
+      }
+      .bdg-nm {
+        background: rgba(109, 40, 217, 0.2);
+        color: #a78bfa;
+        border: 1px solid #6d28d9;
+      }
+      .bdg-qc {
+        background: rgba(180, 83, 9, 0.2);
+        color: #fbbf24;
+        border: 1px solid #b45309;
+      }
+      .bdg-tien {
+        background: rgba(57, 152, 55, 0.2);
+        color: #86efac;
+        border: 1px solid #399837;
+      }
+      .bdg-thoai {
+        background: rgba(239, 68, 68, 0.2);
+        color: #fca5a5;
+        border: 1px solid #882222;
       }
       .legend {
         display: flex;
