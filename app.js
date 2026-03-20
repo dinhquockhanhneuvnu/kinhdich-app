@@ -450,62 +450,115 @@ function xuatPrompt() {
   
   const userNote = document.getElementById('ghi-chu') ? document.getElementById('ghi-chu').value : '';
 
+  // 1. Cấu trúc 6 hào chi tiết
   const haos = state.hao6.map(h => {
     const dongStr = h.laDong ? ` (Động ➔ Biến thành ${h.bienLucThan} ${h.bienDC} - Hành ${DC_HANH[h.bienDC]})` : (h.laAmDong ? ' (Ám Động)' : '');
     const tkStr = h.laTuanKhong ? ' [Tuần Không]' : '';
     const moStr = h.laNhapMo ? ' [Nhập Mộ]' : '';
+    const nphaStr = h.laNhatPha ? ' [Nhật Phá]' : '';
+    const tphaStr = h.laNguyetPha ? ' [Nguyệt Phá]' : '';
+    const nmoStr = h.laNguyetMo ? ' [Nguyệt Mộ]' : '';
+    const qcStr = h.laQuanChan ? ' [Hóa Quẩn Chân]' : '';
+    
+    // Status list
+    const statusTags = [tkStr, moStr, nphaStr, tphaStr, nmoStr, qcStr].filter(s => s !== '').join('');
+    
     const vaiTro = state.haoVaiTro && state.haoVaiTro[h.viTri] ? state.haoVaiTro[h.viTri].vaiTro : '';
     const vtStr = vaiTro && vaiTro !== 'Bình thường' ? ` - Vai trò: ${vaiTro}` : '';
     
-    // Tìm Phục Thần nếu có ẩn dưới hào này
+    // Vượng suy cụ thể từng hào
+    const vsDetail = h.vuongSuy ? `\\n   ↳ [Vượng Suy]: ${h.vuongSuy.diem.toFixed(1)}đ (${h.vuongSuy.mucDo}) — ${h.vuongSuy.nhanXet.join('; ')}` : '';
+
+    // Phục Thần
     const phuc = state.phucThan ? state.phucThan.find(p => p.viTri === h.viTri) : null;
     const phucStr = phuc ? `\\n   ↳ [Phục Thần ẩn giấu]: ${phuc.lucThan} ${phuc.diaChi} (Hành ${DC_HANH[phuc.diaChi]})` : '';
 
-    return `Hào ${h.viTri}: ${h.lucThan} ${h.diaChi} (Hành ${DC_HANH[h.diaChi]}) - Lâm ${h.lucThanTen}${dongStr}${tkStr}${moStr}${vtStr}${phucStr}`;
+    return `Hào ${h.viTri}: ${h.lucThan} ${h.diaChi} (Hành ${DC_HANH[h.diaChi]}) - Lâm ${h.lucThanTen}${dongStr}${statusTags}${vtStr}${vsDetail}${phucStr}`;
   }).reverse().join('\\n');
 
+  // 2. Thông tin Dụng Thần & NKC
   let dtStr = '';
   if (dt.viTri === 'phuc') {
-    dtStr = `Dụng Thần (Phục Tàng): ${dt.lucThan} ${dt.diaChi} (Hành ${DC_HANH[dt.diaChi]}). Lực lượng: ${state.vuongSuyDT.diem.toFixed(1)} điểm - Mức độ: ${state.vuongSuyDT.mucDo}\\n[Chi tiết đánh giá]: ${state.vuongSuyDT.nhanXet.join('; ')}`;
+    dtStr = `Dụng Thần (Phục Tàng): ${dt.lucThan} ${dt.diaChi}. Lực lượng: ${state.vuongSuyDT.diem.toFixed(1)}đ (${state.vuongSuyDT.mucDo})\\n[Đánh giá]: ${state.vuongSuyDT.nhanXet.join('; ')}`;
   } else {
-    dtStr = `Dụng Thần: Hào ${dt.viTri} ${dt.lucThan} ${dt.diaChi} (Hành ${DC_HANH[dt.diaChi]}). Lực lượng: ${state.vuongSuyDT.diem.toFixed(1)} điểm - Mức độ: ${state.vuongSuyDT.mucDo}\\n[Chi tiết đánh giá]: ${state.vuongSuyDT.nhanXet.join('; ')}`;
+    dtStr = `Dụng Thần: Hào ${dt.viTri} ${dt.lucThan} ${dt.diaChi}. Lực lượng: ${state.vuongSuyDT.diem.toFixed(1)}đ (${state.vuongSuyDT.mucDo})\\n[Đánh giá]: ${state.vuongSuyDT.nhanXet.join('; ')}`;
   }
 
   const cacThan = (state.haoVaiTro || []).filter(h => h && h.vaiTro !== 'Dụng Thần' && h.vaiTro !== 'Bình thường').map(h => {
-    return `${h.vaiTro}: Hào ${h.viTri} ${h.lucThan} ${h.diaChi} - Lực lượng: ${h.diemVS} điểm\\n[Chi tiết đánh giá]: ${h.nhanXetVS.join('; ')}`;
+    return `${h.vaiTro}: Hào ${h.viTri} ${h.lucThan} ${h.diaChi} - Lực lượng: ${h.diemVS}đ\\n[Đánh giá]: ${h.nhanXetVS.join('; ')}`;
   }).join('\\n\\n');
 
-  const text = `Tôi cần bạn đóng vai một chuyên gia Dịch Lý Lục Hào (theo trường phái Lưu Xương Minh) để luận giải giúp tôi quẻ sau:
+  // 3. Cảnh báo & Cát Hung
+  const canhBaoEl = document.getElementById('canh-bao-list');
+  const canhBaoText = canhBaoEl ? Array.from(canhBaoEl.querySelectorAll('.canh-bao-item')).map(i => '• ' + i.innerText).join('\\n') : 'Không có cảnh báo đặc biệt.';
+
+  const catHungEl = document.querySelector('.cat-hung-result');
+  const catHungSummary = catHungEl ? `${catHungEl.querySelector('.cat-label').innerText}: ${catHungEl.querySelector('.cat-note').innerText}` : 'Chưa có kết quả tổng quát.';
+
+  // 4. Ứng Kỳ
+  const ungKy1El = document.getElementById('thoi-diem-list');
+  const ungKy1Text = ungKy1El ? Array.from(ungKy1El.querySelectorAll('.thoi-diem-item')).map(i => {
+    const reason = i.querySelector('.td-reason')?.innerText || '';
+    const when = i.querySelector('.td-when')?.innerText || '';
+    return `• ${reason}: ${when}`;
+  }).join('\\n') : 'Không tìm thấy gợi ý Ứng kỳ TH1.';
+
+  const ungKy2El = document.getElementById('thoi-diem-th2-list');
+  const ungKy2Text = ungKy2El ? Array.from(ungKy2El.querySelectorAll('.thoi-diem-item')).map(i => {
+    const reason = i.querySelector('.td-reason')?.innerText || '';
+    const when = i.querySelector('.td-when')?.innerText || '';
+    return `• ${reason}: ${when}`;
+  }).join('\\n') : 'Không có gợi ý Ứng kỳ theo Dã Hạc.';
+
+  // 5. Thủ Tượng
+  const thuTuongEl = document.getElementById('thu-tuong-result');
+  const thuTuongText = thuTuongEl ? Array.from(thuTuongEl.querySelectorAll('.thu-tuong-line')).map(l => l.innerText).join('\\n') : 'Không có thủ tượng phân tích.';
+
+  const text = `Tôi cần bạn đóng vai một chuyên gia Dịch Lý Lục Hào (theo trường phái Lưu Xương Minh & Dã Hạc) để luận giải chi tiết quẻ sau:
 
 1. THÔNG TIN CƠ BẢN:
 - Câu hỏi sự việc: ${cauHoi}
-- Ghi chú thêm từ người gieo: ${userNote || 'Không có'}
-- Thời gian gieo: Ngày ${state.chiNgay} (Hành ${DC_HANH[state.chiNgay]}), Tháng ${state.chiThang} (Hành ${DC_HANH[state.chiThang]})
-- Quẻ chính: ${state.banQue.ten} (Cung ${state.banQue.cung}) — [Ngoại quái: ${state.banQue.ngoai_quat} | Nội quái: ${state.banQue.noi_quat}]
-- Quẻ biến: ${state.chiQue ? state.chiQue.ten + ' — [Ngoại quái: ' + state.chiQue.ngoai_quat + ' | Nội quái: ' + state.chiQue.noi_quat + ']' : 'Không có (Quẻ tĩnh)'}
-- Hào Thể: H${state.banQue.the_hao} | Hào Ứng: H${state.banQue.ung_hao}
-- Tuần Không: ${state.tuanKhong.join(', ')}
+- Ghi chú: ${userNote || 'Không có'}
+- Thời gian: Ngày ${state.chiNgay} (${DC_HANH[state.chiNgay]}), Tháng ${state.chiThang} (${DC_HANH[state.chiThang]})
+- Quẻ chính: ${state.banQue.ten} (Cung ${state.banQue.cung})
+- Quẻ biến: ${state.chiQue ? state.chiQue.ten : 'Quẻ tĩnh'}
+- Hào Thể: H${state.banQue.the_hao} | Ứng: H${state.banQue.ung_hao}
+- Tuần Không: ${state.tuanKhong.join(', ')} | Lục Thần khởi: ${document.getElementById('luc-than-start').textContent}
 
-2. CẤU TRÚC 6 HÀO (Từ Hào 6 trên cùng xuống Hào 1):
+2. CẤU TRÚC 6 HÀO (Chi tiết Vượng Suy & Trạng thái):
 ${haos}
 
-3. PHÂN TÍCH LỰC LƯỢNG & VAI TRÒ (Đã được phần mềm tính toán sẵn Điểm Vượng Suy):
+3. TỔNG HỢP PHÂN TÍCH TỪ PHẦN MỀM:
+- KẾT LUẬN CÁT HUNG: ${catHungSummary}
+- CẢNH BÁO QUAN TRỌNG:
+${canhBaoText}
+
+- DỤNG THẦN & HỆ THỐNG PHÙ TRỢ:
 ${dtStr}
+${cacThan ? '\\n' + cacThan : ''}
 
-BỘ MÁY TÁC ĐỘNG (Nguyên Kỵ Cừu Tiết):
-${cacThan ? cacThan : 'Không có Nguyên/Kỵ/Cừu thần phát động (Quẻ tĩnh hoặc không có hào liên quan).'}
+4. DỰ ĐOÁN THỜI ĐIỂM (ỨNG KỲ):
+--- Phương pháp TH1 (Lưu Xương Minh) ---
+${ungKy1Text}
 
-4. YÊU CẦU LUẬN GIẢI:
-Dựa trên Vượng Suy, sinh khắc của hệ thống Nguyên/Kỵ Thần đã tính ở trên, kết hợp 3 quy luật (Tham sinh quên khắc, Tham hợp quên sinh, Vì sinh mà thiệt) đối với Hào Động, và hệ thống Thủ Tượng (Hào vị, Ngũ hành, Lục thần), bạn hãy:
-- "Dựng lại hiện trường" chi tiết sự việc đang diễn ra (ghép tượng hào vị, đồ vật ngũ hành, tính chất lục thần). Phân tích từng hào động ảnh hưởng thế nào đến sự việc.
-- Kết luận Cát hay Hung.
-- Đưa ra Ứng kỳ (thời điểm cụ thể sẽ xảy ra sự việc hoặc kết quả).`;
+--- Phương pháp TH2 (Dã Hạc - Phân tích bổ sung) ---
+${ungKy2Text}
+
+5. THỦ TƯỢNG (DỰNG LẠI HIỆN TRƯỜNG):
+${thuTuongText}
+
+6. YÊU CẦU LUẬN GIẢI:
+Dựa trên toàn bộ dữ liệu Vượng Suy, Cảnh Báo và Thủ Tượng ở trên, bạn hãy:
+- "Dựng lại hiện trường" một cách sống động: mô tả tính chất sự việc, con người hoặc đồ vật liên quan dựa trên Hào vị, Ngũ hành, Lục Thần và Tượng Quẻ.
+- Phân tích sâu các Hào Động (nếu có): Chúng tác động đến Dụng Thần như thế nào? (Hồi đầu sinh/khắc, Tiến/Thoái thần, Quẩn chân?).
+- Đối chiếu Ứng Kỳ: Kiểm tra các gợi ý thời điểm ở trên và đưa ra ngày/tháng cụ thể nhất có khả năng xảy ra kết quả.
+- Lời khuyên cho người gieo quẻ.`;
 
   navigator.clipboard.writeText(text).then(() => {
-    alert('✅ Đã copy toàn bộ Data Quẻ vào Clipboard!\\n\\nBây giờ bạn có thể Paste (Dán) nội dung vào ChatGPT hoặc Claude để nhờ AI luận giải chi tiết.');
+    alert('✅ Đã copy toàn bộ Data Quẻ Toàn Diện (v3.0) vào Clipboard!\\n\\nBây giờ bạn có thể Paste (Dán) vào ChatGPT hoặc Claude để nhận luận giải chuyên sâu.');
   }).catch(err => {
     console.error('Lỗi copy:', err);
-    alert('Lỗi khi copy. Vui lòng cấp quyền Clipboard cho trình duyệt và thử lại!');
+    alert('Lỗi copy. Vui lòng thử lại!');
   });
 }
 // === KHỞI ĐỘNG ===
