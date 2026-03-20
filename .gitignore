@@ -1,0 +1,8 @@
+node_modules/
+.DS_Store
+*.log
+py_results.json
+js_results.json
+unnamed.png
+split.js
+legacy/
