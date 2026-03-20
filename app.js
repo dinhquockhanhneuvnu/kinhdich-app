@@ -229,7 +229,7 @@ function goiYDungThan() {
   const matches = state.hao6.filter(h => h.lucThan === lucThan);
   box.style.display = 'block';
   box.innerHTML = `<p>Gợi ý Dụng Thần: <span class="luc-than-name">${lucThan}</span></p>
-    <p style="font-size:0.82rem;color:#888;margin-top:0.25rem">Các hào ${lucThan}: ${matches.map(h => 'Hào ' + h.viTri + ' (' + h.diaChi + ')').join(', ') || 'Không có (Phục Tàng)'}</p>`;
+    <p style="font-size:0.82rem;color:var(--text-3);margin-top:0.25rem">Các hào ${lucThan}: ${matches.map(h => 'Hào ' + h.viTri + ' (' + h.diaChi + ')').join(', ') || 'Không có (Phục Tàng)'}</p>`;
 }
 
 function chonDungThan(haoIndex) {
@@ -409,7 +409,7 @@ function runPhanTichPhuc(phiHao, phuc) {
   if (phucVoDung) chiTiet.push('❌ Phục Thần vô dụng: hưu tù + bị Phi khắc — vĩnh viễn không xuất');
 
   const chiTietHtml = `<ul class="cat-hung-chitiet">${chiTiet.map(c => `<li>${c}</li>`).join('')}</ul>`;
-  if (catHungEl) catHungEl.innerHTML = `<div class="cat-hung-result ${cls}"><div class="cat-label">${catHung}</div><div class="cat-note">${detail}</div><div style="font-size:0.63rem;color:#4a5a70;margin-top:0.2rem">Điểm Phục Thần: ${diemPhuc.toFixed(1)}</div>${chiTietHtml}</div>`;
+  if (catHungEl) catHungEl.innerHTML = `<div class="cat-hung-result ${cls}"><div class="cat-label">${catHung}</div><div class="cat-note">${detail}</div><div style="font-size:0.63rem;color:var(--text-3);margin-top:0.2rem">Điểm Phục Thần: ${diemPhuc.toFixed(1)}</div>${chiTietHtml}</div>`;
 
   // Render vượng suy
   state.vuongSuyDT = vs;
@@ -418,7 +418,7 @@ function runPhanTichPhuc(phiHao, phuc) {
   // NKC: không có hào hiện nên render Phi-Phục info
   const nkcEl = document.getElementById('nkc-than-list');
   if (nkcEl) nkcEl.innerHTML = `<div class="nkc-item"><span class="nkc-label nkc-dung">Dụng Thần</span> 👻 Phục: ${phuc.lucThan} (${phuc.diaChi} ${phuc.hanh}) — <span class="vuong-suy ${vs.cssClass}">${vs.mucDo}</span></div>
-    <div class="nkc-item"><span class="nkc-label" style="background:rgba(100,100,100,0.2);color:#aaa;border:1px solid #555">Phi Thần</span> ${phiHao.lucThan} H${phiHao.viTri} (${phiHao.diaChi} ${phiHanh}) — <span class="vuong-suy ${phiHao.vuongSuy.cssClass}">${phiHao.vuongSuy.mucDo}</span></div>`;
+    <div class="nkc-item"><span class="nkc-label" style="background:var(--chip-bg);color:var(--text-2);border:1px solid var(--border-1)">Phi Thần</span> ${phiHao.lucThan} H${phiHao.viTri} (${phiHao.diaChi} ${phiHanh}) — <span class="vuong-suy ${phiHao.vuongSuy.cssClass}">${phiHao.vuongSuy.mucDo}</span></div>`;
 
   // Động hào
   renderDongHao();
@@ -455,7 +455,7 @@ function runPhanTichPhuc(phiHao, phuc) {
     doan.push(`⏳ **Ứng kỳ**: Chờ ngày/tháng ${LUC_XUNG[phiHao.diaChi]} xung bay Phi Thần ${phiHao.diaChi} — Phục Thần xuất lộ.`);
 
     thuTuongEl.innerHTML = doan.map(d => {
-      const formatted = d.replace(/\*\*(.+?)\*\*/g, '<strong style="color:#fff">$1</strong>');
+      const formatted = d.replace(/\*\*(.+?)\*\*/g, '<strong style="color:var(--heading-color)">$1</strong>');
       return `<div class="thu-tuong-line">${formatted}</div>`;
     }).join('');
   }

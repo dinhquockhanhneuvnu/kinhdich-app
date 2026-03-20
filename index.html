@@ -46,6 +46,13 @@
         --text: #eaeef4;
         --text-2: #a8b4c6;
         --text-3: #6b7a92;
+        /* Vượng Suy Levels */
+        --vs-cuc-vuong: #ff6b00;
+        --vs-vuong: #4caf50;
+        --vs-binh-hoa: #808080;
+        --vs-hoi-suy: #ea580c;
+        --vs-suy: #ef4444;
+        --vs-cuc-suy: #dc2626;
         /* Radius */
         --r-sm: 8px;
         --r-md: 12px;
@@ -94,6 +101,13 @@
         --text: #111111;
         --text-2: #3a3a3a;
         --text-3: #666666;
+        /* Vượng Suy Levels — Light Mode */
+        --vs-cuc-vuong: #ea580c;
+        --vs-vuong: #16a34a;
+        --vs-binh-hoa: #71717a;
+        --vs-hoi-suy: #d97706;
+        --vs-suy: #e11d48;
+        --vs-cuc-suy: #be123c;
         /* Theme-aware */
         --topbar-bg: rgba(255, 255, 255, 0.92);
         --topbar-border: rgba(0, 0, 0, 0.1);
@@ -193,7 +207,7 @@
       [data-theme="light"] .dong-item .d-head { color: var(--gold); }
       [data-theme="light"] .badge-voluc { background: rgba(225, 29, 72, 0.1); }
       [data-theme="light"] .badge-huudung { background: rgba(22, 163, 74, 0.1); }
-      [data-theme="light"] .bang-que tr.row-tuan-khong { opacity: 0.7; }
+      [data-theme="light"] .bang-que tr.row-tuan-khong { background: rgba(52, 59, 77, 0.03); }
       [data-theme="light"] textarea#ghi-chu { background: var(--textarea-bg); color: var(--text); }
       [data-theme="light"] .goi-y-box { background: var(--goi-y-bg); }
       [data-theme="light"] .selected-dt-box { background: var(--selected-dt-bg); }
@@ -246,12 +260,10 @@
       }
 
       body {
-        font-family:
-          "Inter",
-          -apple-system,
-          sans-serif;
+        font-family: "Inter", -apple-system, sans-serif;
         background: var(--bg);
         color: var(--text);
+        margin: 0;
         min-height: 100vh;
         overflow-x: hidden;
       }
@@ -533,8 +545,17 @@
         font-weight: 500;
         letter-spacing: 0.05em;
       }
+      .section-head {
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 1.2rem;
+        color: var(--heading-color);
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
       .hint {
-        font-size: 0.78rem;
+        font-size: 0.8rem;
         color: var(--text-2);
         line-height: 1.7;
         margin-bottom: 1rem;
@@ -564,13 +585,12 @@
       .btn-primary {
         display: block;
         width: 100%;
-        padding: 1rem;
-        margin-top: 1.2rem;
-        font-size: 1rem;
+        padding: 0.9rem;
+        font-size: 0.95rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.1em;
-        color: #fff;
+        color: #fff; /* White is usually okay for buttons with dark gradients */
         border: none;
         border-radius: var(--r-md);
         cursor: pointer;
@@ -841,7 +861,7 @@
       }
       .result-score {
         font-weight: 700;
-        color: #fff;
+        color: var(--text);
         background: var(--surface-3);
         padding: 3px 10px;
         border-radius: 6px;
@@ -851,7 +871,7 @@
       .result-symbol {
         font-family: monospace;
         font-size: 1.1rem;
-        color: #fff;
+        color: var(--text);
         letter-spacing: 2px;
       }
       .result-label {
@@ -859,7 +879,7 @@
         color: var(--text-2);
         min-width: 70px;
         text-align: right;
-        font-weight: 500;
+        font-weight: 600;
       }
 
       /* ===================================== */
@@ -954,7 +974,7 @@
         font-weight: 700;
       }
       .bang-que tr.row-tuan-khong {
-        opacity: 0.5;
+        background: rgba(255, 255, 255, 0.02);
       }
       .bang-que tr.row-nhap-mo td:first-child {
         box-shadow: inset 4px 0 0 var(--gold);
@@ -2187,7 +2207,7 @@
             margin-bottom: 0.8rem;
           "
         >
-          <strong style="color: #fff">Lục Hào Kinh Dịch</strong> là công cụ luận
+          <strong style="color: var(--heading-color)">Lục Hào Kinh Dịch</strong> là công cụ luận
           quẻ Lục Hào chuyên nghiệp, được xây dựng dựa trên hệ thống lý luận của
           <strong style="color: var(--cyan)">Lưu Xương Minh</strong> và bổ sung
           các quy tắc nâng cao từ
@@ -2236,7 +2256,7 @@
           >
             <span style="font-size: 1.3rem; line-height: 1">🎴</span>
             <div>
-              <div style="font-weight: 700; color: #fff; font-size: 0.88rem">
+              <div style="font-weight: 700; color: var(--heading-color); font-size: 0.88rem">
                 Tự động lên 64 Quẻ
               </div>
               <div
@@ -2263,7 +2283,7 @@
           >
             <span style="font-size: 1.3rem; line-height: 1">🌡️</span>
             <div>
-              <div style="font-weight: 700; color: #fff; font-size: 0.88rem">
+              <div style="font-weight: 700; color: var(--heading-color); font-size: 0.88rem">
                 Tính Vượng Suy
               </div>
               <div
@@ -2290,7 +2310,7 @@
           >
             <span style="font-size: 1.3rem; line-height: 1">⚔️</span>
             <div>
-              <div style="font-weight: 700; color: #fff; font-size: 0.88rem">
+              <div style="font-weight: 700; color: var(--heading-color); font-size: 0.88rem">
                 Nguyên Kỵ Cừu Thần
               </div>
               <div
@@ -2317,7 +2337,7 @@
           >
             <span style="font-size: 1.3rem; line-height: 1">⏳</span>
             <div>
-              <div style="font-weight: 700; color: #fff; font-size: 0.88rem">
+              <div style="font-weight: 700; color: var(--heading-color); font-size: 0.88rem">
                 Ứng Kỳ TH1 + TH2
               </div>
               <div
@@ -2344,7 +2364,7 @@
           >
             <span style="font-size: 1.3rem; line-height: 1">👻</span>
             <div>
-              <div style="font-weight: 700; color: #fff; font-size: 0.88rem">
+              <div style="font-weight: 700; color: var(--heading-color); font-size: 0.88rem">
                 Phục Tàng
               </div>
               <div
@@ -2371,7 +2391,7 @@
           >
             <span style="font-size: 1.3rem; line-height: 1">📖</span>
             <div>
-              <div style="font-weight: 700; color: #fff; font-size: 0.88rem">
+              <div style="font-weight: 700; color: var(--heading-color); font-size: 0.88rem">
                 Thủ Tượng
               </div>
               <div
@@ -2398,7 +2418,7 @@
           >
             <span style="font-size: 1.3rem; line-height: 1">🔗</span>
             <div>
-              <div style="font-weight: 700; color: #fff; font-size: 0.88rem">
+              <div style="font-weight: 700; color: var(--heading-color); font-size: 0.88rem">
                 Hóa Quẩn Chân
               </div>
               <div
@@ -2425,7 +2445,7 @@
           >
             <span style="font-size: 1.3rem; line-height: 1">📋</span>
             <div>
-              <div style="font-weight: 700; color: #fff; font-size: 0.88rem">
+              <div style="font-weight: 700; color: var(--heading-color); font-size: 0.88rem">
                 Xuất Prompt AI
               </div>
               <div

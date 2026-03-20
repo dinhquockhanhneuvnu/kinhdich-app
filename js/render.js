@@ -53,7 +53,8 @@ function renderHaoInputs() {
   container.innerHTML = html;
   
   // Bật nút An Quẻ luôn vì hào đã full (có kết quả sấp hết 6 hào = Thuần Khôn)
-  document.getElementById('btn-anque').disabled = false;
+  const btnAnQue = document.getElementById('btn-anque');
+  if (btnAnQue) btnAnQue.disabled = false;
 }
 
 function renderHaoSymbol(score) {
@@ -70,24 +71,32 @@ function getLucThanClass(lt) {
 }
 
 function renderBangQue() {
-  document.getElementById('ban-que-name').textContent = state.banQue.ten;
-  document.getElementById('chi-que-name').textContent = state.chiQue ? state.chiQue.ten : '(không biến)';
-  document.getElementById('cung-que').textContent = state.banQue.cung;
-  document.getElementById('hanh-cung').textContent = state.cungHanh;
+  const banQueName = document.getElementById('ban-que-name');
+  if (banQueName) banQueName.textContent = state.banQue.ten;
+  
+  const chiQueName = document.getElementById('chi-que-name');
+  if (chiQueName) chiQueName.textContent = state.chiQue ? state.chiQue.ten : '(không biến)';
+  
+  const cungQue = document.getElementById('cung-que');
+  if (cungQue) cungQue.textContent = state.banQue.cung;
+  
+  const hanhCung = document.getElementById('hanh-cung');
+  if (hanhCung) hanhCung.textContent = state.cungHanh;
 
   const tbody = document.getElementById('tbody-que');
+  if (!tbody) return;
   tbody.innerHTML = '';
   for (let i = 5; i >= 0; i--) {
-    const hao = state.hao6[i];
-    const isThe = hao.viTri === state.banQue.the_hao;
-    const isUng = hao.viTri === state.banQue.ung_hao;
+    const hào = state.hao6[i];
+    const isThe = hào.viTri === state.banQue.the_hao;
+    const isUng = hào.viTri === state.banQue.ung_hao;
     const row = document.createElement('tr');
     const classes = [];
     if (isThe) classes.push('row-the');
     if (isUng) classes.push('row-ung');
-    if (hao.laDong) classes.push('row-dong');
-    if (hao.laTuanKhong && !hao.laAmDong) classes.push('row-tuan-khong'); // Đã Ám Động (Xung Không thành Thực) thì không highlight TK
-    if (hao.laNhapMo) classes.push('row-nhap-mo');
+    if (hào.laDong) classes.push('row-dong');
+    if (hào.laTuanKhong && !hào.laAmDong) classes.push('row-tuan-khong');
+    if (hào.laNhapMo) classes.push('row-nhap-mo');
     if (i === 3) classes.push('noi-ngoai-border');
     row.className = classes.join(' ');
     row.dataset.haoIdx = i;
@@ -95,52 +104,50 @@ function renderBangQue() {
     const theUng = isThe ? 'Thế' : (isUng ? 'Ứng' : '');
     const theUngHtml = theUng ? `<span class="badge ${isThe ? 'bdg-the' : 'bdg-ung'}">${theUng}</span> ` : '';
     
-    // Phục thần HTML (nay tích hợp vào Quẻ Chủ)
-    const phucThanHtml = hao.phucThan ? `<div style="margin-top:6px; font-size:0.95rem; padding:4px; border:1px dashed var(--gold); border-radius:4px; background:var(--phuc-bg)">
+    const phucThanHtml = hào.phucThan ? `<div style="margin-top:6px; font-size:0.95rem; padding:4px; border:1px dashed var(--gold); border-radius:4px; background:var(--phuc-bg)">
       <span style="color:var(--gold); font-size:0.85rem">Phục Thần</span><br>
-      <span class="${getLucThanClass(hao.phucThan.lucThan)}" style="font-weight:bold">${hao.phucThan.lucThan}</span><br>
-      <span style="color:var(--text-2)">${hao.phucThan.diaChi} ${hao.phucThan.hanh}</span>
+      <span class="${getLucThanClass(hào.phucThan.lucThan)}" style="font-weight:bold">${hào.phucThan.lucThan}</span><br>
+      <span style="color:var(--text-2)">${hào.phucThan.diaChi} ${hào.phucThan.hanh}</span>
     </div>` : '';
 
-    const isGK = hao.laTuanKhong && !hao.laAmDong && hao.nhanXetVS && hao.nhanXetVS.some(x=>x.includes("Giả Không")); 
-    const tkBadge = (hao.laTuanKhong && !hao.laAmDong) ? (isGK ? ' <span class="badge bdg-tk-g">TKg</span>' : ' <span class="badge bdg-tk">TK</span>') : "";
-    const isVM = hao.laNhapMo && hao.nhanXetVS && hao.nhanXetVS.some(x=>x.includes("Vượng Mộ")); 
-    const moBadge = hao.laNhapMo ? (isVM ? ' <span class="badge bdg-mo-v">Mv</span>' : ' <span class="badge bdg-mo">Mộ</span>') : "";
-    const nmBadge = hao.laNguyetMo ? ' <span class="badge bdg-nm" title="Nguyệt Mộ — chỉ mô tả trạng thái">NM</span>' : "";
-    const qcBadge = hao.laQuanChan ? ' <span class="badge bdg-qc" title="Hóa Quẩn Chân — ứng kỳ trễ">QC</span>' : "";
-    const amBadge = hao.laAmDong ? ' <span class="badge bdg-am">ÁĐ</span>' : "";
-    const phaBadge = hao.laNhatPha ? ' <span class="badge bdg-pha">Phá</span>' : "";
-    const tienBadge = hao.laTienThan ? ' <span class="badge bdg-tien">Tiến</span>' : ""; 
-    const thoaiBadge = hao.laThoaiThan ? ' <span class="badge bdg-thoai">Thoái</span>' : ""; 
+    const isGK = hào.laTuanKhong && !hào.laAmDong && hào.nhanXetVS && hào.nhanXetVS.some(x=>x.includes("Giả Không")); 
+    const tkBadge = (hào.laTuanKhong && !hào.laAmDong) ? (isGK ? ' <span class="badge bdg-tk-g">TKg</span>' : ' <span class="badge bdg-tk">TK</span>') : "";
+    const isVM = hào.laNhapMo && hào.nhanXetVS && hào.nhanXetVS.some(x=>x.includes("Vượng Mộ")); 
+    const moBadge = hào.laNhapMo ? (isVM ? ' <span class="badge bdg-mo-v">Mv</span>' : ' <span class="badge bdg-mo">Mộ</span>') : "";
+    const nmBadge = hào.laNguyetMo ? ' <span class="badge bdg-nm" title="Nguyệt Mộ">NM</span>' : "";
+    const qcBadge = hào.laQuanChan ? ' <span class="badge bdg-qc" title="Hóa Quẩn Chân">QC</span>' : "";
+    const amBadge = hào.laAmDong ? ' <span class="badge bdg-am">ÁĐ</span>' : "";
+    const phaBadge = hào.laNhatPha ? ' <span class="badge bdg-pha">Phá</span>' : "";
+    const tienBadge = hào.laTienThan ? ' <span class="badge bdg-tien">Tiến</span>' : ""; 
+    const thoaiBadge = hào.laThoaiThan ? ' <span class="badge bdg-thoai">Thoái</span>' : ""; 
 
-    const banQuaiHtml = `<div class="${getLucThanClass(hao.lucThan)}" style="font-weight:700;font-size:0.85rem;margin-bottom:2px">${hao.lucThan}</div><div style="font-size:0.8rem">${hao.diaChi} <span style="color:var(--text-3)">${hao.hanh}</span>${tkBadge}${moBadge}${nmBadge}${amBadge}${phaBadge}${qcBadge}</div><div class="hao-symbol" style="margin-top:3px">${renderHaoSymbol(state.haoScores[i])}</div>${phucThanHtml}`;
+    const banQuaiHtml = `<div class="${getLucThanClass(hào.lucThan)}" style="font-weight:700;font-size:0.85rem;margin-bottom:2px">${hào.lucThan}</div><div style="font-size:0.8rem">${hào.diaChi} <span style="color:var(--text-3)">${hào.hanh}</span>${tkBadge}${moBadge}${nmBadge}${amBadge}${phaBadge}${qcBadge}</div><div class="hao-symbol" style="margin-top:3px">${renderHaoSymbol(state.haoScores[i])}</div>${phucThanHtml}`;
 
     let bienQuaiHtml = '<div style="color:var(--text-3);font-size:0.85rem">—</div>';
-    if (hao.laDong) {
-       bienQuaiHtml = `<div class="${getLucThanClass(hao.bienLucThan)}" style="font-weight:700;font-size:0.85rem;margin-bottom:2px">${hao.bienLucThan}</div><div style="font-size:0.8rem;color:var(--text-2)">${hao.bienDC} ${hao.bienHanh}${tienBadge}${thoaiBadge}</div><div class="hao-symbol" style="margin-top:3px">${renderHaoSymbol(hao.bienScore)}</div>`;
+    if (hào.laDong) {
+       bienQuaiHtml = `<div class="${getLucThanClass(hào.bienLucThan)}" style="font-weight:700;font-size:0.85rem;margin-bottom:2px">${hào.bienLucThan}</div><div style="font-size:0.8rem;color:var(--text-2)">${hào.bienDC} ${hào.bienHanh}${tienBadge}${thoaiBadge}</div><div class="hao-symbol" style="margin-top:3px">${renderHaoSymbol(hào.bienScore)}</div>`;
     }
 
-    const vsDetailHtml = hao.vuongSuy.nhanXet.length > 0 ? `<ul style="list-style:none;padding:0;margin-top:3px;text-align:left">${hao.vuongSuy.nhanXet.map(x=>`<li style="font-size:0.75rem;color:var(--text-3);padding:1px 0">• ${x}</li>`).join('')}</ul>` : '';
-    const vsHtml = `<span class="vuong-suy ${hao.vuongSuy.cssClass}">${hao.vuongSuy.mucDo} <span style="opacity:0.6">(${hao.vuongSuy.diem}đ)</span></span>${vsDetailHtml}`;
+    const vsDetailHtml = hào.vuongSuy.nhanXet.length > 0 ? `<ul style="list-style:none;padding:0;margin-top:3px;text-align:left">${hào.vuongSuy.nhanXet.map(x=>`<li style="font-size:0.75rem;color:var(--text-3);padding:1px 0">• ${x}</li>`).join('')}</ul>` : '';
+    const vsHtml = `<span class="vuong-suy ${hào.vuongSuy.cssClass}">${hào.vuongSuy.mucDo} <span style="color:var(--text-3); font-size:0.75rem">(${hào.vuongSuy.diem}đ)</span></span>${vsDetailHtml}`;
 
-    // Cột Động (X)
     let dongCellHtml = '';
-    if (hao.laDong) {
+    if (hào.laDong) {
       dongCellHtml = '<span style="font-size:1.3rem;font-weight:900;color:var(--gold)">✕</span>';
-    } else if (hao.laAmDong) {
+    } else if (hào.laAmDong) {
       dongCellHtml = '<span style="font-size:0.85rem;font-weight:700;color:var(--purple)">ÁĐ</span>';
     }
 
-    row.innerHTML = `<td style="font-weight:700;color:var(--text-3);font-size:0.85rem">H${hao.viTri} ${theUngHtml}</td><td style="font-size:0.8rem;color:var(--text-3)">${hao.lucThanTen}</td><td>${banQuaiHtml}</td><td style="text-align:center">${dongCellHtml}</td><td style="vertical-align:top;text-align:left;padding:0.3rem 0.6rem">${vsHtml}</td><td>${bienQuaiHtml}</td>`;
+    row.innerHTML = `<td style="font-weight:700;color:var(--text-3);font-size:0.85rem">H${hào.viTri} ${theUngHtml}</td><td style="font-size:0.8rem;color:var(--text-3)">${hào.lucThanTen}</td><td>${banQuaiHtml}</td><td style="text-align:center">${dongCellHtml}</td><td style="vertical-align:top;text-align:left;padding:0.3rem 0.6rem">${vsHtml}</td><td>${bienQuaiHtml}</td>`;
     row.style.cursor = 'pointer';
     row.onclick = () => chonDungThan(i);
     tbody.appendChild(row);
   }
 }
 
-// === BƯỚC 4: DỤNG THẦN ===
 function renderDungThanButtons() {
   const container = document.getElementById('chon-dung-than-buttons');
+  if (!container) return;
   container.innerHTML = '';
   state.hao6.forEach((hao, i) => {
     const btn = document.createElement('button');
@@ -149,7 +156,6 @@ function renderDungThanButtons() {
     btn.onclick = () => chonDungThan(i);
     container.appendChild(btn);
   });
-  // Thêm nút chọn Phục Thần làm DT (nếu có Phục Tàng)
   const phucHaos = state.hao6.filter(h => h.phucThan);
   if (phucHaos.length > 0) {
     const sep = document.createElement('div');
@@ -160,7 +166,6 @@ function renderDungThanButtons() {
       const btn = document.createElement('button');
       btn.className = 'chon-dt-btn';
       btn.style.borderStyle = 'dashed';
-      btn.style.opacity = '0.8';
       btn.textContent = `👻 H${h.viTri}: ${h.phucThan.lucThan} (${h.phucThan.diaChi}) [Phục]`;
       btn.onclick = () => chonPhucThanDT(h);
       container.appendChild(btn);
@@ -169,25 +174,31 @@ function renderDungThanButtons() {
 }
 
 function renderVuongSuy(vs) {
-  const pct = Math.min(100, Math.max(5, ((vs.diem + 6) / 12) * 100));
-  const bar = document.getElementById('vuong-suy-bar');
-  const colors = { 'vs-cuc-vuong': '#ff6b00', 'vs-vuong': '#4caf50', 'vs-binh-hoa': '#808080', 'vs-hoi-suy': '#ff9966', 'vs-suy': '#ff4444', 'vs-cuc-suy': '#880000' };
-  bar.style.width = pct + '%';
-  bar.style.background = `linear-gradient(90deg, ${colors[vs.cssClass] || '#888'}, ${colors[vs.cssClass] || '#888'}88)`;
-  document.getElementById('vuong-suy-text').innerHTML = `<span class="vuong-suy ${vs.cssClass}">${vs.mucDo}</span> <span style="color:var(--text-2,#94A3B8);font-size:0.78rem">(điểm: ${vs.diem})</span>`;
-  document.getElementById('vuong-suy-detail').innerHTML = vs.nhanXet.map(n => `<li>• ${n}</li>`).join('');
+  const bar = document.getElementById('vuong-suy-bar-fill');
+  if (!bar) return;
+  const score = vs.diem;
+  bar.style.width = `${Math.min(100, Math.max(0, ((score + 6) / 12) * 100))}%`;
+  bar.style.background = `var(--${vs.cssClass})`;
+  const textEl = document.getElementById('vuong-suy-text');
+  if (textEl) {
+    textEl.innerHTML = `<span class="vuong-suy ${vs.cssClass}">${vs.mucDo}</span> <span style="color:var(--text-3);font-size:0.78rem">(điểm: ${score})</span>`;
+  }
+  const detailEl = document.getElementById('vuong-suy-detail');
+  if (detailEl) {
+    detailEl.innerHTML = (vs.nhanXet || []).map(n => `<li>• ${n}</li>`).join('');
+  }
 }
 
 function renderNKCThan(haoVaiTro) {
   const el = document.getElementById('nkc-than-list');
+  if (!el) return;
   el.innerHTML = [...haoVaiTro].reverse().filter(h => h.vaiTro).map(h => {
     const clsMap = {'Dụng Thần':'nkc-dung','Nguyên Thần':'nkc-nguyen','Kỵ Thần':'nkc-ky','Cừu Thần':'nkc-cuu','Tiết Thần':'nkc-tiet'};
     const cls = clsMap[h.vaiTro] || 'nkc-cuu';
-    // Badge trạng thái cho Nguyên/Kỵ/Cừu/Tiết
     let ttBadge = '';
     if (h.vaiTro !== 'Dụng Thần') {
       const tt = danhGiaTrangThai(h);
-      if (tt.voLuc) ttBadge = ' <span class="badge-voluc">Vô lực</span>';
+      if (tt.voLoc) ttBadge = ' <span class="badge-voluc">Vô lực</span>';
       else if (tt.huuDung) ttBadge = ' <span class="badge-huudung">Hữu dụng</span>';
       else if (!tt.huuTu) ttBadge = ' <span class="badge-huudung">Vượng</span>';
     }
@@ -197,8 +208,11 @@ function renderNKCThan(haoVaiTro) {
 
 function renderDongHao() {
   const el = document.getElementById('dong-hao-analysis');
-  const allDong = [...state.hao6].reverse().filter(h => h.laDong || h.laAmDong);
-  if (allDong.length === 0) { el.innerHTML = '<p style="color:var(--text-3,#475569);font-size:0.85rem">Không có hào động</p>'; return; }
+  if (!el) return;
+  // Fallback to state.hao6 if state.result.bangQue is not yet populated
+  const source = (state.result && state.result.bangQue) ? state.result.bangQue : state.hao6;
+  const allDong = source.filter(r => r.laDong || r.laAmDong || r.isDong);
+  if (allDong.length === 0) { el.innerHTML = '<p style="color:var(--text-3);font-size:0.85rem">Không có hào động</p>'; return; }
   el.innerHTML = allDong.map(h => {
     const hd = h.bienDC ? kiemTraHoiDau(h.diaChi, h.bienDC) : null;
     const label = h.laAmDong ? '<span class="badge bdg-am">Ám Động</span>' : '<span style="color:var(--gold);font-size:0.62rem;font-weight:700">● Động</span>';
@@ -209,120 +223,91 @@ function renderDongHao() {
 }
 
 function renderCanhBao(list) {
-  document.getElementById('canh-bao-list').innerHTML = list.map(cb =>
+  const el = document.getElementById('canh-bao-list');
+  if (!el) return;
+  el.innerHTML = list.map(cb =>
     `<div class="canh-bao-item ${cb.level}"><span>${cb.icon}</span><span>${cb.text}</span></div>`
-  ).join('') || '<p style="color:var(--text-3,#475569);font-size:0.85rem">Không có cảnh báo đặc biệt ✓</p>';
+  ).join('') || '<p style="color:var(--text-3);font-size:0.85rem">Không có cảnh báo đặc biệt ✓</p>';
 }
 
 function renderCatHung(dt, haoVaiTro, vs) {
   const el = document.getElementById('cat-hung-result');
   if (!el) return;
 
-  const dtHanh = DC_HANH[dt.diaChi];
   const isPhuTang = !state.hao6.some(h => h.lucThan === dt.lucThan);
-  let score = vs.diem; // Base score từ vượng suy cá nhân
+  let score = vs.diem; 
   const chiTiet = [];
   
-  // === DỤNG THẦN ÁM ĐỘNG ===
-  if (dt.laAmDong) {
-    chiTiet.push(`✨ DT Ám Động — Nhật xung hào vượng (+1.5)`);
-  }
+  if (dt.laAmDong) chiTiet.push(`✨ DT Ám Động — Nhật xung hào vượng (+1.5)`);
 
-  // Phân nhóm các Thần
   const nguyenThans = haoVaiTro.filter(h => h.vaiTro === 'Nguyên Thần');
   const kyThans = haoVaiTro.filter(h => h.vaiTro === 'Kỵ Thần');
   const cuuThans = haoVaiTro.filter(h => h.vaiTro === 'Cừu Thần');
   const tietThans = haoVaiTro.filter(h => h.vaiTro === 'Tiết Thần');
-
-  // Kiểm tra Nguyên Thần nào hữu dụng (cho rule Tham Sinh Quên Khắc)
   const ntHuuDung = nguyenThans.filter(nt => danhGiaTrangThai(nt).huuDung);
 
-  // === NGUYÊN THẦN ===
   nguyenThans.forEach(nt => {
     const tt = danhGiaTrangThai(nt);
-    // Rule: Tham Hợp Quên Sinh — NT và DT có Lục Hợp + cả 2 cùng động
     const dtDangDong = dt.laDong || dt.laAmDong;
     if (tt.huuDung && dtDangDong && LUC_HOP[nt.diaChi] === dt.diaChi) {
       chiTiet.push(`🔗 NT H${nt.viTri}: Tham Hợp Quên Sinh — ${nt.diaChi} hợp ${dt.diaChi}, cả 2 cùng động → NT quên sinh DT`);
-    } else if (tt.voLuc) {
-      chiTiet.push(`🔇 NT H${nt.viTri} (${nt.diaChi}): Vô lực → không sinh được DT`);
-    } else if (tt.huuDung) {
+    } else if (tt.voLoc) chiTiet.push(`🔇 NT H${nt.viTri} (${nt.diaChi}): Vô lực → không sinh được DT`);
+    else if (tt.huuDung) {
       const bonus = nt.diemVS >= 3 ? 2.0 : 1.5;
       score += bonus;
       chiTiet.push(`💪 NT H${nt.viTri} (${nt.diaChi}): Vượng động → sinh DT (+${bonus})`);
     } else if (!tt.huuTu && !nt.laDong) {
       score += 0.5;
       chiTiet.push(`🤝 NT H${nt.viTri} (${nt.diaChi}): Vượng tĩnh → sinh nhẹ (+0.5)`);
-    } else {
-      chiTiet.push(`⏸️ NT H${nt.viTri} (${nt.diaChi}): Hưu tù tĩnh → chưa sinh được`);
     }
   });
 
-  // === KỴ THẦN ===
   kyThans.forEach(ky => {
     const tt = danhGiaTrangThai(ky);
-    // Rule: Tham Sinh Quên Khắc — Kỵ + Nguyên cùng động → Kỵ bỏ khắc DT
-    if ((ky.laDong || ky.laAmDong) && ntHuuDung.length > 0) {
-      chiTiet.push(`🔄 KT H${ky.viTri} (${ky.diaChi}): Tham Sinh Quên Khắc — KT + NT cùng động → KT bỏ khắc DT, chuyển sinh NT`);
-    } else if (tt.voLuc) {
-      score += 0.5;
-      chiTiet.push(`✅ KT H${ky.viTri} (${ky.diaChi}): Vô lực → không hại được DT (+0.5)`);
-    } else if (tt.huuDung) {
+    if ((ky.laDong || ky.laAmDong) && ntHuuDung.length > 0) chiTiet.push(`🔄 KT H${ky.viTri} (${ky.diaChi}): Tham Sinh Quên Khắc — KT + NT cùng động → KT bỏ khắc DT, chuyển sinh NT`);
+    else if (tt.voLoc) { score += 0.5; chiTiet.push(`✅ KT H${ky.viTri} (${ky.diaChi}): Vô lực → không hại được DT (+0.5)`); }
+    else if (tt.huuDung) {
       const penalty = ky.diemVS >= 3 ? -2.5 : -1.5;
       score += penalty;
       chiTiet.push(`⚡ KT H${ky.viTri} (${ky.diaChi}): Vượng động → khắc DT (${penalty})`);
-    } else if (!tt.huuTu && ky.laTuanKhong) {
-      chiTiet.push(`⏳ KT H${ky.viTri} (${ky.diaChi}): Giả Không — nguy hiểm sẽ đến sau khi xuất Không`);
-    } else {
-      chiTiet.push(`⏸️ KT H${ky.viTri} (${ky.diaChi}): Hưu tù/tĩnh → tạm chưa hại`);
     }
   });
 
-  // === CỪU THẦN ===
   cuuThans.forEach(cuu => {
     const tt = danhGiaTrangThai(cuu);
     if (tt.huuDung) {
       const ntCoLuc = nguyenThans.some(nt => !danhGiaTrangThai(nt).voLuc);
-      if (ntCoLuc) {
-        score -= 1.5;
-        chiTiet.push(`💀 CT H${cuu.viTri} (${cuu.diaChi}): Động → khắc NT + sinh KT (-1.5)`);
-      } else {
-        chiTiet.push(`💀 CT H${cuu.viTri} (${cuu.diaChi}): Động nhưng NT đã vô lực → không gây thêm hại`);
-      }
-    } else if (tt.voLuc) {
-      chiTiet.push(`✅ CT H${cuu.viTri} (${cuu.diaChi}): Vô lực → không đe dọa NT`);
+      if (ntCoLuc) { score -= 1.5; chiTiet.push(`💀 CT H${cuu.viTri} (${cuu.diaChi}): Động → khắc NT + sinh KT (-1.5)`); }
     }
   });
 
-  // === TIẾT THẦN (Vì Sinh mà Thiệt) ===
   tietThans.forEach(tiet => {
     const tt = danhGiaTrangThai(tiet);
     if (tt.huuDung && tiet.diemVS >= 2) {
       const drain = tiet.diemVS >= 4 ? -2.0 : -1.0;
       score += drain;
       chiTiet.push(`🩸 TiT H${tiet.viTri} (${tiet.diaChi}): Vì Sinh mà Thiệt — Tiết Thần vượng động rút khí DT (${drain})`);
-    } else if (tt.huuDung) {
-      score -= 0.5;
-      chiTiet.push(`🩸 TiT H${tiet.viTri} (${tiet.diaChi}): Tiết khí nhẹ (-0.5)`);
     }
   });
 
-  // Kết luận Cát/Hung
-  let catHung, detail, cls;
-  if (isPhuTang) { catHung = '⚠️ Phục Tàng — Khó luận'; detail = 'Dụng Thần bị ẩn, việc khó thành'; cls = ''; }
-  else if (score >= 4) { catHung = '✅ Đại Cát'; detail = 'Dụng Thần vượng mạnh, việc thuận lợi'; cls = ''; }
-  else if (score >= 2) { catHung = '🟢 Cát'; detail = 'Dụng Thần khá mạnh, hướng tốt'; cls = ''; }
-  else if (score >= 0) { catHung = '🟡 Bình'; detail = 'Lực lượng cân bằng, kết quả chưa rõ'; cls = 'hung'; }
-  else if (score >= -2) { catHung = '🟠 Tiểu Hung'; detail = 'Dụng Thần suy nhược, cần cẩn thận'; cls = 'hung'; }
-  else { catHung = '🔴 Đại Hung'; detail = 'Dụng Thần cực suy, việc khó thành'; cls = 'hung'; }
+  let catHung, detail;
+  if (isPhuTang) { catHung = '⚠️ Phục Tàng'; detail = 'Dụng Thần bị ẩn'; }
+  else if (score >= 4) { catHung = '✅ Đại Cát'; detail = 'Dụng Thần vượng mạnh'; }
+  else if (score >= 2) { catHung = '🟢 Cát'; detail = 'Dụng Thần khá mạnh'; }
+  else if (score >= 0) { catHung = '🟡 Bình'; detail = 'Lực lượng cân bằng'; }
+  else if (score >= -2) { catHung = '🟠 Tiểu Hung'; detail = 'Dụng Thần suy nhược'; }
+  else { catHung = '🔴 Đại Hung'; detail = 'Dụng Thần cực suy'; }
 
   state.finalScore = score;
   state.finalCatHung = catHung;
-
-  const chiTietHtml = chiTiet.length > 0
-    ? `<ul class="cat-hung-chitiet">${chiTiet.map(c => `<li>${c}</li>`).join('')}</ul>`
-    : '';
-  el.innerHTML = `<div class="cat-hung-result ${cls}"><div class="cat-label">${catHung}</div><div class="cat-note">${detail}</div><div style="font-size:0.63rem;color:#4a5a70;margin-top:0.2rem">Điểm tổng hợp: ${score.toFixed(1)}</div>${chiTietHtml}</div>`;
+  const chiTietHtml = chiTiet.length > 0 ? `<ul class="cat-hung-chitiet">${chiTiet.map(c => `<li>• ${c}</li>`).join('')}</ul>` : '';
+  const cls = score >= 0.5 ? 'dai-cat' : score > 0 ? 'cat' : score === 0 ? 'binh-hoa' : score > -0.5 ? 'hung' : 'dai-hung';
+  el.innerHTML = `<div class="cat-hung-result ${cls}">
+    <div class="cat-label">${catHung}</div>
+    <div class="cat-note">${detail}</div>
+    <div style="font-size:0.65rem;color:var(--text-3);margin-top:0.3rem">Điểm tổng hợp: ${score.toFixed(1)}</div>
+    ${chiTietHtml}
+  </div>`;
 }
 
 function renderPhiPhuc() {
@@ -330,7 +315,7 @@ function renderPhiPhuc() {
   if (!el) return;
   const phucThans = state.hao6.filter(h => h.phucThan);
   if (phucThans.length === 0) {
-    el.innerHTML = '<p style="color:var(--text-3,#475569);font-size:0.85rem">Không có Phục Thần ✓</p>'; return;
+    el.innerHTML = '<p style="color:var(--text-3);font-size:0.85rem">Không có Phục Thần ✓</p>'; return;
   }
   el.innerHTML = phucThans.map(h => {
     const phuc = h.phucThan;
@@ -368,32 +353,22 @@ function renderLucThanPanel() {
 }
 
 function renderThoiDiem(list) {
-  const makeTdHtml = (items, color) =>
-    items.map(td =>
+  const makeTdHtml = (items, color) => 
+    items.length > 0 ? items.map(td =>
       `<div class="thoi-diem-item" style="border-left:3px solid ${color}">
         <div class="td-ly">📍 ${td.ly_do}</div>
         <div class="td-val">⏰ ${td.thoi_diem}</div>
         <div class="td-note">💡 ${td.ghi_chu}</div>
-      </div>`).join('');
+      </div>`).join('') : '<p style="color:var(--text-3);font-size:0.75rem;padding:0.5rem">Không có gợi ý cụ thể</p>';
 
-  const lxmItems   = list.filter(td => td.source === 'LXM' || !td.source);
-  const daHacItems = list.filter(td => td.source === 'DaHac');
+  const lxmItems = list.filter(td => td.source === 'LXM' || !td.source);
+  const lxmEl = document.getElementById('thoi-diem-lxm');
+  if (lxmEl) lxmEl.innerHTML = makeTdHtml(lxmItems, 'var(--cyan)');
 
-  const lxmEl   = document.getElementById('thoi-diem-lxm');
   const daHacEl = document.getElementById('thoi-diem-dahac');
-  const daHacCol = daHacEl ? daHacEl.closest('div[id="thoi-diem-dahac"]')?.parentElement : null;
-
-  if (lxmEl) lxmEl.innerHTML = makeTdHtml(lxmItems, '#38bdf8');
-
-  // Ẩn cột TH2 nếu không có ứng kỳ Dã Hạc nào
   if (daHacEl) {
-    const wrapper = daHacEl.parentElement;
-    if (daHacItems.length === 0) {
-      wrapper.style.display = 'none';
-    } else {
-      wrapper.style.display = '';
-      daHacEl.innerHTML = makeTdHtml(daHacItems, '#d4a843');
-    }
+    const daHacItems = list.filter(td => td.source === 'DaHac');
+    daHacEl.innerHTML = makeTdHtml(daHacItems, 'var(--gold)');
   }
 }
 
@@ -401,15 +376,12 @@ function highlightBangQue(haoVaiTro) {
   // Đã bỏ highlight background row theo yêu cầu để tránh nhòe / khó đọc.
 }
 
-// === BƯỚC 8: LƯU & IN ===
 function renderThuTuong(dt, haoVaiTro, vs) {
   const el = document.getElementById('thu-tuong-result');
   if (!el) return;
   const doan = sinhLuanNghia(dt, haoVaiTro, vs);
   el.innerHTML = doan.map(d => {
-    // Bold **text**
     const formatted = d.replace(/\*\*(.+?)\*\*/g, '<strong style="color:var(--heading-color)">$1</strong>');
     return `<div class="thu-tuong-line">${formatted}</div>`;
   }).join('');
 }
-
