@@ -25,14 +25,14 @@ function timQue(noi, ngoai) {
 
 function anQue() {
   if (!state.canNgay || !state.chiNgay || !state.chiThang) {
-    alert('Vui lòng nhập thông tin thời gian (Bước 1) trước!');
+    showToast('Vui lòng nhập thông tin thời gian (Bước 1) trước!', 'warning');
     return;
   }
   // 1. Xác định quái
   const noi = xacDinhQuai(state.haoScores[0], state.haoScores[1], state.haoScores[2]);
   const ngoai = xacDinhQuai(state.haoScores[3], state.haoScores[4], state.haoScores[5]);
   state.banQue = timQue(noi, ngoai);
-  if (!state.banQue) { alert('Không tìm thấy quẻ! Vui lòng kiểm tra lại.'); return; }
+  if (!state.banQue) { showToast('Không tìm thấy quẻ! Vui lòng kiểm tra lại.', 'error'); return; }
   state.cungHanh = CUNG_HANH[state.banQue.cung];
 
   // 2. Hào động & biến hào
