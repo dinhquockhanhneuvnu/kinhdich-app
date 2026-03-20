@@ -238,10 +238,8 @@ function chonDungThan(haoIndex) {
   state.dungThanLucThan = dt.lucThan;
   const dtHanh = DC_HANH[dt.diaChi];
 
-  document.getElementById('dung-than-selected').style.display = 'block';
-  document.getElementById('dt-name').textContent = dt.lucThan + ' — Hào ' + dt.viTri;
-  document.getElementById('dt-dia-chi').textContent = dt.diaChi;
-  document.getElementById('dt-hanh').textContent = dtHanh;
+  const pdt = document.getElementById('prompt-dt-name');
+  if (pdt) pdt.textContent = dt.lucThan + ' — Hào ' + dt.viTri + ' (' + dt.diaChi + ')';
 
   // Highlight active button
   document.querySelectorAll('.chon-dt-btn').forEach((b, i) => {
@@ -255,8 +253,10 @@ function chonDungThan(haoIndex) {
 function resetDungThan() {
   state.dungThanHao = null;
   document.getElementById('dung-than-selected').style.display = 'none';
+  const pdt = document.getElementById('prompt-dt-name');
+  if (pdt) pdt.textContent = 'Chưa chọn';
   document.querySelectorAll('.chon-dt-btn').forEach(b => b.classList.remove('active'));
-  ['step-5','step-6','step-7','step-cat-hung','step-phi-phuc','step-luc-than','step-thu-tuong'].forEach(id => {
+  ['step-5','step-6','step-7','step-cat-hung','step-phi-phuc','step-luc-than','step-thu-tuong','step-prompt'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
@@ -273,10 +273,8 @@ function chonPhucThanDT(phiHao) {
   state.dungThanLucThan = phuc.lucThan;
   state.dungThanPhucData = { phiHao, phuc };
 
-  document.getElementById('dung-than-selected').style.display = 'block';
-  document.getElementById('dt-name').textContent = phuc.lucThan + ' — Phục Thần (dưới H' + phiHao.viTri + ')';
-  document.getElementById('dt-dia-chi').textContent = phuc.diaChi;
-  document.getElementById('dt-hanh').textContent = phuc.hanh;
+  const pdt = document.getElementById('prompt-dt-name');
+  if (pdt) pdt.textContent = phuc.lucThan + ' — Phục (dưới H' + phiHao.viTri + ')';
 
   // Highlight
   document.querySelectorAll('.chon-dt-btn').forEach(b => b.classList.remove('active'));
@@ -536,7 +534,7 @@ function luuQue() {
   localStorage.setItem('lucHaoHistory', JSON.stringify(history.slice(0, 50)));
   alert('✅ Đã lưu quẻ thành công!');
 }
-function xuatPrompt() {
+function copyFullPromptV3() {
   let dt = null;
   if (state.dungThanHao === 'phuc' && state.dungThanPhucData) {
     dt = state.dungThanPhucData.phuc;
@@ -549,10 +547,10 @@ function xuatPrompt() {
     alert('Vui lòng chọn Dụng Thần trước để app tính toán lực lượng!');
     return;
   }
-  const cauHoi = prompt('Bạn đang muốn hỏi cụ thể về vấn đề gì?\\n(Ví dụ: Hỏi về bệnh tật của cha, cầu tài, kiện cáo...)');
-  if (!cauHoi) return;
   
-  const userNote = document.getElementById('ghi-chu') ? document.getElementById('ghi-chu').value : '';
+  const gender = document.getElementById('gender').value;
+  const topic = document.getElementById('topic').value || 'Chưa xác định';
+  const question = document.getElementById('ghi-chu').value || 'Không có mô tả chi tiết';
 
   // 1. Cấu trúc 6 hào chi tiết
   const haos = state.hao6.map(h => {
@@ -571,99 +569,95 @@ function xuatPrompt() {
     const vtStr = vaiTro && vaiTro !== 'Bình thường' ? ` - Vai trò: ${vaiTro}` : '';
     
     // Vượng suy cụ thể từng hào
-    const vsDetail = h.vuongSuy ? `\\n   ↳ [Vượng Suy]: ${h.vuongSuy.diem.toFixed(1)}đ (${h.vuongSuy.mucDo}) — ${h.vuongSuy.nhanXet.join('; ')}` : '';
+    const vsDetail = h.vuongSuy ? `\n   ↳ [Vượng Suy]: ${h.vuongSuy.diem.toFixed(1)}đ (${h.vuongSuy.mucDo}) — ${h.vuongSuy.nhanXet.join('; ')}` : '';
 
     // Phục Thần
     const phuc = state.phucThan ? state.phucThan.find(p => p.viTri === h.viTri) : null;
-    const phucStr = phuc ? `\\n   ↳ [Phục Thần ẩn giấu]: ${phuc.lucThan} ${phuc.diaChi} (Hành ${DC_HANH[phuc.diaChi]})` : '';
+    const phucStr = phuc ? `\n   ↳ [Phục Thần ẩn giấu]: ${phuc.lucThan} ${phuc.diaChi} (Hành ${DC_HANH[phuc.diaChi]})` : '';
 
     return `Hào ${h.viTri}: ${h.lucThan} ${h.diaChi} (Hành ${DC_HANH[h.diaChi]}) - Lâm ${h.lucThanTen}${dongStr}${statusTags}${vtStr}${vsDetail}${phucStr}`;
-  }).reverse().join('\\n');
+  }).reverse().join('\n');
 
   // 2. Thông tin Dụng Thần & NKC
   let dtStr = '';
   if (dt.viTri === 'phuc') {
-    dtStr = `Dụng Thần (Phục Tàng): ${dt.lucThan} ${dt.diaChi}. Lực lượng: ${state.vuongSuyDT.diem.toFixed(1)}đ (${state.vuongSuyDT.mucDo})\\n[Đánh giá]: ${state.vuongSuyDT.nhanXet.join('; ')}`;
+    dtStr = `Dụng Thần (Phục Tàng): ${dt.lucThan} ${dt.diaChi}. Lực lượng: ${state.vuongSuyDT.diem.toFixed(1)}đ (${state.vuongSuyDT.mucDo})\n[Đánh giá]: ${state.vuongSuyDT.nhanXet.join('; ')}`;
   } else {
-    dtStr = `Dụng Thần: Hào ${dt.viTri} ${dt.lucThan} ${dt.diaChi}. Lực lượng: ${state.vuongSuyDT.diem.toFixed(1)}đ (${state.vuongSuyDT.mucDo})\\n[Đánh giá]: ${state.vuongSuyDT.nhanXet.join('; ')}`;
+    dtStr = `Dụng Thần: Hào ${dt.viTri} ${dt.lucThan} ${dt.diaChi}. Lực lượng: ${state.vuongSuyDT.diem.toFixed(1)}đ (${state.vuongSuyDT.mucDo})\n[Đánh giá]: ${state.vuongSuyDT.nhanXet.join('; ')}`;
   }
 
   const cacThan = (state.haoVaiTro || []).filter(h => h && h.vaiTro !== 'Dụng Thần' && h.vaiTro !== 'Bình thường').map(h => {
-    return `${h.vaiTro}: Hào ${h.viTri} ${h.lucThan} ${h.diaChi} - Lực lượng: ${h.diemVS}đ\\n[Đánh giá]: ${h.nhanXetVS.join('; ')}`;
-  }).join('\\n\\n');
+    return `${h.vaiTro}: Hào ${h.viTri} ${h.lucThan} ${h.diaChi} - Lực lượng: ${h.diemVS}đ\n[Đánh giá]: ${h.nhanXetVS.join('; ')}`;
+  }).join('\n\n');
 
   // 3. Cảnh báo & Cát Hung
   const canhBaoEl = document.getElementById('canh-bao-list');
-  const canhBaoText = canhBaoEl ? Array.from(canhBaoEl.querySelectorAll('.canh-bao-item')).map(i => '• ' + i.innerText).join('\\n') : 'Không có cảnh báo đặc biệt.';
+  const canhBaoText = canhBaoEl ? Array.from(canhBaoEl.querySelectorAll('.canh-bao-item')).map(i => '• ' + i.innerText).join('\n') : 'Không có cảnh báo đặc biệt.';
 
   const catHungEl = document.querySelector('.cat-hung-result');
   const catHungSummary = catHungEl ? `${catHungEl.querySelector('.cat-label').innerText}: ${catHungEl.querySelector('.cat-note').innerText}` : 'Chưa có kết quả tổng quát.';
 
   // 4. Ứng Kỳ
-  const ungKy1El = document.getElementById('thoi-diem-list');
-  const ungKy1Text = ungKy1El ? Array.from(ungKy1El.querySelectorAll('.thoi-diem-item')).map(i => {
-    const reason = i.querySelector('.td-reason')?.innerText || '';
-    const when = i.querySelector('.td-when')?.innerText || '';
-    return `• ${reason}: ${when}`;
-  }).join('\\n') : 'Không tìm thấy gợi ý Ứng kỳ TH1.';
+  const lxmEl = document.getElementById('thoi-diem-lxm');
+  const lxmText = lxmEl ? Array.from(lxmEl.querySelectorAll('.thoi-diem-item')).map(i => i.innerText.replace(/\n\s+/g, ' ')).join('\n') : 'Không tìm thấy gợi ý Ứng kỳ (LXM).';
 
-  const ungKy2El = document.getElementById('thoi-diem-th2-list');
-  const ungKy2Text = ungKy2El ? Array.from(ungKy2El.querySelectorAll('.thoi-diem-item')).map(i => {
-    const reason = i.querySelector('.td-reason')?.innerText || '';
-    const when = i.querySelector('.td-when')?.innerText || '';
-    return `• ${reason}: ${when}`;
-  }).join('\\n') : 'Không có gợi ý Ứng kỳ theo Dã Hạc.';
+  const daHacEl = document.getElementById('thoi-diem-dahac');
+  const daHacText = daHacEl ? Array.from(daHacEl.querySelectorAll('.thoi-diem-item')).map(i => i.innerText.replace(/\n\s+/g, ' ')).join('\n') : 'Không tìm thấy gợi ý Ứng kỳ (Dã Hạc).';
 
   // 5. Thủ Tượng
   const thuTuongEl = document.getElementById('thu-tuong-result');
-  const thuTuongText = thuTuongEl ? Array.from(thuTuongEl.querySelectorAll('.thu-tuong-line')).map(l => l.innerText).join('\\n') : 'Không có thủ tượng phân tích.';
+  const thuTuongText = thuTuongEl ? Array.from(thuTuongEl.querySelectorAll('.thu-tuong-line')).map(l => l.innerText).join('\n') : 'Không có thủ tượng phân tích.';
 
-  const text = `Tôi cần bạn đóng vai một chuyên gia Dịch Lý Lục Hào (theo trường phái Lưu Xương Minh & Dã Hạc) để luận giải chi tiết quẻ sau:
+  const text = `Tôi cần bạn đóng vai một chuyên gia Dịch Lý Lục Hào (theo trường phái Lưu Xương Minh & Dã Hạc) để luận giải chi tiết quẻ sau.
 
-1. THÔNG TIN CƠ BẢN:
-- Câu hỏi sự việc: ${cauHoi}
-- Ghi chú: ${userNote || 'Không có'}
-- Thời gian: Ngày ${state.chiNgay} (${DC_HANH[state.chiNgay]}), Tháng ${state.chiThang} (${DC_HANH[state.chiThang]})
+LƯU Ý QUAN TRỌNG: Lực lượng và điểm Vượng Suy của các hào đã được phần mềm tính toán chính xác dựa trên Nhật, Nguyệt và các mối quan hệ tương tác. Bạn KHÔNG cần tính toán lại lực lượng, mà hãy tập trung vào việc LUẬN GIẢI Ý NGHĨA và dự đoán DIỄN BIẾN thực tế của sự việc một cách sống động.
+
+1. THÔNG TIN NGƯỜI HỎI & CÂU HỎI:
+- Người hỏi: ${gender}
+- Chủ đề: ${topic}
+- Câu hỏi chi tiết: ${question}
+- Thời gian gieo: Ngày ${state.chiNgay} (${DC_HANH[state.chiNgay]}), Tháng ${state.chiThang} (${DC_HANH[state.chiThang]})
 - Quẻ chính: ${state.banQue.ten} (Cung ${state.banQue.cung})
 - Quẻ biến: ${state.chiQue ? state.chiQue.ten : 'Quẻ tĩnh'}
 - Hào Thể: H${state.banQue.the_hao} | Ứng: H${state.banQue.ung_hao}
 - Tuần Không: ${state.tuanKhong.join(', ')} | Lục Thần khởi: ${document.getElementById('luc-than-start').textContent}
 
-2. CẤU TRÚC 6 HÀO (Chi tiết Vượng Suy & Trạng thái):
+2. CẤU TRÚC 6 HÀO (Số liệu Vượng Suy & Trạng thái từ phần mềm):
 ${haos}
 
-3. TỔNG HỢP PHÂN TÍCH TỪ PHẦN MỀM:
-- KẾT LUẬN CÁT HUNG: ${catHungSummary}
-- CẢNH BÁO QUAN TRỌNG:
+3. TỔNG HỢP PHÂN TÍCH LỰC LƯỢNG:
+- KẾT LUẬN CÁT HUNG TỔNG QUAN: ${catHungSummary}
+- CẢNH BÁO HỆ THỐNG:
 ${canhBaoText}
 
-- DỤNG THẦN & HỆ THỐNG PHÙ TRỢ:
+- HỆ THỐNG DỤNG - NGUYÊN - KỴ - CỪU:
 ${dtStr}
-${cacThan ? '\\n' + cacThan : ''}
+${cacThan ? '\n' + cacThan : ''}
 
-4. DỰ ĐOÁN THỜI ĐIỂM (ỨNG KỲ):
---- Phương pháp TH1 (Lưu Xương Minh) ---
-${ungKy1Text}
+4. GỢI Ý THỜI ĐIỂM (ỨNG KỲ):
+--- Theo Lưu Xương Minh ---
+${lxmText}
 
---- Phương pháp TH2 (Dã Hạc - Phân tích bổ sung) ---
-${ungKy2Text}
+--- Theo Dã Hạc ---
+${daHacText}
 
-5. THỦ TƯỢNG (DỰNG LẠI HIỆN TRƯỜNG):
+5. PHÂN TÍCH THỦ TƯỢNG (DỰNG LẠI HIỆN TRƯỜNG):
 ${thuTuongText}
 
-6. YÊU CẦU LUẬN GIẢI:
-Dựa trên toàn bộ dữ liệu Vượng Suy, Cảnh Báo và Thủ Tượng ở trên, bạn hãy:
-- "Dựng lại hiện trường" một cách sống động: mô tả tính chất sự việc, con người hoặc đồ vật liên quan dựa trên Hào vị, Ngũ hành, Lục Thần và Tượng Quẻ.
-- Phân tích sâu các Hào Động (nếu có): Chúng tác động đến Dụng Thần như thế nào? (Hồi đầu sinh/khắc, Tiến/Thoái thần, Quẩn chân?).
-- Đối chiếu Ứng Kỳ: Kiểm tra các gợi ý thời điểm ở trên và đưa ra ngày/tháng cụ thể nhất có khả năng xảy ra kết quả.
-- Lời khuyên cho người gieo quẻ.`;
+6. YÊU CẦU LUẬN GIẢI TỪ CHUYÊN GIA:
+Dựa trên các số liệu Vượng Suy và Cảnh Báo đã được cung cấp ở trên, bạn hãy:
+- "Dựng lại hiện trường" sự việc: Mô tả tính chất sự việc, trạng thái của các bên liên quan dựa trên Hào vị, Ngũ hành, Lục Thần và Tượng Quẻ.
+- Luận giải Diễn biến: Sự việc sẽ xoay chuyển thế nào? Các Hào Động (nếu có) đóng vai trò là "biến số" gì trong câu chuyện này?
+- Chốt Ứng Kỳ: Dựa trên các gợi ý thời điểm, hãy đưa ra mốc thời gian (ngày/tháng) cụ thể nhất mà kết quả sẽ ứng nghiệm.
+- Lời khuyên cụ thể cho người gieo quẻ.`;
 
   navigator.clipboard.writeText(text).then(() => {
-    alert('✅ Đã copy toàn bộ Data Quẻ Toàn Diện (v3.0) vào Clipboard!\\n\\nBây giờ bạn có thể Paste (Dán) vào ChatGPT hoặc Claude để nhận luận giải chuyên sâu.');
+    alert('✅ Đã copy toàn bộ Data Quẻ Toàn Diện (v4.0) vào Clipboard!\n\nBây giờ bạn có thể Paste (Dán) vào ChatGPT hoặc Claude để nhận luận giải chuyên sâu.');
   }).catch(err => {
     console.error('Lỗi copy:', err);
     alert('Lỗi copy. Vui lòng thử lại!');
   });
 }
+
 // === KHỞI ĐỘNG ===
 document.addEventListener('DOMContentLoaded', init);

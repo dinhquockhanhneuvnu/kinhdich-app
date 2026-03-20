@@ -1849,62 +1849,45 @@
                 <option value="nha-cua">🏠 Nhà cửa / BĐS</option>
               </select>
             </div>
-            <div
-              id="goi-y-dung-than"
-              class="goi-y-box"
-              style="display: none"
-            ></div>
-            <p
-              class="hint"
-              style="text-align: center; color: var(--purple); font-weight: 600"
-            >
+            <div id="goi-y-dung-than" class="goi-y-box" style="display: none"></div>
+            <p class="hint" style="text-align: center; color: var(--purple); font-weight: 600">
               Click dòng trong Bảng Quẻ để chốt Dụng Thần
             </p>
             <div id="chon-dung-than-buttons" class="chon-dt-buttons"></div>
-            <div class="step-title">📍 Nhập thông tin Quẻ để xuất Prompt</div>
-            <textarea
-              id="ghi-chu"
-              placeholder="Người hỏi (Nam/Nữ): 
-Câu hỏi sự việc: 
-Ghi chú thêm (nếu có):"
-            ></textarea>
-            <div class="action-row">
-              <button onclick="copyFullPromptV3()" class="btn-convert">
-                🚀 Copy Toàn Bộ Data & Xuất Prompt AI
-              </button>
-            </div>
-            <div
-              id="dung-than-selected"
-              class="selected-dt-box"
-              style="display: none"
-            >
-              <span
-                >Dụng Thần: <strong id="dt-name">—</strong> (<span
-                  id="dt-dia-chi"
-                  >—</span
-                >
-                <span id="dt-hanh">—</span>)</span
-              >
+            
+            <div id="dung-than-selected" class="selected-dt-box" style="display: none; margin-top: 1rem">
+              <span>Dụng Thần: <strong id="dt-name">—</strong> (<span id="dt-dia-chi">—</span> <span id="dt-hanh">—</span>)</span>
               <button onclick="resetDungThan()">✕</button>
             </div>
           </div>
 
-          <div class="g" id="step-8" style="display: none">
-            <div class="g-title">
-              <span class="ico">✍️</span> Ghi Chú Luận Quẻ
+          <div class="g" id="step-prompt" style="display: none">
+            <div class="g-title"><span class="ico">📋</span> Nhập Thông Tin Quẻ (Xuất Prompt)</div>
+            
+            <div id="prompt-dt-display" style="margin-bottom: 1rem; padding: 0.8rem; background: rgba(212, 168, 67, 0.1); border: 1px solid rgba(212, 168, 67, 0.3); border-radius: 8px; font-size: 0.85rem">
+              <span style="color: var(--text-3)">Dụng Thần đã chọn:</span><br>
+              <strong id="prompt-dt-name" style="color: var(--gold); font-size: 1rem">Chưa chọn</strong>
             </div>
-            <textarea
-              id="ghi-chu"
-              placeholder="Ghi chú diễn giải..."
-            ></textarea>
+
+            <div class="form-row" style="margin-bottom: 0.8rem">
+              <label>Giới tính người hỏi</label>
+              <select id="gender" class="ctrl">
+                <option value="Nam">Nam</option>
+                <option value="Nữ">Nữ</option>
+              </select>
+            </div>
+            <div class="form-row" style="margin-bottom: 0.8rem">
+              <label>Chủ đề hỏi</label>
+              <input type="text" id="topic" class="ctrl" placeholder="Vd: Công việc, Tình duyên..." style="width: 100%">
+            </div>
+            <div class="form-row" style="margin-bottom: 0.8rem">
+              <label>Câu hỏi chi tiết</label>
+              <textarea id="ghi-chu" placeholder="Mô tả chi tiết sự việc..." style="min-height: 80px"></textarea>
+            </div>
             <div class="action-row">
-              <button
-                onclick="xuatPrompt()"
-                style="background: var(--purple); color: #fff"
-              >
-                📋 Xuất Prompt
+              <button onclick="copyFullPromptV3()" class="btn-convert" style="width: 100%; padding: 1rem; background: var(--purple); border-color: var(--purple); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3)">
+                🚀 Copy Data & Xuất Prompt AI
               </button>
-              <button onclick="luuQue()">💾 Lưu Quẻ</button>
             </div>
           </div>
         </div>
