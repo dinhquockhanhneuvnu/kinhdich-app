@@ -49,3 +49,31 @@ function toggleTheme() {
     });
   }
 })();
+
+/**
+ * Cuộn trang thông minh đến phần phân tích chi tiết
+ */
+function scrollToAnalysis() {
+  const stepThuTuong = document.getElementById('step-thu-tuong');
+  const step3 = document.getElementById('step-3');
+  const step2 = document.getElementById('step-2');
+
+  // 1. Ưu tiên nhất: Hào Thủ Tượng (Nếu đã chọn Dụng Thần)
+  if (stepThuTuong && stepThuTuong.style.display !== 'none') {
+    stepThuTuong.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+
+  // 2. Ưu tiên 2: Bảng Quẻ / Chọn Dụng Thần (Nếu đã Lên Quẻ)
+  if (step3 && step3.style.display !== 'none') {
+    const step4 = document.getElementById('step-4');
+    const target = step4 || step3;
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+
+  // 3. Fallback: Cuộn đến phần Lập Quẻ
+  if (step2) {
+    step2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}

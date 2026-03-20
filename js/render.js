@@ -83,6 +83,21 @@ function renderBangQue() {
   const hanhCung = document.getElementById('hanh-cung');
   if (hanhCung) hanhCung.textContent = state.cungHanh;
 
+  const chiMetaSide = document.getElementById('chi-meta-side');
+  const metaArrowFixed = document.getElementById('meta-arrow-fixed');
+  const chiCung = document.getElementById('chi-cung');
+  const chiHanh = document.getElementById('chi-hanh');
+
+  if (state.chiQue) {
+    if (chiMetaSide) chiMetaSide.style.visibility = 'visible';
+    if (metaArrowFixed) metaArrowFixed.style.visibility = 'visible';
+    if (chiCung) chiCung.textContent = state.chiQue.cung;
+    if (chiHanh) chiHanh.textContent = CUNG_HANH[state.chiQue.cung] || '?';
+  } else {
+    if (chiMetaSide) chiMetaSide.style.visibility = 'hidden';
+    if (metaArrowFixed) metaArrowFixed.style.visibility = 'hidden';
+  }
+
   const tbody = document.getElementById('tbody-que');
   if (!tbody) return;
   tbody.innerHTML = '';
@@ -200,6 +215,194 @@ function renderMiniQue() {
     if (chiInfo) chiInfo.textContent = '';
     if (arrow) arrow.style.display = 'none';
     if (chiSymbol && chiSymbol.parentElement) chiSymbol.parentElement.style.display = 'none';
+  }
+
+  // Hiển thị ý nghĩa toàn diện Chủ/Biến (v4.16)
+  const meaningBox = document.getElementById('mini-que-meaning');
+  if (meaningBox) {
+    let html = '';
+    
+    // 1. Quẻ Chủ
+    const banData = QUE_Y_NGHIA[state.banQue.ten];
+    if (banData) {
+      html += `
+        <div class="mini-meaning-col ban">
+          <div class="mini-m-header">Quẻ Chủ: ${state.banQue.ten}</div>
+          <div class="mini-m-section">
+            <span class="mini-m-label">🎯 Chính yếu</span>
+            <div class="mini-m-text">${banData.chinh_yeu}</div>
+          </div>
+          <div class="mini-m-section">
+            <span class="mini-m-label">🔮 Lời quẻ</span>
+            <div class="mini-m-text">${banData.loi_que || '---'}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 2. Quẻ Biến
+    if (state.chiQue) {
+      const chiData = QUE_Y_NGHIA[state.chiQue.ten];
+      if (chiData) {
+        html += `
+          <div class="mini-meaning-col chi">
+            <div class="mini-m-header">Quẻ Biến: ${state.chiQue.ten}</div>
+            <div class="mini-m-section">
+              <span class="mini-m-label">🎯 Chính yếu</span>
+              <div class="mini-m-text">${chiData.chinh_yeu}</div>
+            </div>
+            <div class="mini-m-section">
+              <span class="mini-m-label">🔮 Lời quẻ</span>
+              <div class="mini-m-text">${chiData.loi_que || '---'}</div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    if (html) {
+      html += `
+        <div style="grid-column: 1 / -1; display: flex; justify-content: center; margin-top: 0.5rem;">
+          <button class="mini-detail-btn" onclick="showQueDetailModal()">
+            🔍 Xem chi tiết
+          </button>
+        </div>
+      `;
+    }
+
+    meaningBox.innerHTML = html;
+    meaningBox.style.display = html ? 'grid' : 'none';
+  }
+}
+
+/**
+ * Hiển thị modal chi tiết ý nghĩa quẻ
+ */
+function showQueDetailModal() {
+  const modal = document.getElementById('que-detail-modal');
+  const body = document.getElementById('que-modal-body');
+  if (!modal || !body) return;
+
+  if (!state.banQue) {
+    showToast('Vui lòng Lập Quẻ trước!', 'warning');
+    return;
+  }
+
+  let html = '<div class="modal-grid">';
+
+  // 1. Cột Quẻ Chủ
+  const banData = QUE_Y_NGHIA[state.banQue.ten];
+  
+  // Visual Quẻ Chủ
+  const banLinesHtml = state.hao6.map((h, i) => {
+    const score = state.haoScores[i];
+    let banScore = (score === 9) ? 7 : (score === 6) ? 8 : score;
+    
+    const isThe = h.viTri === state.banQue.the_hao;
+    const isUng = h.viTri === state.banQue.ung_hao;
+    const indicator = isThe ? '<span class="modal-indicator modal-ind-the">Thế</span>' : (isUng ? '<span class="modal-indicator modal-ind-ung">Ứng</span>' : '<span class="modal-indicator" style="opacity:0">---</span>');
+
+    return `
+      <div class="modal-hao-wrapper">
+        ${indicator}
+        <div class="modal-hao">${renderHaoSymbol(banScore)}</div>
+      </div>
+    `;
+  }).reverse().join('');
+
+  html += `
+    <div class="modal-col ban">
+      <div class="modal-que-header">🧧 ${state.banQue.ten}</div>
+      
+      <div class="modal-que-visual">
+        <div style="font-size: 0.7rem; color: var(--text-3); font-weight: 700; margin-bottom: 5px; text-transform: uppercase;">Mô hình vạch tượng</div>
+        ${banLinesHtml}
+        <div class="modal-que-info-box">
+          <span style="color:var(--cyan)">🏛️</span> Cung ${state.banQue.cung} (${state.cungHanh})
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <span class="modal-section-label">🎯 Chính yếu</span>
+        <div class="modal-section-text">${banData ? banData.chinh_yeu : 'Chưa có dữ liệu'}</div>
+      </div>
+      <div class="modal-section">
+        <span class="modal-section-label">🧩 Ý nghĩa</span>
+        <div class="modal-section-text">${banData ? banData.y_nghia : 'Chưa có dữ liệu'}</div>
+      </div>
+      <div class="modal-section">
+        <span class="modal-section-label">🔮 Lời quẻ</span>
+        <div class="modal-section-text">${banData ? (banData.loi_que || '---') : 'Chưa có dữ liệu'}</div>
+      </div>
+    </div>
+  `;
+
+  // 2. Cột Mũi Tên (nếu có biến)
+  if (state.chiQue) {
+    html += `
+      <div class="modal-arrow-col">
+        <div class="modal-arrow-icon">➔</div>
+        <div style="font-size: 0.7rem; color: var(--text-3); font-weight: 700; margin-top: 5px;">BIẾN</div>
+      </div>
+    `;
+
+    // 3. Cột Quẻ Biến
+    const chiData = QUE_Y_NGHIA[state.chiQue.ten];
+    
+    // Visual Quẻ Biến
+    const chiLinesHtml = state.hao6.map((h, i) => {
+      const score = h.laDong ? h.bienScore : state.haoScores[i];
+      let finalScore = (score === 9) ? 7 : (score === 6) ? 8 : score;
+      return `<div class="modal-hao">${renderHaoSymbol(finalScore)}</div>`;
+    }).reverse().join('');
+
+    html += `
+      <div class="modal-col chi">
+        <div class="modal-que-header chi">🌀 ${state.chiQue.ten}</div>
+
+        <div class="modal-que-visual">
+          <div style="font-size: 0.7rem; color: var(--text-3); font-weight: 700; margin-bottom: 5px; text-transform: uppercase;">Mô hình vạch biến</div>
+          ${chiLinesHtml}
+          <div class="modal-que-info-box">
+            <span style="color:var(--gold)">🏛️</span> Cung ${state.chiQue.cung} (${CUNG_HANH[state.chiQue.cung] || '?'})
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <span class="modal-section-label">🎯 Chính yếu</span>
+          <div class="modal-section-text">${chiData ? chiData.chinh_yeu : 'Chưa có dữ liệu'}</div>
+        </div>
+        <div class="modal-section">
+          <span class="modal-section-label">🧩 Ý nghĩa</span>
+          <div class="modal-section-text">${chiData ? chiData.y_nghia : 'Chưa có dữ liệu'}</div>
+        </div>
+        <div class="modal-section">
+          <span class="modal-section-label">🔮 Lời quẻ</span>
+          <div class="modal-section-text">${chiData ? (chiData.loi_que || '---') : 'Chưa có dữ liệu'}</div>
+        </div>
+      </div>
+    `;
+  } else {
+    // Nếu quẻ tĩnh, thêm cột trống để giữ layout hoặc căn giữa
+    html += '<div></div><div></div>';
+  }
+
+  html += '</div>';
+  body.innerHTML = html;
+  modal.classList.add('show');
+  document.body.classList.add('modal-open');
+
+  // Đóng khi click ngoài
+  modal.onclick = (e) => {
+    if (e.target === modal) closeQueModal();
+  };
+}
+
+function closeQueModal() {
+  const modal = document.getElementById('que-detail-modal');
+  if (modal) {
+    modal.classList.remove('show');
+    document.body.classList.remove('modal-open');
   }
 }
 

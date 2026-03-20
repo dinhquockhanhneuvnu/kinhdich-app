@@ -46,7 +46,14 @@
         </div>
       </div>
       <!-- Tab nav + Theme Toggle -->
-      <div style="display: flex; gap: 0.6rem; margin-left: auto; align-items: center">
+      <div
+        style="
+          display: flex;
+          gap: 0.6rem;
+          margin-left: auto;
+          align-items: center;
+        "
+      >
         <button
           id="tab-luan-que"
           class="tab-btn active-luan"
@@ -57,7 +64,11 @@
         <button id="tab-tac-gia" class="tab-btn" onclick="switchTab('tac-gia')">
           👤 Tác Giả
         </button>
-        <div class="theme-toggle" onclick="toggleTheme()" title="Chuyển đổi Dark/Light Mode">
+        <div
+          class="theme-toggle"
+          onclick="toggleTheme()"
+          title="Chuyển đổi Dark/Light Mode"
+        >
           <span class="toggle-icon" id="theme-icon">🌙</span>
           <div class="toggle-track"><div class="toggle-thumb"></div></div>
         </div>
@@ -93,7 +104,11 @@
           </div>
 
           <!-- Tượng quẻ Mini (hiển thị khi Lên Quẻ) -->
-          <div id="mini-que-container" class="mini-que-container" style="display: none">
+          <div
+            id="mini-que-container"
+            class="mini-que-container"
+            style="display: none"
+          >
             <div class="mini-que-item">
               <div class="mini-que-symbol" id="mini-ban-symbol"></div>
               <div class="mini-que-name" id="mini-ban-name"></div>
@@ -105,19 +120,30 @@
               <div class="mini-que-name" id="mini-chi-name"></div>
               <div class="mini-que-info" id="mini-chi-info"></div>
             </div>
+            <div id="mini-que-meaning" class="mini-meaning-box"></div>
           </div>
         </div>
 
         <!-- Gieo xu -->
         <div class="g" id="step-2">
           <div class="g-title"><span class="ico">🪙</span> Lập Quẻ</div>
-          
+
           <!-- Segmented Control Method Toggle -->
           <div class="method-segmented-control">
-            <button type="button" class="method-btn active" id="btn-method-coin" onclick="setMethod('coin')">
+            <button
+              type="button"
+              class="method-btn active"
+              id="btn-method-coin"
+              onclick="setMethod('coin')"
+            >
               <span class="ico">🪙</span> Gieo Xu
             </button>
-            <button type="button" class="method-btn" id="btn-method-direct" onclick="setMethod('direct')">
+            <button
+              type="button"
+              class="method-btn"
+              id="btn-method-direct"
+              onclick="setMethod('direct')"
+            >
               <span class="ico">✍️</span> Chọn Trực Tiếp
             </button>
           </div>
@@ -127,10 +153,11 @@
             <strong style="color: var(--gold)">Ngửa</strong> / Sấp. Hào 1 (Sơ) ở
             dưới cùng, Hào 6 (Thượng) ở trên.
           </p>
-          <p class="hint" id="hint-direct" style="display:none">
-            Chọn Âm/Dương và tích vào ô Động. Đồng xu và điểm số sẽ tự động đồng bộ.
+          <p class="hint" id="hint-direct" style="display: none">
+            Chọn Âm/Dương và tích vào ô Động. Đồng xu và điểm số sẽ tự động đồng
+            bộ.
           </p>
-          
+
           <div class="hao-inputs" id="hao-inputs"></div>
           <button class="btn-primary" onclick="anQue()" id="btn-anque" disabled>
             🔮 Lên Quẻ
@@ -149,14 +176,32 @@
         <!-- Bảng Quẻ -->
         <div class="g" id="step-3" style="display: none; padding: 2.5rem">
           <div class="que-header">
-            <div class="que-title">
-              <span id="ban-que-name">—</span>
-              <span style="color: var(--text-3); margin: 0 1rem">→</span>
-              <span id="chi-que-name">—</span>
+            <div class="que-title-grid">
+              <div class="side-left" id="ban-que-name">—</div>
+              <div class="side-center">→</div>
+              <div class="side-right" id="chi-que-name">—</div>
             </div>
-            <div class="que-meta">
-              <span>Cung <strong id="cung-que">—</strong></span>
-              <span>Hành <strong id="hanh-cung">—</strong></span>
+
+            <div class="que-meta-grid">
+              <div class="side-left">
+                <span>Cung <strong id="cung-que">—</strong></span>
+                <span>Hành <strong id="hanh-cung">—</strong></span>
+              </div>
+              <div
+                class="side-center"
+                id="meta-arrow-fixed"
+                style="visibility: hidden"
+              >
+                →
+              </div>
+              <div
+                class="side-right"
+                id="chi-meta-side"
+                style="visibility: hidden"
+              >
+                <span>Cung <strong id="chi-cung">—</strong></span>
+                <span>Hành <strong id="chi-hanh">—</strong></span>
+              </div>
             </div>
           </div>
           <table class="bang-que" id="bang-que">
@@ -166,7 +211,11 @@
                 <th style="width: 60px">Lục Thân</th>
                 <th style="width: 140px">Quẻ Chủ & Phục</th>
                 <th style="width: 40px">Động</th>
-                <th style="width: 170px; text-align: left; padding-left: 0.6rem">Vượng Suy</th>
+                <th
+                  style="width: 170px; text-align: left; padding-left: 0.6rem"
+                >
+                  Vượng Suy
+                </th>
                 <th style="width: 120px">Quẻ Biến</th>
               </tr>
             </thead>
@@ -205,24 +254,57 @@
                 <option value="nha-cua">🏠 Nhà cửa / BĐS</option>
               </select>
             </div>
-            <div id="goi-y-dung-than" class="goi-y-box" style="display: none"></div>
-            <p class="hint" style="text-align: center; color: var(--purple); font-weight: 600">
+            <div
+              id="goi-y-dung-than"
+              class="goi-y-box"
+              style="display: none"
+            ></div>
+            <p
+              class="hint"
+              style="text-align: center; color: var(--purple); font-weight: 600"
+            >
               Click dòng trong Bảng Quẻ để chốt Dụng Thần
             </p>
             <div id="chon-dung-than-buttons" class="chon-dt-buttons"></div>
-            
-            <div id="dung-than-selected" class="selected-dt-box" style="display: none; margin-top: 1rem">
-              <span>Dụng Thần: <strong id="dt-name">—</strong> (<span id="dt-dia-chi">—</span> <span id="dt-hanh">—</span>)</span>
+
+            <div
+              id="dung-than-selected"
+              class="selected-dt-box"
+              style="display: none; margin-top: 1rem"
+            >
+              <span
+                >Dụng Thần: <strong id="dt-name">—</strong> (<span
+                  id="dt-dia-chi"
+                  >—</span
+                >
+                <span id="dt-hanh">—</span>)</span
+              >
               <button onclick="resetDungThan()">✕</button>
             </div>
           </div>
 
           <div class="g" id="step-prompt" style="display: none">
-            <div class="g-title"><span class="ico">📋</span> Nhập Thông Tin Quẻ (Xuất Prompt)</div>
-            
-            <div id="prompt-dt-display" style="margin-bottom: 1rem; padding: 0.8rem; background: rgba(212, 168, 67, 0.1); border: 1px solid rgba(212, 168, 67, 0.3); border-radius: 8px; font-size: 0.85rem">
-              <span style="color: var(--text-3)">Dụng Thần đã chọn:</span><br>
-              <strong id="prompt-dt-name" style="color: var(--gold); font-size: 1rem">Chưa chọn</strong>
+            <div class="g-title">
+              <span class="ico">📋</span> Nhập Thông Tin Quẻ (Xuất Prompt)
+            </div>
+
+            <div
+              id="prompt-dt-display"
+              style="
+                margin-bottom: 1rem;
+                padding: 0.8rem;
+                background: rgba(212, 168, 67, 0.1);
+                border: 1px solid rgba(212, 168, 67, 0.3);
+                border-radius: 8px;
+                font-size: 0.85rem;
+              "
+            >
+              <span style="color: var(--text-3)">Dụng Thần đã chọn:</span><br />
+              <strong
+                id="prompt-dt-name"
+                style="color: var(--gold); font-size: 1rem"
+                >Chưa chọn</strong
+              >
             </div>
 
             <div class="form-row" style="margin-bottom: 0.8rem">
@@ -234,14 +316,35 @@
             </div>
             <div class="form-row" style="margin-bottom: 0.8rem">
               <label>Chủ đề hỏi</label>
-              <input type="text" id="topic" class="ctrl" placeholder="Vd: Công việc, Tình duyên..." style="width: 100%">
+              <input
+                type="text"
+                id="topic"
+                class="ctrl"
+                placeholder="Vd: Công việc, Tình duyên..."
+                style="width: 100%"
+              />
             </div>
             <div class="form-row" style="margin-bottom: 0.8rem">
               <label>Câu hỏi chi tiết</label>
-              <textarea id="ghi-chu" placeholder="Mô tả chi tiết sự việc..." style="min-height: 80px"></textarea>
+              <textarea
+                id="ghi-chu"
+                placeholder="Mô tả chi tiết sự việc..."
+                style="min-height: 80px"
+              ></textarea>
             </div>
             <div class="action-row">
-              <button onclick="copyFullPromptV3()" class="btn-convert" style="width: 100%; padding: 1rem; background: var(--purple); border-color: var(--purple); color: #ffffff; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3)">
+              <button
+                onclick="copyFullPromptV3()"
+                class="btn-convert"
+                style="
+                  width: 100%;
+                  padding: 1rem;
+                  background: var(--purple);
+                  border-color: var(--purple);
+                  color: #ffffff;
+                  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+                "
+              >
                 🚀 TẠO PROMPT
               </button>
             </div>
@@ -442,7 +545,10 @@
         <div class="author-name">KhanhDev</div>
         <div class="author-title">Lập trình viên · Nghiên cứu Dịch Lý</div>
         <!-- Email pill -->
-        <a href="mailto:dinhquockhanh.neu.vnu@gmail.com" class="author-email-pill">
+        <a
+          href="mailto:dinhquockhanh.neu.vnu@gmail.com"
+          class="author-email-pill"
+        >
           ✉️ dinhquockhanh.neu.vnu@gmail.com
         </a>
       </div>
@@ -451,8 +557,9 @@
       <div class="author-card">
         <div class="author-card-label">⚡ Về Dự Án</div>
         <p class="author-card-text">
-          <strong style="color: var(--heading-color)">Lục Hào Kinh Dịch</strong> là công cụ luận
-          quẻ Lục Hào chuyên nghiệp, được xây dựng dựa trên hệ thống lý luận của
+          <strong style="color: var(--heading-color)">Lập quẻ Dịch</strong> là
+          công cụ luận quẻ Lục Hào chuyên nghiệp, được xây dựng dựa trên hệ
+          thống lý luận của
           <strong style="color: var(--cyan)">Lưu Xương Minh</strong> và bổ sung
           các quy tắc nâng cao từ
           <strong style="color: var(--gold)">Dã Hạc</strong>.
@@ -472,14 +579,18 @@
             <span class="author-feature-icon">🎴</span>
             <div>
               <div class="author-feature-title">Tự động lên 64 Quẻ</div>
-              <div class="author-feature-desc">khớp địa chi, lục thần, thế ứng</div>
+              <div class="author-feature-desc">
+                khớp địa chi, lục thần, thế ứng
+              </div>
             </div>
           </div>
           <div class="author-feature-item">
             <span class="author-feature-icon">🌡️</span>
             <div>
               <div class="author-feature-title">Tính Vượng Suy</div>
-              <div class="author-feature-desc">Nhật/Nguyệt/Hào Động toàn diện</div>
+              <div class="author-feature-desc">
+                Nhật/Nguyệt/Hào Động toàn diện
+              </div>
             </div>
           </div>
           <div class="author-feature-item">
@@ -493,35 +604,45 @@
             <span class="author-feature-icon">⏳</span>
             <div>
               <div class="author-feature-title">Ứng Kỳ TH1 + TH2</div>
-              <div class="author-feature-desc">so sánh LXM và Dã Hạc song song</div>
+              <div class="author-feature-desc">
+                so sánh LXM và Dã Hạc song song
+              </div>
             </div>
           </div>
           <div class="author-feature-item">
             <span class="author-feature-icon">👻</span>
             <div>
               <div class="author-feature-title">Phục Tàng</div>
-              <div class="author-feature-desc">tự động tìm và phân tích phục thần</div>
+              <div class="author-feature-desc">
+                tự động tìm và phân tích phục thần
+              </div>
             </div>
           </div>
           <div class="author-feature-item">
             <span class="author-feature-icon">📖</span>
             <div>
               <div class="author-feature-title">Thủ Tượng</div>
-              <div class="author-feature-desc">tự sinh luận nghĩa theo tượng quẻ</div>
+              <div class="author-feature-desc">
+                tự sinh luận nghĩa theo tượng quẻ
+              </div>
             </div>
           </div>
           <div class="author-feature-item">
             <span class="author-feature-icon">🔗</span>
             <div>
               <div class="author-feature-title">Hóa Quẻ Chân Thực</div>
-              <div class="author-feature-desc">Phản ngâm, Phục ngâm, Hồi đầu khắc</div>
+              <div class="author-feature-desc">
+                Phản ngâm, Phục ngâm, Hồi đầu khắc
+              </div>
             </div>
           </div>
           <div class="author-feature-item">
             <span class="author-feature-icon">🌙</span>
             <div>
               <div class="author-feature-title">Theme Dark/Light</div>
-              <div class="author-feature-desc">tối ưu trải nghiệm ngày và đêm</div>
+              <div class="author-feature-desc">
+                tối ưu trải nghiệm ngày và đêm
+              </div>
             </div>
           </div>
         </div>
@@ -529,32 +650,60 @@
 
       <!-- Footer cho trang Tác Giả -->
       <footer class="author-footer">
-        <div style="font-size: 0.85rem; color: var(--text-2); margin-bottom: 0.3rem">
+        <div
+          style="
+            font-size: 0.85rem;
+            color: var(--text-2);
+            margin-bottom: 0.3rem;
+          "
+        >
           Thiết kế & Phát triển bởi
           <strong style="color: var(--heading-color)">KhanhDev</strong>
         </div>
         <div style="font-size: 0.75rem; color: var(--text-3)">
           Email:
-          <a href="mailto:dinhquockhanh.neu.vnu@gmail.com" style="color: var(--cyan); text-decoration: none">
+          <a
+            href="mailto:dinhquockhanh.neu.vnu@gmail.com"
+            style="color: var(--cyan); text-decoration: none"
+          >
             dinhquockhanh.neu.vnu@gmail.com
           </a>
         </div>
-        <div style="margin-top: 0.4rem; font-size: 0.75rem; color: var(--text-3); opacity: 0.6">
+        <div
+          style="
+            margin-top: 0.4rem;
+            font-size: 0.75rem;
+            color: var(--text-3);
+            opacity: 0.6;
+          "
+        >
           © 2026 LẬP QUẺ DỊCH · v2.0
         </div>
       </footer>
     </div>
     <!-- end about page -->
 
-
-
     <script src="data.js"></script>
-    <script src="js/ui.js"></script>
+    <script src="js/data-ynghia.js"></script>
     <script src="js/state.js"></script>
     <script src="js/logic.js"></script>
     <script src="js/thuTuong.js"></script>
     <script src="js/render.js"></script>
+    <script src="js/ui.js"></script>
     <script src="app.js"></script>
+    <!-- ===== MODAL CHI TIẾT QUẺ ===== -->
+    <div id="que-detail-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title">🔍 Chi Tiết Ý Nghĩa Tượng Quẻ</div>
+          <span class="close-modal" onclick="closeQueModal()">&times;</span>
+        </div>
+        <div class="modal-body" id="que-modal-body">
+          <!-- Content injected via JS -->
+        </div>
+      </div>
+    </div>
+
     <div id="toast-container" class="toast-container"></div>
   </body>
 </html>
