@@ -136,7 +136,7 @@ function sinhLuanNghia(dt, haoVaiTro, vs) {
     const canhTuong = getCanhTuong(cuu.viTri, DC_HANH[cuu.diaChi]);
     if (tt.huuDung) {
       doan.push(
-        `💀 Cừu Thần ${cuu.lucThan} H${cuu.viTri} động ${canhTuong} — khắc Nguyên Thần (cắt nguồn trợ) đồng thời sinh Kỵ Thần (bơm sức cho kẻ thù). Tình huống nguy hiểm gấp bội.`,
+        ` Cừu Thần ${cuu.lucThan} H${cuu.viTri} động ${canhTuong} — khắc Nguyên Thần (cắt nguồn trợ) đồng thời sinh Kỵ Thần (bơm sức cho kẻ thù). Tình huống nguy hiểm gấp bội.`,
       );
     }
   });

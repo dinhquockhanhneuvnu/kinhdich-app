@@ -418,142 +418,31 @@
     <!-- end page -->
 
     <!-- ===== ABOUT PAGE ===== -->
-    <div
-      id="page-tac-gia"
-      style="
-        display: none;
-        position: relative;
-        z-index: 2;
-        max-width: 860px;
-        margin: 0 auto;
-        padding: 2rem 2rem 0;
-        min-height: calc(100vh - 84px);
-        flex-direction: column;
-      "
-    >
+    <div id="page-tac-gia" class="author-page" style="display: none">
       <!-- Hero card -->
-      <div
-        style="
-          background: var(--surface-1);
-          border: 1px solid var(--border-1);
-          border-radius: 20px;
-          padding: 3rem;
-          text-align: center;
-          margin-bottom: 1.5rem;
-          position: relative;
-          overflow: hidden;
-        "
-      >
-        <div
-          style="
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(
-              ellipse at 50% 0%,
-              rgba(139, 92, 246, 0.12) 0%,
-              transparent 70%
-            );
-            pointer-events: none;
-          "
-        ></div>
+      <div class="author-hero">
+        <div class="author-hero-glow"></div>
         <!-- Avatar -->
-        <div
-          style="
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--purple), var(--cyan));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.4rem;
-            margin: 0 auto 1.2rem;
-            box-shadow: 0 0 40px rgba(139, 92, 246, 0.4);
-          "
-        >
-          👨‍💻
-        </div>
-        <div
-          style="
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: 0.02em;
-            margin-bottom: 0.3rem;
-          "
-        >
-          KhanhDev
-        </div>
-        <div
-          style="
-            font-size: 0.95rem;
-            color: var(--text-2);
-            margin-bottom: 1.4rem;
-          "
-        >
-          Lập trình viên · Nghiên cứu Dịch Lý
-        </div>
+        <div class="author-avatar">👨‍💻</div>
+        <div class="author-name">KhanhDev</div>
+        <div class="author-title">Lập trình viên · Nghiên cứu Dịch Lý</div>
         <!-- Email pill -->
-        <a
-          href="mailto:dinhquockhanh.neu.vnu@gmail.com"
-          style="
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 8px 20px;
-            border-radius: 100px;
-            background: rgba(139, 92, 246, 0.15);
-            border: 1px solid rgba(139, 92, 246, 0.5);
-            color: #e9d5ff;
-            font-size: 0.88rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: 0.2s;
-          "
-          onmouseover="this.style.background = 'rgba(139,92,246,0.3)'"
-          onmouseout="this.style.background = 'rgba(139,92,246,0.15)'"
-        >
+        <a href="mailto:dinhquockhanh.neu.vnu@gmail.com" class="author-email-pill">
           ✉️ dinhquockhanh.neu.vnu@gmail.com
         </a>
       </div>
 
       <!-- Về dự án -->
-      <div
-        style="
-          background: var(--surface-1);
-          border: 1px solid var(--border-1);
-          border-radius: 16px;
-          padding: 2rem;
-          margin-bottom: 1.5rem;
-        "
-      >
-        <div
-          style="
-            font-size: 0.75rem;
-            font-weight: 800;
-            color: var(--cyan);
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            margin-bottom: 1rem;
-          "
-        >
-          ⚡ Về Dự Án
-        </div>
-        <p
-          style="
-            color: var(--text-2);
-            font-size: 0.95rem;
-            line-height: 1.8;
-            margin-bottom: 0.8rem;
-          "
-        >
+      <div class="author-card">
+        <div class="author-card-label">⚡ Về Dự Án</div>
+        <p class="author-card-text">
           <strong style="color: var(--heading-color)">Lục Hào Kinh Dịch</strong> là công cụ luận
           quẻ Lục Hào chuyên nghiệp, được xây dựng dựa trên hệ thống lý luận của
           <strong style="color: var(--cyan)">Lưu Xương Minh</strong> và bổ sung
           các quy tắc nâng cao từ
           <strong style="color: var(--gold)">Dã Hạc</strong>.
         </p>
-        <p style="color: var(--text-2); font-size: 0.95rem; line-height: 1.8">
+        <p class="author-card-text">
           Ứng dụng tự động tính toán Vượng Suy, Nguyên Kỵ Cừu Thần, phân tích
           Ứng Kỳ theo 2 phương pháp — giúp người học có công cụ đối chiếu và
           kiểm chứng theo từng trường phái.
@@ -561,259 +450,84 @@
       </div>
 
       <!-- Tính năng -->
-      <div
-        style="
-          background: var(--surface-1);
-          border: 1px solid var(--border-1);
-          border-radius: 16px;
-          padding: 2rem;
-          margin-bottom: 1.5rem;
-        "
-      >
-        <div
-          style="
-            font-size: 0.75rem;
-            font-weight: 800;
-            color: var(--gold);
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            margin-bottom: 1rem;
-          "
-        >
-          ✨ Tính Năng Chính
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem">
-          <div
-            style="
-              background: var(--bg);
-              border: 1px solid var(--border-1);
-              border-radius: 10px;
-              padding: 0.9rem 1rem;
-              display: flex;
-              gap: 0.7rem;
-              align-items: flex-start;
-            "
-          >
-            <span style="font-size: 1.3rem; line-height: 1">🎴</span>
+      <div class="author-card">
+        <div class="author-card-label">✨ Tính Năng Chính</div>
+        <div class="author-features-grid">
+          <div class="author-feature-item">
+            <span class="author-feature-icon">🎴</span>
             <div>
-              <div style="font-weight: 700; color: var(--heading-color); font-size: 0.88rem">
-                Tự động lên 64 Quẻ
-              </div>
-              <div
-                style="
-                  font-size: 0.75rem;
-                  color: var(--text-3);
-                  margin-top: 2px;
-                "
-              >
-                khớp địa chi, lục thần, thế ứng
-              </div>
+              <div class="author-feature-title">Tự động lên 64 Quẻ</div>
+              <div class="author-feature-desc">khớp địa chi, lục thần, thế ứng</div>
             </div>
           </div>
-          <div
-            style="
-              background: var(--bg);
-              border: 1px solid var(--border-1);
-              border-radius: 10px;
-              padding: 0.9rem 1rem;
-              display: flex;
-              gap: 0.7rem;
-              align-items: flex-start;
-            "
-          >
-            <span style="font-size: 1.3rem; line-height: 1">🌡️</span>
+          <div class="author-feature-item">
+            <span class="author-feature-icon">🌡️</span>
             <div>
-              <div style="font-weight: 700; color: var(--heading-color); font-size: 0.88rem">
-                Tính Vượng Suy
-              </div>
-              <div
-                style="
-                  font-size: 0.75rem;
-                  color: var(--text-3);
-                  margin-top: 2px;
-                "
-              >
-                Nhật/Nguyệt/Hào Động toàn diện
-              </div>
+              <div class="author-feature-title">Tính Vượng Suy</div>
+              <div class="author-feature-desc">Nhật/Nguyệt/Hào Động toàn diện</div>
             </div>
           </div>
-          <div
-            style="
-              background: var(--bg);
-              border: 1px solid var(--border-1);
-              border-radius: 10px;
-              padding: 0.9rem 1rem;
-              display: flex;
-              gap: 0.7rem;
-              align-items: flex-start;
-            "
-          >
-            <span style="font-size: 1.3rem; line-height: 1">⚔️</span>
+          <div class="author-feature-item">
+            <span class="author-feature-icon">⚔️</span>
             <div>
-              <div style="font-weight: 700; color: var(--heading-color); font-size: 0.88rem">
-                Nguyên Kỵ Cừu Thần
-              </div>
-              <div
-                style="
-                  font-size: 0.75rem;
-                  color: var(--text-3);
-                  margin-top: 2px;
-                "
-              >
-                phân loại vai trò từng hào
-              </div>
+              <div class="author-feature-title">Nguyên Kỵ Cừu Thần</div>
+              <div class="author-feature-desc">phân loại vai trò từng hào</div>
             </div>
           </div>
-          <div
-            style="
-              background: var(--bg);
-              border: 1px solid var(--border-1);
-              border-radius: 10px;
-              padding: 0.9rem 1rem;
-              display: flex;
-              gap: 0.7rem;
-              align-items: flex-start;
-            "
-          >
-            <span style="font-size: 1.3rem; line-height: 1">⏳</span>
+          <div class="author-feature-item">
+            <span class="author-feature-icon">⏳</span>
             <div>
-              <div style="font-weight: 700; color: var(--heading-color); font-size: 0.88rem">
-                Ứng Kỳ TH1 + TH2
-              </div>
-              <div
-                style="
-                  font-size: 0.75rem;
-                  color: var(--text-3);
-                  margin-top: 2px;
-                "
-              >
-                so sánh LXM và Dã Hạc song song
-              </div>
+              <div class="author-feature-title">Ứng Kỳ TH1 + TH2</div>
+              <div class="author-feature-desc">so sánh LXM và Dã Hạc song song</div>
             </div>
           </div>
-          <div
-            style="
-              background: var(--bg);
-              border: 1px solid var(--border-1);
-              border-radius: 10px;
-              padding: 0.9rem 1rem;
-              display: flex;
-              gap: 0.7rem;
-              align-items: flex-start;
-            "
-          >
-            <span style="font-size: 1.3rem; line-height: 1">👻</span>
+          <div class="author-feature-item">
+            <span class="author-feature-icon">👻</span>
             <div>
-              <div style="font-weight: 700; color: var(--heading-color); font-size: 0.88rem">
-                Phục Tàng
-              </div>
-              <div
-                style="
-                  font-size: 0.75rem;
-                  color: var(--text-3);
-                  margin-top: 2px;
-                "
-              >
-                tự động tìm và phân tích phục thần
-              </div>
+              <div class="author-feature-title">Phục Tàng</div>
+              <div class="author-feature-desc">tự động tìm và phân tích phục thần</div>
             </div>
           </div>
-          <div
-            style="
-              background: var(--bg);
-              border: 1px solid var(--border-1);
-              border-radius: 10px;
-              padding: 0.9rem 1rem;
-              display: flex;
-              gap: 0.7rem;
-              align-items: flex-start;
-            "
-          >
-            <span style="font-size: 1.3rem; line-height: 1">📖</span>
+          <div class="author-feature-item">
+            <span class="author-feature-icon">📖</span>
             <div>
-              <div style="font-weight: 700; color: var(--heading-color); font-size: 0.88rem">
-                Thủ Tượng
-              </div>
-              <div
-                style="
-                  font-size: 0.75rem;
-                  color: var(--text-3);
-                  margin-top: 2px;
-                "
-              >
-                tự sinh luận nghĩa theo tượng quẻ
-              </div>
+              <div class="author-feature-title">Thủ Tượng</div>
+              <div class="author-feature-desc">tự sinh luận nghĩa theo tượng quẻ</div>
             </div>
           </div>
-          <div
-            style="
-              background: var(--bg);
-              border: 1px solid var(--border-1);
-              border-radius: 10px;
-              padding: 0.9rem 1rem;
-              display: flex;
-              gap: 0.7rem;
-              align-items: flex-start;
-            "
-          >
-            <span style="font-size: 1.3rem; line-height: 1">🔗</span>
+          <div class="author-feature-item">
+            <span class="author-feature-icon">🔗</span>
             <div>
-              <div style="font-weight: 700; color: var(--heading-color); font-size: 0.88rem">
-                Hóa Quẩn Chân
-              </div>
-              <div
-                style="
-                  font-size: 0.75rem;
-                  color: var(--text-3);
-                  margin-top: 2px;
-                "
-              >
-                nhận diện ứng kỳ trễ theo Dã Hạc
-              </div>
+              <div class="author-feature-title">Hóa Quẻ Chân Thực</div>
+              <div class="author-feature-desc">Phản ngâm, Phục ngâm, Hồi đầu khắc</div>
             </div>
           </div>
-          <div
-            style="
-              background: var(--bg);
-              border: 1px solid var(--border-1);
-              border-radius: 10px;
-              padding: 0.9rem 1rem;
-              display: flex;
-              gap: 0.7rem;
-              align-items: flex-start;
-            "
-          >
-            <span style="font-size: 1.3rem; line-height: 1">📋</span>
+          <div class="author-feature-item">
+            <span class="author-feature-icon">🌙</span>
             <div>
-              <div style="font-weight: 700; color: var(--heading-color); font-size: 0.88rem">
-                Xuất Prompt AI
-              </div>
-              <div
-                style="
-                  font-size: 0.75rem;
-                  color: var(--text-3);
-                  margin-top: 2px;
-                "
-              >
-                đưa dữ liệu sang AI để luận giải
-              </div>
+              <div class="author-feature-title">Theme Dark/Light</div>
+              <div class="author-feature-desc">tối ưu trải nghiệm ngày và đêm</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Phiên bản -->
-      <div
-        style="
-          margin-top: auto;
-          text-align: center;
-          color: var(--text-3);
-          font-size: 0.78rem;
-          padding: 1rem 0;
-        "
-      >
-        v2.0 · Tháng 3/2026 · Built with ❤️ by KhanhDev
-      </div>
+      <!-- Footer cho trang Tác Giả -->
+      <footer class="author-footer">
+        <div style="font-size: 0.85rem; color: var(--text-2); margin-bottom: 0.3rem">
+          Thiết kế & Phát triển bởi
+          <strong style="color: var(--heading-color)">KhanhDev</strong>
+        </div>
+        <div style="font-size: 0.75rem; color: var(--text-3)">
+          Email:
+          <a href="mailto:dinhquockhanh.neu.vnu@gmail.com" style="color: var(--cyan); text-decoration: none">
+            dinhquockhanh.neu.vnu@gmail.com
+          </a>
+        </div>
+        <div style="margin-top: 0.4rem; font-size: 0.75rem; color: var(--text-3); opacity: 0.6">
+          © 2026 LẬP QUẺ DỊCH · v2.0
+        </div>
+      </footer>
     </div>
     <!-- end about page -->
 
