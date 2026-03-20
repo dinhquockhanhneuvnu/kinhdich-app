@@ -155,8 +155,10 @@ function renderMiniQue() {
 
   const banSymbol = document.getElementById('mini-ban-symbol');
   const banName = document.getElementById('mini-ban-name');
+  const banInfo = document.getElementById('mini-ban-info');
   const chiSymbol = document.getElementById('mini-chi-symbol');
   const chiName = document.getElementById('mini-chi-name');
+  const chiInfo = document.getElementById('mini-chi-info');
   const arrow = document.querySelector('.mini-que-arrow');
 
   // Quẻ Chủ
@@ -166,10 +168,16 @@ function renderMiniQue() {
       let banScore = score;
       if (score === 9) banScore = 7;
       if (score === 6) banScore = 8;
-      return `<div class="mini-hao">${renderHaoSymbol(banScore)}</div>`;
+      
+      const isThe = h.viTri === state.banQue.the_hao;
+      const isUng = h.viTri === state.banQue.ung_hao;
+      const indicator = isThe ? '<span class="mini-tu-indicator mini-tu-the">T</span>' : (isUng ? '<span class="mini-tu-indicator mini-tu-ung">U</span>' : '');
+      
+      return `<div class="mini-hao-wrapper"><div class="mini-hao">${renderHaoSymbol(banScore)}</div>${indicator}</div>`;
     }).reverse().join('');
   }
   if (banName) banName.textContent = state.banQue.ten;
+  if (banInfo) banInfo.textContent = `Cung ${state.banQue.cung} (${state.cungHanh})`;
 
   // Quẻ Biến
   if (state.chiQue) {
@@ -179,15 +187,17 @@ function renderMiniQue() {
         let finalScore = score;
         if (score === 9) finalScore = 7;
         if (score === 6) finalScore = 8;
-        return `<div class="mini-hao">${renderHaoSymbol(finalScore)}</div>`;
+        return `<div class="mini-hao-wrapper"><div class="mini-hao">${renderHaoSymbol(finalScore)}</div></div>`;
       }).reverse().join('');
     }
     if (chiName) chiName.textContent = state.chiQue.ten;
+    if (chiInfo) chiInfo.textContent = `Cung ${state.chiQue.cung}`;
     if (arrow) arrow.style.display = 'block';
     if (chiSymbol && chiSymbol.parentElement) chiSymbol.parentElement.style.display = 'flex';
   } else {
     if (chiSymbol) chiSymbol.innerHTML = '';
     if (chiName) chiName.textContent = '';
+    if (chiInfo) chiInfo.textContent = '';
     if (arrow) arrow.style.display = 'none';
     if (chiSymbol && chiSymbol.parentElement) chiSymbol.parentElement.style.display = 'none';
   }
