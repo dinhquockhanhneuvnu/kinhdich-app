@@ -1,0 +1,74 @@
+/* ===================================== */
+/*            RESET & TOKENS             */
+/* ===================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html {
+  font-size: 17px;
+  scroll-behavior: smooth;
+}
+
+:root {
+  --bg: #0a0c10;
+  --surface-1: #13161d;
+  --surface-2: #191d27;
+  --surface-3: #1f2430;
+  --border-1: #252a36;
+  --border-2: #343b4d;
+  --border-3: #4a5168;
+  /* Accent */
+  --purple: #8b5cf6;
+  --cyan: #06b6d4;
+  --gold: #d4a843;
+  --rose: #f43f5e;
+  /* Text — high contrast */
+  --text: #eaeef4;
+  --text-2: #a8b4c6;
+  --text-3: #6b7a92;
+  /* Vượng Suy Levels */
+  --vs-cuc-vuong: #ff6b00;
+  --vs-vuong: #4caf50;
+  --vs-binh-hoa: #808080;
+  --vs-hoi-suy: #ea580c;
+  --vs-suy: #ef4444;
+  --vs-cuc-suy: #dc2626;
+  /* Radius */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  /* Theme-aware colors (dark defaults) */
+  --topbar-bg: rgba(13, 16, 23, 0.7);
+  --topbar-border: rgba(255, 255, 255, 0.06);
+  --card-hover-bg: rgba(255, 255, 255, 0.06);
+  --chip-bg: rgba(255, 255, 255, 0.03);
+  --chip-border: rgba(255, 255, 255, 0.05);
+  --chip-hover-bg: rgba(255, 255, 255, 0.06);
+  --heading-color: #fff;
+  --row-border-top: rgba(255, 255, 255, 0.03);
+  --row-border-bottom: rgba(255, 255, 255, 0.02);
+  --row-border-side: rgba(255, 255, 255, 0.04);
+  --noi-ngoai-border: rgba(255, 255, 255, 0.1);
+  --ctrl-bg: var(--bg);
+  --ctrl-color: #fff;
+  --ctrl-option-bg: #111;
+  --canh-bao-bg: rgba(0, 0, 0, 0.3);
+  --textarea-bg: rgba(0, 0, 0, 0.4);
+  --goi-y-bg: rgba(0, 0, 0, 0.4);
+  --selected-dt-bg: rgba(0, 0, 0, 0.4);
+  --thoi-diem-bg: rgba(0, 0, 0, 0.3);
+  --phuc-bg: #111;
+}
+
+body {
+  font-family: "Inter", -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
