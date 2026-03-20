@@ -30,7 +30,6 @@
       }
 
       :root {
-        /* Default: Dark Theme */
         --bg: #0a0c10;
         --surface-1: #13161d;
         --surface-2: #191d27;
@@ -38,46 +37,179 @@
         --border-1: #252a36;
         --border-2: #343b4d;
         --border-3: #4a5168;
+        /* Accent */
         --purple: #8b5cf6;
         --cyan: #06b6d4;
         --gold: #d4a843;
         --rose: #f43f5e;
+        /* Text — high contrast */
         --text: #eaeef4;
         --text-2: #a8b4c6;
         --text-3: #6b7a92;
-        --r-sm: 8px; --r-md: 12px; --r-lg: 16px;
-        --bg-header: rgba(13, 16, 23, 0.7);
-        --header-glass: blur(20px) saturate(180%);
-        --card-shadow: none;
+        /* Radius */
+        --r-sm: 8px;
+        --r-md: 12px;
+        --r-lg: 16px;
+        /* Theme-aware colors (dark defaults) */
+        --topbar-bg: rgba(13, 16, 23, 0.7);
+        --topbar-border: rgba(255, 255, 255, 0.06);
+        --card-hover-bg: rgba(255, 255, 255, 0.06);
+        --chip-bg: rgba(255, 255, 255, 0.03);
+        --chip-border: rgba(255, 255, 255, 0.05);
+        --chip-hover-bg: rgba(255, 255, 255, 0.06);
+        --heading-color: #fff;
+        --row-border-top: rgba(255, 255, 255, 0.03);
+        --row-border-bottom: rgba(255, 255, 255, 0.02);
+        --row-border-side: rgba(255, 255, 255, 0.04);
+        --noi-ngoai-border: rgba(255, 255, 255, 0.1);
+        --ctrl-bg: var(--bg);
+        --ctrl-color: #fff;
+        --ctrl-option-bg: #111;
+        --canh-bao-bg: rgba(0, 0, 0, 0.3);
+        --textarea-bg: rgba(0, 0, 0, 0.4);
+        --goi-y-bg: rgba(0, 0, 0, 0.4);
+        --selected-dt-bg: rgba(0, 0, 0, 0.4);
+        --thoi-diem-bg: rgba(0, 0, 0, 0.3);
+        --phuc-bg: #111;
       }
 
-      body.light-theme {
-        --bg: #f8fafc;
+      /* ======================== LIGHT MODE ======================== */
+      [data-theme="light"] {
+        --bg: #f5f5f0;
         --surface-1: #ffffff;
-        --surface-2: #f1f5f9;
-        --surface-3: #e2e8f0;
-        --border-1: #e2e8f0;
-        --border-2: #cbd5e1;
-        --border-3: #94a3b8;
-        --purple: #6366f1;
-        --cyan: #06b6d4;
-        --gold: #b45309;
+        --surface-2: #f0efe8;
+        --surface-3: #e8e6de;
+        --border-1: #d5d3c8;
+        --border-2: #c0bdb0;
+        --border-3: #a8a498;
+        /* Accent — slightly deeper for light bg */
+        --purple: #7c3aed;
+        --cyan: #0891b2;
+        --gold: #b8860b;
         --rose: #e11d48;
-        --text: #1e293b;
-        --text-2: #475569;
-        --text-3: #64748b;
-        --bg-header: rgba(255, 255, 255, 0.8);
-        --header-glass: blur(15px) saturate(150%);
-        --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        /* Text — dark for readability */
+        --text: #1a1a1a;
+        --text-2: #4a4a4a;
+        --text-3: #7a7a7a;
+        /* Theme-aware */
+        --topbar-bg: rgba(255, 255, 255, 0.85);
+        --topbar-border: rgba(0, 0, 0, 0.08);
+        --card-hover-bg: rgba(0, 0, 0, 0.02);
+        --chip-bg: rgba(0, 0, 0, 0.03);
+        --chip-border: rgba(0, 0, 0, 0.08);
+        --chip-hover-bg: rgba(0, 0, 0, 0.06);
+        --heading-color: #1a1a1a;
+        --row-border-top: rgba(0, 0, 0, 0.05);
+        --row-border-bottom: rgba(0, 0, 0, 0.03);
+        --row-border-side: rgba(0, 0, 0, 0.06);
+        --noi-ngoai-border: rgba(0, 0, 0, 0.12);
+        --ctrl-bg: #fff;
+        --ctrl-color: #1a1a1a;
+        --ctrl-option-bg: #fff;
+        --canh-bao-bg: rgba(0, 0, 0, 0.02);
+        --textarea-bg: #fff;
+        --goi-y-bg: rgba(0, 0, 0, 0.02);
+        --selected-dt-bg: rgba(212, 168, 67, 0.06);
+        --thoi-diem-bg: rgba(0, 0, 0, 0.02);
+        --phuc-bg: #f8f7f2;
       }
-
-      body.light-theme .aurora .blob { opacity: 0.05; }
-
-      * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.3s ease, border-color 0.3s ease, color 0.1s ease; }
-      html { font-size: 15px; scroll-behavior: smooth; }
+      [data-theme="light"] body {
+        background: var(--bg);
+        color: var(--text);
+      }
+      [data-theme="light"] .aurora .blob { opacity: 0.06; }
+      [data-theme="light"] .topbar {
+        background: var(--topbar-bg);
+        border-bottom-color: var(--topbar-border);
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      }
+      [data-theme="light"] .brand h1 { color: var(--heading-color); text-shadow: none; }
+      [data-theme="light"] .chip { background: var(--chip-bg); border-color: var(--chip-border); color: var(--text-2); }
+      [data-theme="light"] .chip:hover { background: var(--chip-hover-bg); border-color: rgba(0,0,0,0.12); }
+      [data-theme="light"] .chip strong { color: var(--text); }
+      [data-theme="light"] .chip.danger { border-color: rgba(225,29,72,0.2); background: rgba(225,29,72,0.04); }
+      [data-theme="light"] .chip.danger strong { color: #e11d48; }
+      [data-theme="light"] .ctrl { background: var(--ctrl-bg); color: var(--ctrl-color); border-color: var(--border-2); }
+      [data-theme="light"] .ctrl option { background: var(--ctrl-option-bg); }
+      [data-theme="light"] .que-title { color: var(--heading-color); text-shadow: none; }
+      [data-theme="light"] .bang-que td { border-top-color: var(--row-border-top); border-bottom-color: var(--row-border-bottom); }
+      [data-theme="light"] .bang-que td:first-child { border-left-color: var(--row-border-side); }
+      [data-theme="light"] .bang-que td:last-child { border-right-color: var(--row-border-side); }
+      [data-theme="light"] .bang-que tr.noi-ngoai-border td { border-top-color: var(--noi-ngoai-border); }
+      [data-theme="light"] .result-score { color: var(--text); background: var(--surface-3); }
+      [data-theme="light"] .result-symbol { color: var(--text); }
+      [data-theme="light"] .section-head { color: var(--text); }
+      [data-theme="light"] .cat-hung-result .cat-label { color: var(--text); }
+      [data-theme="light"] .cat-hung-result.hung .cat-label { color: #e11d48; }
+      [data-theme="light"] .cat-hung-chitiet li { border-bottom-color: rgba(0,0,0,0.06); color: var(--text-2); }
+      [data-theme="light"] .thu-tuong-line { border-bottom-color: rgba(0,0,0,0.06); }
+      [data-theme="light"] .canh-bao-item { background: var(--canh-bao-bg); border-color: var(--border-1); }
+      [data-theme="light"] .thoi-diem-item { background: var(--thoi-diem-bg); border-color: var(--border-1); }
+      [data-theme="light"] .thoi-diem-item .td-val { color: var(--text); }
+      [data-theme="light"] .dong-item { border-bottom-color: var(--border-1); }
+      [data-theme="light"] .dong-item .d-head { color: var(--gold); }
+      [data-theme="light"] textarea#ghi-chu { background: var(--textarea-bg); color: var(--text); }
+      [data-theme="light"] .goi-y-box { background: var(--goi-y-bg); }
+      [data-theme="light"] .selected-dt-box { background: var(--selected-dt-bg); }
+      [data-theme="light"] .action-row button { background: var(--surface-2); color: var(--text); border-color: var(--border-2); }
+      [data-theme="light"] .action-row button:hover { background: var(--surface-3); border-color: var(--text-3); box-shadow: 0 3px 10px rgba(0,0,0,0.08); }
+      [data-theme="light"] .btn-convert { background: var(--surface-2); color: var(--text); }
+      [data-theme="light"] .btn-convert:hover { background: var(--surface-3); }
+      [data-theme="light"] .chon-dt-btn { color: var(--text); }
+      [data-theme="light"] .chon-dt-btn.active { color: var(--text); }
+      /* Light mode: Lục Thần still colorful but deeper */
+      [data-theme="light"] .lt-tu-ton { color: #15803d; }
+      [data-theme="light"] .lt-the-tai { color: #a16207; }
+      [data-theme="light"] .lt-quan-quy { color: #be123c; }
+      [data-theme="light"] .lt-phu-mau { color: #0369a1; }
+      [data-theme="light"] .lt-huynh-de { color: #7e22ce; }
+      /* Toggle switch */
+      .theme-toggle {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        margin-left: 8px;
+        user-select: none;
+      }
+      .theme-toggle .toggle-track {
+        width: 42px;
+        height: 22px;
+        border-radius: 12px;
+        background: var(--surface-3);
+        border: 1px solid var(--border-2);
+        position: relative;
+        transition: background 0.3s, border-color 0.3s;
+      }
+      .theme-toggle .toggle-thumb {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--cyan);
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+      }
+      [data-theme="light"] .theme-toggle .toggle-track {
+        background: #e0ddd6;
+        border-color: #c0bdb0;
+      }
+      [data-theme="light"] .theme-toggle .toggle-thumb {
+        transform: translateX(20px);
+        background: #f59e0b;
+      }
+      .theme-toggle .toggle-icon {
+        font-size: 1rem;
+        line-height: 1;
+      }
 
       body {
-        font-family: "Inter", sans-serif;
+        font-family:
+          "Inter",
+          -apple-system,
+          sans-serif;
         background: var(--bg);
         color: var(--text);
         min-height: 100vh;
@@ -153,9 +285,9 @@
         gap: 2.5rem;
         padding: 0 4rem;
         height: 84px;
-        background: rgba(13, 16, 23, 0.7);
+        background: var(--topbar-bg);
         backdrop-filter: blur(20px) saturate(180%);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: 1px solid var(--topbar-border);
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
       }
       .brand {
@@ -176,7 +308,7 @@
         font-family: "Inter", sans-serif;
         font-size: 1.5rem;
         font-weight: 900;
-        color: #fff;
+        color: var(--heading-color);
         letter-spacing: 0.12em;
         text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         text-transform: uppercase;
@@ -210,17 +342,17 @@
         font-size: 0.78rem;
         font-weight: 600;
         color: var(--text-2);
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        background: var(--chip-bg);
+        border: 1px solid var(--chip-border);
         transition: 0.2s;
       }
       .chip:hover {
-        background: rgba(255, 255, 255, 0.06);
+        background: var(--chip-hover-bg);
         border-color: rgba(255, 255, 255, 0.1);
         transform: translateY(-1px);
       }
       .chip strong {
-        color: #fff;
+        color: var(--heading-color);
       }
       .chip.danger {
         border-color: rgba(244, 63, 94, 0.2);
@@ -339,8 +471,8 @@
         padding: 0.65rem 0.9rem;
         font-size: 0.9rem;
         font-family: inherit;
-        background: var(--bg);
-        color: #fff;
+        background: var(--ctrl-bg);
+        color: var(--ctrl-color);
         border: 1px solid var(--border-2);
         border-radius: var(--r-sm);
         transition: border-color 0.2s;
@@ -350,7 +482,7 @@
         border-color: var(--cyan);
       }
       .ctrl option {
-        background: #111;
+        background: var(--ctrl-option-bg);
       }
       .divider {
         text-align: center;
@@ -569,7 +701,7 @@
         font-family: "Noto Serif SC", serif;
         font-size: 1.8rem;
         font-weight: 700;
-        color: #fff;
+        color: var(--heading-color);
         margin-bottom: 0.5rem;
       }
       .que-meta {
@@ -612,22 +744,22 @@
         padding: 1rem;
         text-align: center;
         vertical-align: middle;
-        border-top: 1px solid rgba(255, 255, 255, 0.03);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        border-top: 1px solid var(--row-border-top);
+        border-bottom: 1px solid var(--row-border-bottom);
       }
       .bang-que td:first-child {
         border-radius: var(--r-md) 0 0 var(--r-md);
-        border-left: 1px solid rgba(255, 255, 255, 0.04);
+        border-left: 1px solid var(--row-border-side);
         font-weight: 800;
         font-size: 0.9rem;
       }
       .bang-que td:last-child {
         border-radius: 0 var(--r-md) var(--r-md) 0;
-        border-right: 1px solid rgba(255, 255, 255, 0.04);
+        border-right: 1px solid var(--row-border-side);
         text-align: left;
       }
       .bang-que tr.noi-ngoai-border td {
-        border-top: 2px solid rgba(255, 255, 255, 0.1);
+        border-top: 2px solid var(--noi-ngoai-border);
       }
 
       /* Table Row Highlights */
@@ -699,12 +831,12 @@
         letter-spacing: 0.04em;
       }
       .bdg-the {
-        background: rgba(var(--accent-rgb), 0.15);
-        color: var(--accent);
-        border: 1px solid var(--accent);
+        background: rgba(212, 168, 67, 0.2);
+        color: var(--gold);
+        border: 1px solid var(--gold);
       }
       .bdg-ung {
-        background: rgba(6, 182, 212, 0.15);
+        background: rgba(6, 182, 212, 0.2);
         color: var(--cyan);
         border: 1px solid var(--cyan);
       }
@@ -1346,15 +1478,9 @@
         <span class="brand-icon">☯</span>
         <div style="display: flex; flex-direction: column">
           <h1>LẬP QUẺ DỊCH</h1>
-          <div class="author-badge">KhanhDev</div>
+          <div class="author-badge">By KhanhDev</div>
         </div>
       </div>
-
-      <!-- Theme Toggle -->
-      <button id="theme-toggle" style="background: var(--surface-2); border: 1px solid var(--border-2); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text); font-size: 1.1rem; transition: 0.3s; margin-left: -1rem">
-        <span id="theme-icon">🌙</span>
-      </button>
-
       <div class="topbar-pills" id="topbar-meta">
         <div class="chip">
           <span>Nguyệt Kiến <strong id="nguyet-kien">—</strong></span>
@@ -1369,9 +1495,8 @@
           <span>Lục Thần <strong id="luc-than-start">—</strong></span>
         </div>
       </div>
-
-      <!-- Tab nav -->
-      <div style="display: flex; gap: 0.6rem; margin-left: auto">
+      <!-- Tab nav + Theme Toggle -->
+      <div style="display: flex; gap: 0.6rem; margin-left: auto; align-items: center">
         <button
           id="tab-luan-que"
           class="tab-btn active-luan"
@@ -1382,6 +1507,10 @@
         <button id="tab-tac-gia" class="tab-btn" onclick="switchTab('tac-gia')">
           👤 Tác Giả
         </button>
+        <div class="theme-toggle" onclick="toggleTheme()" title="Chuyển đổi Dark/Light Mode">
+          <span class="toggle-icon" id="theme-icon">🌙</span>
+          <div class="toggle-track"><div class="toggle-thumb"></div></div>
+        </div>
       </div>
     </header>
 
@@ -2144,6 +2273,25 @@
           btnTac.classList.add("active-tacgia");
         }
       }
+
+      // === THEME TOGGLE ===
+      function toggleTheme() {
+        const html = document.documentElement;
+        const current = html.getAttribute('data-theme');
+        const next = current === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('kinhdich-theme', next);
+        document.getElementById('theme-icon').textContent = next === 'light' ? '☀️' : '🌙';
+      }
+      // Restore saved theme on load
+      (function() {
+        const saved = localStorage.getItem('kinhdich-theme');
+        if (saved === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+          const icon = document.getElementById('theme-icon');
+          if (icon) icon.textContent = '☀️';
+        }
+      })();
     </script>
 
     <script src="data.js"></script>

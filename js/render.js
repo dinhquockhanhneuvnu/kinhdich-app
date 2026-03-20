@@ -67,10 +67,10 @@ function renderBangQue() {
     const theUngHtml = theUng ? `<span class="badge ${isThe ? 'bdg-the' : 'bdg-ung'}">${theUng}</span> ` : '';
     
     // Phục thần HTML (nay tích hợp vào Quẻ Chủ)
-    const phucThanHtml = hao.phucThan ? `<div style="margin-top:6px; font-size:0.85rem; padding:4px; border:1px dashed var(--accent); border-radius:4px; background:var(--bg-inner)">
-      <span style="color:var(--accent); font-size:0.75rem">Phục Thần</span><br>
+    const phucThanHtml = hao.phucThan ? `<div style="margin-top:6px; font-size:0.85rem; padding:4px; border:1px dashed var(--gold); border-radius:4px; background:var(--phuc-bg)">
+      <span style="color:var(--gold); font-size:0.75rem">Phục Thần</span><br>
       <span class="${getLucThanClass(hao.phucThan.lucThan)}" style="font-weight:bold">${hao.phucThan.lucThan}</span><br>
-      <span style="color:var(--text-secondary)">${hao.phucThan.diaChi} ${hao.phucThan.hanh}</span>
+      <span style="color:var(--text-2)">${hao.phucThan.diaChi} ${hao.phucThan.hanh}</span>
     </div>` : '';
 
     const isGK = hao.laTuanKhong && !hao.laAmDong && hao.nhanXetVS && hao.nhanXetVS.some(x=>x.includes("Giả Không")); 
@@ -84,17 +84,17 @@ function renderBangQue() {
     const tienBadge = hao.laTienThan ? ' <span class="badge" style="background:#0a1e0a;color:#57c255;border:1px solid #399837">Tiến</span>' : ""; 
     const thoaiBadge = hao.laThoaiThan ? ' <span class="badge" style="background:#1e0808;color:#cc4444;border:1px solid #882222">Thoái</span>' : ""; 
 
-    const banQuaiHtml = `<div class="${getLucThanClass(hao.lucThan)}" style="font-weight:700;font-size:0.78rem;margin-bottom:2px">${hao.lucThan}</div><div style="font-size:0.73rem">${hao.diaChi} <span style="color:#6b7a94">${hao.hanh}</span>${tkBadge}${moBadge}${nmBadge}${amBadge}${phaBadge}${qcBadge}</div><div class="hao-symbol" style="margin-top:3px">${renderHaoSymbol(state.haoScores[i])}</div>${phucThanHtml}`;
+    const banQuaiHtml = `<div class="${getLucThanClass(hao.lucThan)}" style="font-weight:700;font-size:0.78rem;margin-bottom:2px">${hao.lucThan}</div><div style="font-size:0.73rem">${hao.diaChi} <span style="color:var(--text-3)">${hao.hanh}</span>${tkBadge}${moBadge}${nmBadge}${amBadge}${phaBadge}${qcBadge}</div><div class="hao-symbol" style="margin-top:3px">${renderHaoSymbol(state.haoScores[i])}</div>${phucThanHtml}`;
 
-    let bienQuaiHtml = '<div style="color:#2a3a55;font-size:0.78rem">—</div>';
+    let bienQuaiHtml = '<div style="color:var(--text-3);font-size:0.78rem">—</div>';
     if (hao.laDong) {
-       bienQuaiHtml = `<div class="${getLucThanClass(hao.bienLucThan)}" style="font-weight:700;font-size:0.78rem;margin-bottom:2px">${hao.bienLucThan}</div><div style="font-size:0.73rem;color:#8090a8">${hao.bienDC} ${hao.bienHanh}${tienBadge}${thoaiBadge}</div><div class="hao-symbol" style="margin-top:3px">${renderHaoSymbol(hao.bienScore)}</div>`;
+       bienQuaiHtml = `<div class="${getLucThanClass(hao.bienLucThan)}" style="font-weight:700;font-size:0.78rem;margin-bottom:2px">${hao.bienLucThan}</div><div style="font-size:0.73rem;color:var(--text-2)">${hao.bienDC} ${hao.bienHanh}${tienBadge}${thoaiBadge}</div><div class="hao-symbol" style="margin-top:3px">${renderHaoSymbol(hao.bienScore)}</div>`;
     }
 
-    const vsDetailHtml = hao.vuongSuy.nhanXet.length > 0 ? `<ul style="list-style:none;padding:0;margin-top:3px;text-align:left">${hao.vuongSuy.nhanXet.map(x=>`<li style="font-size:0.62rem;color:#6b7a94;padding:1px 0">• ${x}</li>`).join('')}</ul>` : '';
+    const vsDetailHtml = hao.vuongSuy.nhanXet.length > 0 ? `<ul style="list-style:none;padding:0;margin-top:3px;text-align:left">${hao.vuongSuy.nhanXet.map(x=>`<li style="font-size:0.62rem;color:var(--text-3);padding:1px 0">• ${x}</li>`).join('')}</ul>` : '';
     const vsHtml = `<span class="vuong-suy ${hao.vuongSuy.cssClass}">${hao.vuongSuy.mucDo} <span style="opacity:0.6">(${hao.vuongSuy.diem}đ)</span></span>${vsDetailHtml}`;
 
-    row.innerHTML = `<td style="font-weight:700;color:var(--text-secondary);font-size:0.75rem">H${hao.viTri} ${theUngHtml}</td><td style="font-size:0.7rem;color:var(--text-secondary)">${hao.lucThanTen}</td><td>${banQuaiHtml}</td><td style="vertical-align:top;text-align:left;padding:0.3rem 0.6rem">${vsHtml}</td><td>${bienQuaiHtml}</td>`;
+    row.innerHTML = `<td style="font-weight:700;color:var(--text-3);font-size:0.75rem">H${hao.viTri} ${theUngHtml}</td><td style="font-size:0.7rem;color:var(--text-3)">${hao.lucThanTen}</td><td>${banQuaiHtml}</td><td style="vertical-align:top;text-align:left;padding:0.3rem 0.6rem">${vsHtml}</td><td>${bienQuaiHtml}</td>`;
     row.style.cursor = 'pointer';
     row.onclick = () => chonDungThan(i);
     tbody.appendChild(row);

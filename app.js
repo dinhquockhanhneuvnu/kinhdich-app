@@ -561,28 +561,5 @@ Dựa trên toàn bộ dữ liệu Vượng Suy, Cảnh Báo và Thủ Tượng 
     alert('Lỗi copy. Vui lòng thử lại!');
   });
 }
-// === THEME MANAGER ===
-function toggleTheme() {
-  const body = document.body;
-  const isLight = body.classList.toggle('light-theme');
-  const icon = document.getElementById('theme-icon');
-  icon.textContent = isLight ? '☀️' : '🌙';
-  localStorage.setItem('kinhdich-theme', isLight ? 'light' : 'dark');
-}
-
-function initTheme() {
-  const savedTheme = localStorage.getItem('kinhdich-theme');
-  if (savedTheme === 'light') {
-    document.body.classList.add('light-theme');
-    document.getElementById('theme-icon').textContent = '☀️';
-  }
-  document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
-}
-
 // === KHỞI ĐỘNG ===
-async function init() {
-  initTheme();
-  initLunar();
-  await updateStep1();
-}
 document.addEventListener('DOMContentLoaded', init);
