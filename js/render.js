@@ -211,13 +211,13 @@ function renderDongHao() {
   if (!el) return;
   // Fallback to state.hao6 if state.result.bangQue is not yet populated
   const source = (state.result && state.result.bangQue) ? state.result.bangQue : state.hao6;
-  const allDong = source.filter(r => r.laDong || r.laAmDong || r.isDong);
+  const allDong = source.filter(r => r.laDong || r.laAmDong || r.isDong).reverse();
   if (allDong.length === 0) { el.innerHTML = '<p style="color:var(--text-3);font-size:0.85rem">Không có hào động</p>'; return; }
   el.innerHTML = allDong.map(h => {
     const hd = h.bienDC ? kiemTraHoiDau(h.diaChi, h.bienDC) : null;
-    const label = h.laAmDong ? '<span class="badge bdg-am">Ám Động</span>' : '<span style="color:var(--gold);font-size:0.62rem;font-weight:700">● Động</span>';
+    const label = h.laAmDong ? '<span class="badge bdg-am">Ám Động</span>' : '<span style="color:var(--gold);font-size:0.75rem;font-weight:700">● Động</span>';
     const tiPhu = h.laTienThan ? ' <span style="color:var(--green)">→ Tiến Thần</span>' : h.laThoaiThan ? ' <span style="color:var(--red)">→ Thoái Thần</span>' : '';
-    const hdLabel = hd ? `<span style="color:${hd.loai.includes('sinh') ? 'var(--green)' : 'var(--red)'};font-size:0.65rem"> [${hd.loai}]</span>` : '';
+    const hdLabel = hd ? `<span style="color:${hd.loai.includes('sinh') ? 'var(--green)' : 'var(--red)'};font-size:0.75rem"> [${hd.loai}]</span>` : '';
     return `<div class="dong-item"><span class="d-head">H${h.viTri}</span> ${label} ${h.diaChi}→${h.bienDC||'?'}${tiPhu}${hdLabel}</div>`;
   }).join('');
 }
@@ -305,7 +305,7 @@ function renderCatHung(dt, haoVaiTro, vs) {
   el.innerHTML = `<div class="cat-hung-result ${cls}">
     <div class="cat-label">${catHung}</div>
     <div class="cat-note">${detail}</div>
-    <div style="font-size:0.65rem;color:var(--text-3);margin-top:0.3rem">Điểm tổng hợp: ${score.toFixed(1)}</div>
+    <div style="font-size:0.75rem;color:var(--text-3);margin-top:0.3rem">Điểm tổng hợp: ${score.toFixed(1)}</div>
     ${chiTietHtml}
   </div>`;
 }
@@ -313,7 +313,7 @@ function renderCatHung(dt, haoVaiTro, vs) {
 function renderPhiPhuc() {
   const el = document.getElementById('phi-phuc-analysis');
   if (!el) return;
-  const phucThans = state.hao6.filter(h => h.phucThan);
+  const phucThans = state.hao6.filter(h => h.phucThan).reverse();
   if (phucThans.length === 0) {
     el.innerHTML = '<p style="color:var(--text-3);font-size:0.85rem">Không có Phục Thần ✓</p>'; return;
   }
@@ -326,9 +326,9 @@ function renderPhiPhuc() {
     else if (NGU_HANH_SINH[phucHanh] === phiHanh) tuongTac = '<span style="color:var(--orange)">Phục Tiết Phi</span>';
     else tuongTac = '<span style="color:var(--text-3)">Bình thường</span>';
     return `<div style="border:1px solid var(--border-2);border-radius:5px;padding:0.4rem;margin-bottom:0.3rem;background:var(--surface-2)">
-      <div style="font-size:0.7rem;color:var(--text-3)">Vị trí H${h.viTri}</div>
-      <div style="font-size:0.72rem">Phi: <span class="${getLucThanClass(h.lucThan)}">${h.lucThan}</span> (${h.diaChi} ${h.hanh}) | Phục: <span class="${getLucThanClass(phuc.lucThan)}">${phuc.lucThan}</span> (${phuc.diaChi} ${phuc.hanh})</div>
-      <div style="font-size:0.67rem;margin-top:0.15rem">${tuongTac}</div>
+      <div style="font-size:0.75rem;color:var(--text-3)">Vị trí H${h.viTri}</div>
+      <div style="font-size:0.8rem">Phi: <span class="${getLucThanClass(h.lucThan)}">${h.lucThan}</span> (${h.diaChi} ${h.hanh}) | Phục: <span class="${getLucThanClass(phuc.lucThan)}">${phuc.lucThan}</span> (${phuc.diaChi} ${phuc.hanh})</div>
+      <div style="font-size:0.75rem;margin-top:0.15rem">${tuongTac}</div>
     </div>`;
   }).join('');
 }
@@ -348,7 +348,7 @@ function renderLucThanPanel() {
   el.innerHTML = Object.entries(lucThanMap).map(([lt, info]) => {
     const haos = grouped[lt] || [];
     const haosStr = haos.length ? haos.map(h => `H${h.viTri}(${h.diaChi})`).join(', ') : '<span style="color:var(--text-3)">Phục Tàng</span>';
-    return `<div style="border-bottom:1px solid var(--border-1);padding:0.2rem 0"><span style="color:${info.color};font-weight:700;font-size:0.72rem">${lt}</span> <span style="color:var(--text-2);font-size:0.66rem">${haosStr}</span><div style="font-size:0.6rem;color:var(--text-3)">${info.y}</div></div>`;
+    return `<div style="border-bottom:1px solid var(--border-1);padding:0.2rem 0"><span style="color:${info.color};font-weight:700;font-size:0.75rem">${lt}</span> <span style="color:var(--text-2);font-size:0.72rem">${haosStr}</span><div style="font-size:0.72rem;color:var(--text-3)">${info.y}</div></div>`;
   }).join('');
 }
 
@@ -362,13 +362,27 @@ function renderThoiDiem(list) {
       </div>`).join('') : '<p style="color:var(--text-3);font-size:0.75rem;padding:0.5rem">Không có gợi ý cụ thể</p>';
 
   const lxmItems = list.filter(td => td.source === 'LXM' || !td.source);
-  const lxmEl = document.getElementById('thoi-diem-lxm');
-  if (lxmEl) lxmEl.innerHTML = makeTdHtml(lxmItems, 'var(--cyan)');
+  const daHacItems = list.filter(td => td.source === 'DaHac');
 
+  const lxmEl = document.getElementById('thoi-diem-lxm');
   const daHacEl = document.getElementById('thoi-diem-dahac');
-  if (daHacEl) {
-    const daHacItems = list.filter(td => td.source === 'DaHac');
-    daHacEl.innerHTML = makeTdHtml(daHacItems, 'var(--gold)');
+  const th1Container = document.getElementById('th1-container');
+  const th2Container = document.getElementById('th2-container');
+  const th1Label = document.getElementById('th1-label');
+  const th2Label = document.getElementById('th2-label');
+
+  if (lxmEl) lxmEl.innerHTML = makeTdHtml(lxmItems, 'var(--cyan)');
+  if (daHacEl) daHacEl.innerHTML = makeTdHtml(daHacItems, 'var(--gold)');
+
+  // Logic hiển thị tiêu đề TH1/TH2
+  const showBoth = lxmItems.length > 0 && daHacItems.length > 0;
+  if (th1Container && th1Label) {
+    th1Container.style.display = lxmItems.length > 0 ? '' : 'none';
+    th1Label.textContent = showBoth ? 'TH1: Lưu Xương Minh' : 'Lưu Xương Minh';
+  }
+  if (th2Container && th2Label) {
+    th2Container.style.display = daHacItems.length > 0 ? '' : 'none';
+    th2Label.textContent = showBoth ? 'TH2: Dã Hạc' : 'Dã Hạc';
   }
 }
 

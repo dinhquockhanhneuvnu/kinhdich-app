@@ -367,7 +367,7 @@
         text-transform: uppercase;
       }
       .author-badge {
-        font-size: 0.65rem;
+        font-size: 0.75rem;
         font-weight: 800;
         color: var(--cyan);
         text-transform: uppercase;
@@ -780,7 +780,7 @@
         transition: color 0.3s;
       }
       .direct-preview-label {
-        font-size: 0.65rem;
+        font-size: 0.75rem;
         color: var(--text-3);
         text-transform: uppercase;
         font-weight: 700;
@@ -924,7 +924,7 @@
       }
       .bang-que th {
         padding: 0 1rem 0.8rem;
-        font-size: 0.72rem;
+        font-size: 0.8rem;
         font-weight: 700;
         color: var(--text-3);
         text-transform: uppercase;
@@ -1014,7 +1014,7 @@
         display: inline-block;
         border-radius: 4px;
         padding: 2px 8px;
-        font-size: 0.68rem;
+        font-size: 0.75rem;
         font-weight: 700;
         margin: 0 3px;
         letter-spacing: 0.04em;
@@ -1097,7 +1097,7 @@
         align-items: center;
         padding: 4px 12px;
         border-radius: 4px;
-        font-size: 0.78rem;
+        font-size: 0.85rem;
         font-weight: 700;
       }
       .vs-cuc-vuong {
@@ -1278,7 +1278,7 @@
         border: 1px solid var(--red);
         padding: 1px 6px;
         border-radius: 4px;
-        font-size: 0.6rem;
+        font-size: 0.75rem;
         font-weight: 700;
         margin-left: 4px;
       }
@@ -1289,7 +1289,7 @@
         border: 1px solid var(--green);
         padding: 1px 6px;
         border-radius: 4px;
-        font-size: 0.6rem;
+        font-size: 0.75rem;
         font-weight: 700;
         margin-left: 4px;
       }
@@ -1861,6 +1861,18 @@
               Click dòng trong Bảng Quẻ để chốt Dụng Thần
             </p>
             <div id="chon-dung-than-buttons" class="chon-dt-buttons"></div>
+            <div class="step-title">📍 Nhập thông tin Quẻ để xuất Prompt</div>
+            <textarea
+              id="ghi-chu"
+              placeholder="Người hỏi (Nam/Nữ): 
+Câu hỏi sự việc: 
+Ghi chú thêm (nếu có):"
+            ></textarea>
+            <div class="action-row">
+              <button onclick="copyFullPromptV3()" class="btn-convert">
+                🚀 Copy Toàn Bộ Data & Xuất Prompt AI
+              </button>
+            </div>
             <div
               id="dung-than-selected"
               class="selected-dt-box"
@@ -1956,6 +1968,7 @@
               <!-- Cột Lưu Xương Minh -->
               <div>
                 <div
+                  id="th1-container"
                   style="
                     display: flex;
                     align-items: center;
@@ -1967,6 +1980,7 @@
                 >
                   <span style="font-size: 1.1rem">📘</span>
                   <span
+                    id="th1-label"
                     style="
                       font-size: 0.78rem;
                       font-weight: 800;
@@ -1974,7 +1988,7 @@
                       text-transform: uppercase;
                       letter-spacing: 0.1em;
                     "
-                    >TH1</span
+                    >TH1: Lưu Xương Minh</span
                   >
                 </div>
                 <div id="thoi-diem-lxm"></div>
@@ -1982,6 +1996,7 @@
               <!-- Cột Dã Hạc -->
               <div>
                 <div
+                  id="th2-container"
                   style="
                     display: flex;
                     align-items: center;
@@ -1993,6 +2008,7 @@
                 >
                   <span style="font-size: 1.1rem">📙</span>
                   <span
+                    id="th2-label"
                     style="
                       font-size: 0.78rem;
                       font-weight: 800;
@@ -2000,7 +2016,7 @@
                       text-transform: uppercase;
                       letter-spacing: 0.1em;
                     "
-                    >TH2</span
+                    >TH2: Dã Hạc</span
                   >
                 </div>
                 <div id="thoi-diem-dahac"></div>
@@ -2066,7 +2082,7 @@
         <div
           style="
             margin-top: 0.4rem;
-            font-size: 0.6rem;
+            font-size: 0.75rem;
             color: var(--text-3);
             opacity: 0.6;
           "
