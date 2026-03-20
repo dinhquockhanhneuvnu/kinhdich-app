@@ -57,7 +57,7 @@ function renderBangQue() {
     if (isThe) classes.push('row-the');
     if (isUng) classes.push('row-ung');
     if (hao.laDong) classes.push('row-dong');
-    if (hao.laTuanKhong) classes.push('row-tuan-khong');
+    if (hao.laTuanKhong && !hao.laAmDong) classes.push('row-tuan-khong'); // Đã Ám Động (Xung Không thành Thực) thì không highlight TK
     if (hao.laNhapMo) classes.push('row-nhap-mo');
     if (i === 3) classes.push('noi-ngoai-border');
     row.className = classes.join(' ');
@@ -73,13 +73,17 @@ function renderBangQue() {
       <span style="color:#aaa">${hao.phucThan.diaChi} ${hao.phucThan.hanh}</span>
     </div>` : '';
 
-    const isGK = hao.laTuanKhong && hao.nhanXetVS && hao.nhanXetVS.some(x=>x.includes("Giả Không")); const tkBadge = hao.laTuanKhong ? (isGK ? ' <span class="badge bdg-tk-g">TKg</span>' : ' <span class="badge bdg-tk">TK</span>') : "";
+    const isGK = hao.laTuanKhong && !hao.laAmDong && hao.nhanXetVS && hao.nhanXetVS.some(x=>x.includes("Giả Không")); const tkBadge = (hao.laTuanKhong && !hao.laAmDong) ? (isGK ? ' <span class="badge bdg-tk-g">TKg</span>' : ' <span class="badge bdg-tk">TK</span>') : "";
     const isVM = hao.laNhapMo && hao.nhanXetVS && hao.nhanXetVS.some(x=>x.includes("Vượng Mộ")); const moBadge = hao.laNhapMo ? (isVM ? ' <span class="badge bdg-mo-v">Mv</span>' : ' <span class="badge bdg-mo">Mộ</span>') : "";
+    // Dã Hạc: Nguyệt Mộ badge (chỉ mô tả, màu tím nhạt)
+    const nmBadge = hao.laNguyetMo ? ' <span class="badge" style="background:#1a1230;color:#a78bfa;border:1px solid #6d28d9;font-size:0.58rem" title="Nguyệt Mộ — chỉ mô tả trạng thái">NM</span>' : "";
+    // Dã Hạc: Hóa Quẩn Chân badge (màu vàng amber)
+    const qcBadge = hao.laQuanChan ? ' <span class="badge" style="background:#1a1500;color:#f59e0b;border:1px solid #b45309;font-size:0.58rem" title="Hóa Quẩn Chân — ứng kỳ trễ">QC</span>' : "";
     const amBadge = hao.laAmDong ? ' <span class="badge bdg-am">ÁĐ</span>' : "";
     const phaBadge = hao.laNhatPha ? ' <span class="badge bdg-pha">Phá</span>' : "";
     const tienBadge = hao.laTienThan ? ' <span class="badge" style="background:#0a1e0a;color:#57c255;border:1px solid #399837">Tiến</span>' : ""; 
     const thoaiBadge = hao.laThoaiThan ? ' <span class="badge" style="background:#1e0808;color:#cc4444;border:1px solid #882222">Thoái</span>' : ""; 
-    const banQuaiHtml = `<div class="${getLucThanClass(hao.lucThan)}" style="font-weight:700;font-size:0.78rem;margin-bottom:2px">${hao.lucThan}</div><div style="font-size:0.73rem">${hao.diaChi} <span style="color:#6b7a94">${hao.hanh}</span>${tkBadge}${moBadge}${amBadge}${phaBadge}</div><div class="hao-symbol" style="margin-top:3px">${renderHaoSymbol(state.haoScores[i])}</div>`;
+    const banQuaiHtml = `<div class="${getLucThanClass(hao.lucThan)}" style="font-weight:700;font-size:0.78rem;margin-bottom:2px">${hao.lucThan}</div><div style="font-size:0.73rem">${hao.diaChi} <span style="color:#6b7a94">${hao.hanh}</span>${tkBadge}${moBadge}${nmBadge}${amBadge}${phaBadge}${qcBadge}</div><div class="hao-symbol" style="margin-top:3px">${renderHaoSymbol(state.haoScores[i])}</div>`;
 
     let bienQuaiHtml = '<div style="color:#2a3a55;font-size:0.78rem">—</div>';
     if (hao.laDong) {
@@ -326,9 +330,33 @@ function renderLucThanPanel() {
 }
 
 function renderThoiDiem(list) {
-  document.getElementById('thoi-diem-ung').innerHTML = list.map(td =>
-    `<div class="thoi-diem-item"><div class="td-ly">📍 ${td.ly_do}</div><div class="td-val">⏰ ${td.thoi_diem}</div><div class="td-note">💡 ${td.ghi_chu}</div></div>`
-  ).join('');
+  const makeTdHtml = (items, color) =>
+    items.map(td =>
+      `<div class="thoi-diem-item" style="border-left:3px solid ${color}">
+        <div class="td-ly">📍 ${td.ly_do}</div>
+        <div class="td-val">⏰ ${td.thoi_diem}</div>
+        <div class="td-note">💡 ${td.ghi_chu}</div>
+      </div>`).join('');
+
+  const lxmItems   = list.filter(td => td.source === 'LXM' || !td.source);
+  const daHacItems = list.filter(td => td.source === 'DaHac');
+
+  const lxmEl   = document.getElementById('thoi-diem-lxm');
+  const daHacEl = document.getElementById('thoi-diem-dahac');
+  const daHacCol = daHacEl ? daHacEl.closest('div[id="thoi-diem-dahac"]')?.parentElement : null;
+
+  if (lxmEl) lxmEl.innerHTML = makeTdHtml(lxmItems, '#38bdf8');
+
+  // Ẩn cột TH2 nếu không có ứng kỳ Dã Hạc nào
+  if (daHacEl) {
+    const wrapper = daHacEl.parentElement;
+    if (daHacItems.length === 0) {
+      wrapper.style.display = 'none';
+    } else {
+      wrapper.style.display = '';
+      daHacEl.innerHTML = makeTdHtml(daHacItems, '#d4a843');
+    }
+  }
 }
 
 function highlightBangQue(haoVaiTro) {

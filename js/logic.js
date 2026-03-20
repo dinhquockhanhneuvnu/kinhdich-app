@@ -58,7 +58,10 @@ function anQue() {
     const lucThan = tinhLucThan(state.cungHanh, dc);
     const haoHanh = DC_HANH[dc];
     const moAddr = NHAP_MO[haoHanh];
-    const nhapMo = (state.chiNgay === moAddr) || (state.chiThang === moAddr);
+    // Dã Hạc: chỉ Nhật Mộ (và Động Mộ/Hóa Mộ) mới là Nhập Mộ thật ảnh hưởng cát hung
+    // Nguyệt Mộ chỉ dùng để mô tả trạng thái, không dùng đoán cát hung
+    const nhapMo = (state.chiNgay === moAddr); // Nhật Mộ
+    const nguyetMo = !nhapMo && (state.chiThang === moAddr); // Nguyệt Mộ (chỉ mô tả)
     let bienDC = null, bienHanh = null, bienLucThan = null, bienScore = null;
     if (state.haoDong.includes(i) && state.chiQue) {
       bienDC = state.chiQue.dia_chi[i];
@@ -71,11 +74,13 @@ function anQue() {
       lucThan, lucThanTen: lucThanArr[i],
       laTuanKhong: state.tuanKhong.includes(dc),
       laNhapMo: nhapMo,
+      laNguyetMo: nguyetMo, // Dã Hạc: Nguyệt Mộ chỉ mô tả trạng thái
       laDong: state.haoDong.includes(i),
       bienDC, bienHanh, bienLucThan, bienScore,
       vuongSuy: null, // Sẽ được tính lại trong Sweep 2-pass
       laTienThan: false,
       laThoaiThan: false,
+      laQuanChan: false, // Hóa Quẩn Chân (Dã Hạc)
     };
   });
 
@@ -124,7 +129,11 @@ function anQue() {
     // NHẬT THẦN
     if (nt === hao.diaChi) { hao.diemVS += 3; hao.nhanXetVS.push('Nhật Kiến (Cực vượng)'); }
     else if (LUC_XUNG[nt] === hao.diaChi) {
-      if (hao.diemVS >= 1 && !hao.laDong) {
+      if (hao.laTuanKhong && !hao.laDong) {
+        // Dã Hạc: "Xung Không thành Thực" — hào Tuần Không bị Nhật xung → Ám Động đặc biệt
+        hao.diemVS += 1.5; hao.nhanXetVS.push('Ám Động (Xung Không thành Thực)');
+        hao.laAmDong = true;
+      } else if (hao.diemVS >= 1 && !hao.laDong) {
         hao.diemVS += 1.5; hao.nhanXetVS.push('Ám Động (Nhật Xung Hào Vượng)');
         hao.laAmDong = true;
       } else {
@@ -141,13 +150,18 @@ function anQue() {
     else if (NGU_HANH_KHAC[nth] === hh) { hao.diemVS -= 2; hao.nhanXetVS.push('Nhật Khắc'); }
 
     // Xử lý TUẦN KHÔNG & NHẬP MỘ sau khi có điểm nền
-    if (hao.laTuanKhong) {
+    if (hao.laTuanKhong && !hao.laAmDong) { // Nếu đã thành Ám Động (Xung Không thành Thực) thì không xét Tuần Không nữa
       if (hao.diemVS < 1) { hao.diemVS -= 2; hao.nhanXetVS.push('Tuần Không (Chân Không - Vô lực)'); }
       else { hao.nhanXetVS.push('Tuần Không (Giả Không - Chờ ứng kỳ)'); }
     }
     if (hao.laNhapMo) {
+      // Dã Hạc: Nhật Mộ mới là Nhập Mộ thật (ảnh hưởng cát hung)
       if (hao.diemVS < 1) { hao.diemVS -= 2; hao.nhanXetVS.push('Nhập Mộ (Suy Mộ - Bế tắc)'); }
       else { hao.nhanXetVS.push('Nhập Mộ (Vượng Mộ - Kho tàng)'); }
+    }
+    if (hao.laNguyetMo) {
+      // Dã Hạc: Nguyệt Mộ chỉ mô tả trạng thái, KHÔNG ảnh hưởng cát hung
+      hao.nhanXetVS.push('Nguyệt Mộ (Mô tả: trạng thái trì trệ, mơ hồ)');
     }
   });
 
@@ -164,7 +178,14 @@ function anQue() {
         hao.laThoaiThan = true;
       } else {
         const bienHanh = DC_HANH[hao.bienDC];
-        if (NGU_HANH_SINH[bienHanh] === hao.hanh) {
+        // Dã Hạc: Hóa Quẩn Chân = hào động hóa ra hào có Lục Hợp với chính nó
+        // Không ảnh hưởng mạnh đến cát hung (Giả Quẩn Chân phổ biến)
+        // nhưng ứng kỳ bị trễ — cần chờ ngày Xung khai Quẩn Chân
+        if (LUC_HOP[hao.bienDC] === hao.diaChi) {
+          hao.laQuanChan = true;
+          hao.nhanXetVS.push(`Hóa Quẩn Chân (${hao.diaChi}↔${hao.bienDC} Lục Hợp — ứng kỳ trễ)`);
+          // Không cộng điểm vì Quẩn Chân làm trói buộc chứ không giúp ích
+        } else if (NGU_HANH_SINH[bienHanh] === hao.hanh) {
           hao.diemVS += 2; hao.nhanXetVS.push(`Hóa Hồi Đầu Sinh (${hao.bienDC} sinh)`);
         } else if (NGU_HANH_KHAC[bienHanh] === hao.hanh) {
           hao.diemVS -= 2; hao.nhanXetVS.push(`Hóa Hồi Đầu Khắc (${hao.bienDC} khắc)`);
@@ -293,10 +314,16 @@ function danhGiaTrangThai(hao) {
       t.includes('Hồi Đầu Khắc') || t.includes('Phản Ngâm') || t.includes('Nguyệt Phá')
     )                                                          // Hưu tù + bị hóa khắc/phá
   );
+
+  // Dã Hạc: Cảnh báo Quẻ Tâm Tính — khi Quan Quỷ trì Thế (hào 5 hoặc hào Thế)
+  // Quẻ có thể phản ánh nội tâm lo lắng của người hỏi, không phải thực tế khách quan
+  const canhBaoTamTinh = (hao.viTri === 5 || hao.vitriThe) && hao.lucThan === 'Quan Quỷ';
+
   return {
     huuTu,
     voLuc,
     huuDung: !voLuc && (hao.laDong || hao.laAmDong),
+    canhBaoTamTinh,
     giaiThich: voLuc
       ? 'Vô lực — hưu tù + bị chế ngự'
       : huuTu
@@ -312,7 +339,7 @@ function duDoanThoiDiem(dt, nguyetKien, nhatThan, tuanKhong, haoVaiTro) {
   const dtVS = dt.vuongSuy || { diem: 0 };
   const isDong = dt.laDong || dt.laAmDong;
 
-  // RULE PRIORITY: 1. Không -> 2. Mộ -> 3. Hợp -> 4. Phá -> 5. Phục -> 6. Động/Tĩnh
+  // RULE PRIORITY: 1. Không -> 2. Mộ -> 3. Hợp -> 4. Phá -> 5. Phục -> 6. Quẩn Chân -> 7. Động/Tĩnh
 
   // 1. TUẦN KHÔNG (Hào vắng mặt)
   if (tuanKhong.includes(dungThanDC)) {
@@ -323,7 +350,8 @@ function duDoanThoiDiem(dt, nguyetKien, nhatThan, tuanKhong, haoVaiTro) {
     goiY.push({
       ly_do: '🕳️ Tuần Không',
       thoi_diem: `Xuất Không: ngày/tháng ${dungThanDC} | Xung Không: ngày/tháng ${LUC_XUNG[dungThanDC]}`,
-      ghi_chu: 'DT vắng mặt tạm thời — sự việc ứng sau khi thoát Không'
+      ghi_chu: 'DT vắng mặt tạm thời — sự việc ứng sau khi thoát Không',
+      source: 'LXM'
     });
   }
 
@@ -333,7 +361,8 @@ function duDoanThoiDiem(dt, nguyetKien, nhatThan, tuanKhong, haoVaiTro) {
     goiY.push({
       ly_do: '🔒 Nhập Mộ',
       thoi_diem: `Xung Mộ: ngày/tháng ${LUC_XUNG[moAddr]} (phá ${moAddr})`,
-      ghi_chu: 'DT bị giam trong Mộ — phải chờ xung khai mộ khố'
+      ghi_chu: 'DT bị giam trong Mộ — phải chờ xung khai mộ khố',
+      source: 'LXM'
     });
   }
 
@@ -346,7 +375,8 @@ function duDoanThoiDiem(dt, nguyetKien, nhatThan, tuanKhong, haoVaiTro) {
     goiY.push({
       ly_do: `🤝 Hợp Bán (${nguon})`,
       thoi_diem: `Xung khai: ngày/tháng ${LUC_XUNG[tac]} (xung ${tac}) hoặc ngày ${LUC_XUNG[dungThanDC]} (xung hào)`,
-      ghi_chu: 'DT bị trói buộc — cần xung phá hợp thần hoặc xung trực tiếp vào hào'
+      ghi_chu: 'DT bị trói buộc — cần xung phá hợp thần hoặc xung trực tiếp vào hào',
+      source: 'LXM'
     });
   }
 
@@ -359,7 +389,8 @@ function duDoanThoiDiem(dt, nguyetKien, nhatThan, tuanKhong, haoVaiTro) {
     goiY.push({
       ly_do: '💥 Nguyệt Phá',
       thoi_diem: `Lâm trị: ngày/tháng ${dungThanDC} | Hợp phá: ngày/tháng ${LUC_HOP[dungThanDC]}`,
-      ghi_chu: 'DT bị tháng xung vỡ — chờ ngày trùng hào hoặc ngày hợp để hàn gắn'
+      ghi_chu: 'DT bị tháng xung vỡ — chờ ngày trùng hào hoặc ngày hợp để hàn gắn',
+      source: 'LXM'
     });
   }
 
@@ -375,34 +406,77 @@ function duDoanThoiDiem(dt, nguyetKien, nhatThan, tuanKhong, haoVaiTro) {
     goiY.push({
       ly_do: '👻 Phục Tàng',
       thoi_diem: `Xung Phi: ngày/tháng ${LUC_XUNG[phiDC]} (xung ${phiDC}) | Lâm Phục: ngày/tháng ${dungThanDC}`,
-      ghi_chu: 'DT ẩn dưới Phi Thần — chờ xung phi lộ phục hoặc ngày Lâm Phục'
+      ghi_chu: 'DT ẩn dưới Phi Thần — chờ xung phi lộ phục hoặc ngày Lâm Phục',
+      source: 'LXM'
     });
   }
 
-  // 6. ĐỘNG / TĨNH (Trạng thái vận động)
-  if (goiY.length === 0) { // Chỉ xét nếu không có bệnh nặng (Không, Mộ, Phá, Hợp)
+  // 6a. HÓA QUẨN CHÂN của chính DT (Dã Hạc: ứng kỳ bị trễ)
+  if (dt.laQuanChan && dt.bienDC) {
+    goiY.push({
+      ly_do: '🔗 Hóa Quẩn Chân (DT)',
+      thoi_diem: `Xung khai Quẩn Chân: ngày/tháng ${LUC_XUNG[dt.bienDC]} (xung ${dt.bienDC})`,
+      ghi_chu: 'DT hóa Quẩn Chân — ứng kỳ bị trễ, phải chờ ngày Xung khai hào biến',
+      source: 'DaHac'
+    });
+  }
+
+  // 6b. NGUYÊN THẦN hóa Quẩn Chân → ứng kỳ DT cũng bị trễ theo (Dã Hạc, ví dụ 1)
+  // Khi NT hóa QC, NT tạm thời bị trói → dù NT vẫn sinh DT nhưng phải chờ NT được giải phóng
+  if (haoVaiTro) {
+    const ntQuanChan = haoVaiTro.filter(h => h.vaiTro === 'Nguyên Thần' && h.laQuanChan && h.bienDC);
+    ntQuanChan.forEach(nt => {
+      goiY.push({
+        ly_do: `🔗 NT H${nt.viTri} Hóa Quẩn Chân`,
+        thoi_diem: `Xung khai QC của NT: ngày/tháng ${LUC_XUNG[nt.bienDC]} (xung ${nt.bienDC})`,
+        ghi_chu: `Nguyên Thần (${nt.diaChi}) hóa Quẩn Chân — DT phải chờ NT được giải phóng mới ứng nghiệm`,
+        source: 'DaHac'
+      });
+    });
+  }
+
+  // 7. ĐỘNG / TĨNH (Trạng thái vận động)
+  if (goiY.filter(g => g.source === 'LXM' || (!g.source && !g.ly_do.includes('Dã Hạc') && !g.ly_do.includes('Quẩn Chân'))).length === 0) {
     if (isDong) {
       goiY.push({
         ly_do: '🔄 Hào Động (Vượng)',
         thoi_diem: `Phùng Hợp: ngày/tháng ${LUC_HOP[dungThanDC]} | Lâm trị: ngày/tháng ${dungThanDC}`,
-        ghi_chu: 'Hào động thì ứng vào ngày Hợp (để kết thúc) hoặc ngày Lâm trị'
+        ghi_chu: 'Hào động thì ứng vào ngày Hợp (để kết thúc) hoặc ngày Lâm trị',
+        source: 'LXM'
       });
+
+      // Dã Hạc (ví dụ 5): DT hóa Tiến Thần → bienDC có thể nhập Mộ
+      // → ứng kỳ tại ngày Mộ khố của bienDC ("thu bảo quản" thành quả)
+      if (dt.laTienThan && dt.bienDC) {
+        const bienHanh = DC_HANH[dt.bienDC];
+        const bienMoAddr = NHAP_MO[bienHanh];
+        if (bienMoAddr) {
+          goiY.push({
+            ly_do: '📈 Tiến Thần Nhập Mộ (Dã Hạc)',
+            thoi_diem: `Ngày/tháng ${bienMoAddr} (${dt.bienDC} nhập Mộ ${bienHanh} tại ${bienMoAddr})`,
+            ghi_chu: `DT hóa Tiến Thần (${dt.diaChi}→${dt.bienDC}) — khi hào biến nhập Mộ là lúc sự việc "thu thành", ứng kỳ kết thúc`,
+            source: 'DaHac'
+          });
+        }
+      }
     } else {
       goiY.push({
         ly_do: '📌 Hào Tĩnh (Vượng)',
         thoi_diem: `Xung khởi: ngày/tháng ${LUC_XUNG[dungThanDC]} | Lâm trị: ngày/tháng ${dungThanDC}`,
-        ghi_chu: 'Hào tĩnh thì ứng vào ngày Xung (để khởi động) hoặc ngày Lâm trị'
+        ghi_chu: 'Hào tĩnh thì ứng vào ngày Xung (để khởi động) hoặc ngày Lâm trị',
+        source: 'LXM'
       });
     }
   }
 
-  // 7. SUY NHƯỢC FALLBACK
+  // Fallback: Suy nhược
   if (dtVS.diem < 1 && !goiY.some(g => g.ly_do.includes('Suy'))) {
     const hanhSinh = nguocSinh(haoHanh);
     goiY.push({
       ly_do: '📉 DT Suy nhược',
       thoi_diem: `Sinh vượng: ngày/tháng hành ${hanhSinh || '?'} | Lâm trị: ngày/tháng ${dungThanDC}`,
-      ghi_chu: 'DT yếu — cần gặp ngày sinh vượng để có lực ứng nghiệm'
+      ghi_chu: 'DT yếu — cần gặp ngày sinh vượng để có lực ứng nghiệm',
+      source: 'LXM'
     });
   }
 

@@ -28,10 +28,11 @@ Hào động là máy phát điện của quẻ, cho thấy diễn biến và xu
 
 ## BƯỚC 4: RÀ SOÁT ĐIỂM MÙ (Tuần Không, Nhập Mộ, Phục Ngâm...)
 Kiểm tra chướng ngại vật - "Tìm Bệnh" của sự việc.
-- **Tuần Không:** Sự vật hiện tại không có thực chất, trạng thái giả tạo, trong lòng bất an, sự việc đình trệ chưa đến lúc ứng nghiệm. Kỵ Thần Tuần Không thì Cát, Dụng Thần Tuần Không thì phải chờ.
-- **Nhập Mộ:** Sự việc bị giam giữ, đóng băng, đình trệ, mất tự do (VD: kẹt vốn, nằm viện, giam giữ).
-- **Tuyệt địa, Hợp bán:** Bị khóa chặt, triệt tiêu sinh khí.
+- **Tuần Không:** Sự vật hiện tại không có thực chất, trạng thái giả tạo, trong lòng bất an, sự việc đình trệ chưa đến lúc ứng nghiệm. Kỵ Thần Tuần Không thì Cát, Dụng Thần Tuần Không thì phải chờ. **Ngoại lệ (Dã Hạc):** Hào Tuần Không bị Nhật xung → "Xung Không thành Thực" → trở thành **Ám Động** có lực ngay, không còn coi là Tuần Không nữa.
+- **Nhập Mộ (Tam Mộ theo Dã Hạc):** Chỉ có **Nhật Mộ, Động Mộ, Hóa Mộ** mới là Nhập Mộ thật — sự việc bị giam giữ, đóng băng, mất tự do. **Nguyệt Mộ không phải Nhập Mộ** — chỉ dùng mô tả trạng thái (VD: bệnh nhân mê man, thần trí mơ hồ).
+- **Huyệt Địa, Hợp bán:** Bị khóa chặt, triệt tiêu sinh khí.
 - Xác định xem Quẻ có lâm Phục Ngâm (đau khổ giậm chân tại chỗ) hay Phản Ngâm (lật lọng, tái diễn thất thường).
+- **Hóa Quẩn Chân (Dã Hạc):** Khi hào động hóa ra hào có Lục Hợp với chính nó (VD: Ngọ động hóa Mùi). KQCH — Quẩn Chân không ảnh hưởng đến **cát hung** (trừ khi là Thật Quẩn Chân), nhưng **làm trễ ứng kỳ** — phải chờ ngày Xung khai hào biến.
 
 ## BƯỚC 5: LẮP GHÉP ĐỂ THỦ TƯỢNG (Dựng Hình Ảnh Hiện Trường)
 Đây là bước biến các con số khô khan thành câu chuyện sinh động (Luận Nghĩa) để người hỏi hình dung được sự việc diễn ra thế nào.
@@ -46,6 +47,7 @@ Lắp ghép 4 lăng kính:
 Dựa trên tất cả các tham số từ Bước 2, Bước 3, và Bước 4.
 - Cộng gộp điểm lực lượng của Dụng Thần (bản thân) + Sự viện trợ của Nguyên Thần - Sự xung phá của Kỵ / Cừu / Tiết Thần.
 - Đưa ra phán quyết cuối cùng: Mưu cầu là Cát (Thành công, thuận lợi), Bình Hòa (Giằng co, chưa rõ thành bại), hay Đại Hung (Thất bại, hung hiểm).
+- **Quẻ Tâm Tính (Dã Hạc):** Khi người hỏi quá lo lắng hoặc hy vọng thái quá, quẻ có thể phản ảnh **tâm lý người hỏi** thay vì thực tế. Dấu hiệu: **Quan Quỷ trì Thế** (app hiển thị cảnh báo). Lúc này: Quan Quỷ = nỗi lo sợ; Tử Tôn = bình an. Nếu Tử Tôn vượng/phát động khắc Quan Quỷ → Đại Cát (thực tế bình an, chỉ là lo thôi).
 
 ## BƯỚC 7: ĐỊNH ỨNG KỲ (Xác Định Thời Gian)
 "Bệnh nào Thuốc nấy". Dựa trên điểm kẹt (Bệnh) tìm ra ở Bước 4 để xác định lúc nào sự việc xảy ra:
