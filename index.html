@@ -1,794 +1,2128 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lục Hào Kinh Dịch — Thần Toán Dịch Lý</title>
-  <meta name="description" content="Công cụ lập quẻ Lục Hào chuyên nghiệp. Tự động tính Lục Thân, Vượng Suy, Nguyên Kỵ Cừu Thần, Thời điểm ứng nghiệm.">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/lunar-javascript/lunar.js"></script>
-<style>
-/* ===================================== */
-/*            RESET & TOKENS             */
-/* ===================================== */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 15px; scroll-behavior: smooth; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lục Hào Kinh Dịch — Thần Toán Dịch Lý</title>
+    <meta
+      name="description"
+      content="Công cụ lập quẻ Lục Hào chuyên nghiệp. Tự động tính Lục Thân, Vượng Suy, Nguyên Kỵ Cừu Thần, Thời điểm ứng nghiệm."
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/lunar-javascript/lunar.js"></script>
+    <style>
+      /* ===================================== */
+      /*            RESET & TOKENS             */
+      /* ===================================== */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        font-size: 15px;
+        scroll-behavior: smooth;
+      }
 
-:root {
-  --bg: #0a0c10;
-  --surface-1: #13161d;
-  --surface-2: #191d27;
-  --surface-3: #1f2430;
-  --border-1: #252a36;
-  --border-2: #343b4d;
-  --border-3: #4a5168;
-  /* Accent */
-  --purple: #8B5CF6;
-  --cyan: #06B6D4;
-  --gold: #D4A843;
-  --rose: #F43F5E;
-  /* Text — high contrast */
-  --text: #EAEEF4;
-  --text-2: #A8B4C6;
-  --text-3: #6B7A92;
-  /* Radius */
-  --r-sm: 8px;
-  --r-md: 12px;
-  --r-lg: 16px;
-}
+      :root {
+        --bg: #0a0c10;
+        --surface-1: #13161d;
+        --surface-2: #191d27;
+        --surface-3: #1f2430;
+        --border-1: #252a36;
+        --border-2: #343b4d;
+        --border-3: #4a5168;
+        /* Accent */
+        --purple: #8b5cf6;
+        --cyan: #06b6d4;
+        --gold: #d4a843;
+        --rose: #f43f5e;
+        /* Text — high contrast */
+        --text: #eaeef4;
+        --text-2: #a8b4c6;
+        --text-3: #6b7a92;
+        /* Radius */
+        --r-sm: 8px;
+        --r-md: 12px;
+        --r-lg: 16px;
+      }
 
-body {
-  font-family: 'Inter', -apple-system, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
 
-/* ===================================== */
-/*          AURORA BACKGROUND            */
-/* ===================================== */
-.aurora {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
-}
-.aurora .blob {
-  position: absolute; border-radius: 50%; filter: blur(150px); opacity: 0.15;
-  animation: drift 40s ease-in-out infinite alternate;
-}
-.aurora .b1 { width: 50vw; height: 50vw; top: -30%; left: -15%; background: var(--purple); }
-.aurora .b2 { width: 40vw; height: 40vw; bottom: -20%; right: -10%; background: var(--cyan); animation-delay: -10s; }
-.aurora .b3 { width: 30vw; height: 30vw; top: 40%; left: 50%; background: var(--gold); opacity: 0.08; animation-delay: -15s; animation-duration: 50s; }
-@keyframes drift {
-  0%   { transform: translate(0,0) scale(1); }
-  33%  { transform: translate(5%,8%) scale(1.08); }
-  66%  { transform: translate(-6%,-4%) scale(0.94); }
-  100% { transform: translate(3%,-6%) scale(1.02); }
-}
+      /* ===================================== */
+      /*          AURORA BACKGROUND            */
+      /* ===================================== */
+      .aurora {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .aurora .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(150px);
+        opacity: 0.15;
+        animation: drift 40s ease-in-out infinite alternate;
+      }
+      .aurora .b1 {
+        width: 50vw;
+        height: 50vw;
+        top: -30%;
+        left: -15%;
+        background: var(--purple);
+      }
+      .aurora .b2 {
+        width: 40vw;
+        height: 40vw;
+        bottom: -20%;
+        right: -10%;
+        background: var(--cyan);
+        animation-delay: -10s;
+      }
+      .aurora .b3 {
+        width: 30vw;
+        height: 30vw;
+        top: 40%;
+        left: 50%;
+        background: var(--gold);
+        opacity: 0.08;
+        animation-delay: -15s;
+        animation-duration: 50s;
+      }
+      @keyframes drift {
+        0% {
+          transform: translate(0, 0) scale(1);
+        }
+        33% {
+          transform: translate(5%, 8%) scale(1.08);
+        }
+        66% {
+          transform: translate(-6%, -4%) scale(0.94);
+        }
+        100% {
+          transform: translate(3%, -6%) scale(1.02);
+        }
+      }
 
+      /* ===================================== */
+      /*              TOPBAR                   */
+      /* ===================================== */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        gap: 2.5rem;
+        padding: 0 4rem;
+        height: 84px;
+        background: rgba(13, 16, 23, 0.7);
+        backdrop-filter: blur(20px) saturate(180%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        cursor: pointer;
+      }
+      .brand-icon {
+        font-size: 2.2rem;
+        line-height: 1;
+        background: linear-gradient(135deg, var(--cyan), var(--purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.4));
+      }
+      .brand h1 {
+        font-family: "Inter", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: #fff;
+        letter-spacing: 0.12em;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        text-transform: uppercase;
+      }
+      .author-badge {
+        font-size: 0.65rem;
+        font-weight: 800;
+        color: var(--cyan);
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        padding: 2px 8px;
+        border-radius: 4px;
+        border: 1px solid rgba(6, 182, 212, 0.3);
+        background: rgba(6, 182, 212, 0.08);
+        margin-top: 2px;
+        width: fit-content;
+      }
 
+      .topbar-pills {
+        display: flex;
+        gap: 1rem;
+        flex: 1;
+        justify-content: center;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 8px 18px;
+        border-radius: 12px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text-2);
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: 0.2s;
+      }
+      .chip:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.1);
+        transform: translateY(-1px);
+      }
+      .chip strong {
+        color: #fff;
+      }
+      .chip.danger {
+        border-color: rgba(244, 63, 94, 0.2);
+        background: rgba(244, 63, 94, 0.05);
+      }
+      .chip.danger strong {
+        color: #fda4af;
+      }
 
-/* ===================================== */
-/*              TOPBAR                   */
-/* ===================================== */
-.topbar {
-  position: sticky; top: 0; z-index: 100;
-  display: flex; align-items: center; gap: 2rem;
-  padding: 0 2.5rem; height: 72px;
-  background: var(--surface-1);
-  border-bottom: 1px solid var(--border-1);
-}
-.brand { display: flex; align-items: center; gap: 0.8rem; }
-.brand-icon { font-size: 2rem; line-height: 1; }
-.brand h1 {
-  font-family: 'Noto Serif SC', serif; font-size: 1.4rem; font-weight: 700;
-  color: #fff;
-}
-.topbar-pills { display: flex; gap: 0.8rem; flex: 1; flex-wrap: wrap; }
-.chip {
-  display: inline-flex; align-items: center; gap: 0.4rem;
-  padding: 6px 16px; border-radius: 100px; font-size: 0.8rem; font-weight: 500; color: var(--text-2);
-  background: var(--surface-2); border: 1px solid var(--border-1);
-}
-.chip strong { color: #fff; margin-left: 2px; }
-.chip.danger strong { color: #fca5a5; }
+      /* Tabs in topbar */
+      .tab-btn {
+        padding: 8px 18px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-family: inherit;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .tab-btn.active-luan {
+        border-color: var(--cyan);
+        background: rgba(6, 182, 212, 0.12);
+        color: #22d3ee;
+        box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+      }
+      .tab-btn.active-tacgia {
+        border-color: var(--gold);
+        background: rgba(212, 168, 67, 0.12);
+        color: #fbbf24;
+        box-shadow: 0 0 20px rgba(212, 168, 67, 0.15);
+      }
+      .tab-btn:not(.active-luan):not(.active-tacgia) {
+        background: transparent;
+        color: var(--text-3);
+        border-color: rgba(255, 255, 255, 0.05);
+      }
+      .tab-btn:hover:not(.active-luan):not(.active-tacgia) {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-2);
+      }
 
-/* ===================================== */
-/*          MAIN SCROLLABLE AREA         */
-/* ===================================== */
-.page {
-  position: relative; z-index: 2;
-  max-width: 1440px; margin: 0 auto;
-  padding: 2rem 2.5rem 5rem;
-  display: flex; flex-direction: column; gap: 2rem;
-}
+      /* ===================================== */
+      /*          MAIN SCROLLABLE AREA         */
+      /* ===================================== */
+      .page {
+        position: relative;
+        z-index: 2;
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 2rem 2.5rem 0;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        min-height: calc(100vh - 84px);
+      }
 
-/* ===================================== */
-/*         SETUP ROW (top strip)         */
-/* ===================================== */
-.setup-strip {
-  display: grid;
-  grid-template-columns: 1fr 1.6fr;
-  gap: 1.5rem;
-}
+      /* ===================================== */
+      /*         SETUP ROW (top strip)         */
+      /* ===================================== */
+      .setup-strip {
+        display: grid;
+        grid-template-columns: 1fr 1.6fr;
+        gap: 1.5rem;
+      }
 
-/* ===================================== */
-/*            GLASS CARD                 */
-/* ===================================== */
-.g {
-  background: var(--surface-1);
-  border: 1px solid var(--border-1);
-  border-radius: var(--r-lg);
-  padding: 1.8rem;
-}
-.g:hover { border-color: var(--border-2); }
+      /* ===================================== */
+      /*            GLASS CARD                 */
+      /* ===================================== */
+      .g {
+        background: var(--surface-1);
+        border: 1px solid var(--border-1);
+        border-radius: var(--r-lg);
+        padding: 1.8rem;
+      }
+      .g:hover {
+        border-color: var(--border-2);
+      }
 
-.g-title {
-  display: flex; align-items: center; gap: 0.7rem;
-  font-size: 0.8rem; font-weight: 700; color: var(--text);
-  text-transform: uppercase; letter-spacing: 0.1em;
-  margin-bottom: 1.4rem;
-}
-.g-title .ico { font-size: 1.2rem; }
+      .g-title {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--text);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 1.4rem;
+      }
+      .g-title .ico {
+        font-size: 1.2rem;
+      }
 
-/* ===================================== */
-/*           FORM CONTROLS               */
-/* ===================================== */
-.form-row { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem; }
-.form-row label { font-size: 0.85rem; color: var(--text-2); min-width: 80px; font-weight: 500; }
-.ctrl {
-  flex: 1; min-width: 0; padding: 0.65rem 0.9rem; font-size: 0.9rem; font-family: inherit;
-  background: var(--bg); color: #fff; border: 1px solid var(--border-2); border-radius: var(--r-sm);
-  transition: border-color 0.2s;
-}
-.ctrl:focus { outline: none; border-color: var(--cyan); }
-.ctrl option { background: #111; }
-.divider { text-align: center; color: var(--text-3); font-size: 0.75rem; margin: 0.6rem 0; font-weight: 500; letter-spacing: 0.05em; }
-.hint { font-size: 0.78rem; color: var(--text-2); line-height: 1.7; margin-bottom: 1rem; }
+      /* ===================================== */
+      /*           FORM CONTROLS               */
+      /* ===================================== */
+      .form-row {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        margin-bottom: 0.3rem;
+      }
+      .form-row label {
+        font-size: 0.85rem;
+        color: var(--text-2);
+        min-width: 80px;
+        font-weight: 500;
+      }
+      .ctrl {
+        flex: 1;
+        min-width: 0;
+        padding: 0.65rem 0.9rem;
+        font-size: 0.9rem;
+        font-family: inherit;
+        background: var(--bg);
+        color: #fff;
+        border: 1px solid var(--border-2);
+        border-radius: var(--r-sm);
+        transition: border-color 0.2s;
+      }
+      .ctrl:focus {
+        outline: none;
+        border-color: var(--cyan);
+      }
+      .ctrl option {
+        background: #111;
+      }
+      .divider {
+        text-align: center;
+        color: var(--text-3);
+        font-size: 0.75rem;
+        margin: 0.6rem 0;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+      }
+      .hint {
+        font-size: 0.78rem;
+        color: var(--text-2);
+        line-height: 1.7;
+        margin-bottom: 1rem;
+      }
 
-/* ===================================== */
-/*              BUTTONS                  */
-/* ===================================== */
-.btn-convert {
-  padding: 0.5rem 1rem; border: 1px solid var(--border-2); border-radius: var(--r-sm);
-  background: var(--surface-2); color: #fff; font-weight: 600; font-size: 0.8rem; cursor: pointer;
-  transition: 0.2s; font-family: inherit;
-}
-.btn-convert:hover { background: var(--surface-3); border-color: var(--border-3); box-shadow: 0 0 15px rgba(255,255,255,0.08); }
+      /* ===================================== */
+      /*              BUTTONS                  */
+      /* ===================================== */
+      .btn-convert {
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--border-2);
+        border-radius: var(--r-sm);
+        background: var(--surface-2);
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: 0.2s;
+        font-family: inherit;
+      }
+      .btn-convert:hover {
+        background: var(--surface-3);
+        border-color: var(--border-3);
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
+      }
 
-.btn-primary {
-  display: block; width: 100%; padding: 1rem; margin-top: 1.2rem;
-  font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
-  color: #fff; border: none; border-radius: var(--r-md); cursor: pointer;
-  background: linear-gradient(135deg, var(--purple), var(--cyan));
-  transition: opacity 0.2s;
-  font-family: inherit;
-}
-.btn-primary:hover { opacity: 0.85; }
-.btn-primary:disabled { background: var(--surface-2); color: var(--text-3); cursor: default; border: 1px solid var(--border-1); }
+      .btn-primary {
+        display: block;
+        width: 100%;
+        padding: 1rem;
+        margin-top: 1.2rem;
+        font-size: 1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #fff;
+        border: none;
+        border-radius: var(--r-md);
+        cursor: pointer;
+        background: linear-gradient(135deg, var(--purple), var(--cyan));
+        transition: opacity 0.2s;
+        font-family: inherit;
+      }
+      .btn-primary:hover {
+        opacity: 0.85;
+      }
+      .btn-primary:disabled {
+        background: var(--surface-2);
+        color: var(--text-3);
+        cursor: default;
+        border: 1px solid var(--border-1);
+      }
 
-/* ===================================== */
-/*           COIN TOSS UI                */
-/* ===================================== */
-.hao-inputs { display: flex; flex-direction: column; gap: 0.5rem; }
-.hao-row {
-  display: grid; grid-template-columns: 80px auto 1fr; align-items: center; gap: 1rem;
-  padding: 0.7rem 1rem; border-radius: var(--r-md);
-  background: var(--bg); border: 1px solid var(--border-1);
-  transition: background 0.2s;
-}
-.hao-row:hover { background: var(--surface-2); }
-.hao-row.selected {
-  background: var(--surface-2); border-color: var(--purple);
-}
-.hao-row > label { font-size: 0.9rem; font-weight: 700; color: var(--text); line-height: 1.3; }
-.hao-row > label small { display: block; font-size: 0.65rem; font-weight: 500; color: var(--cyan); text-transform: uppercase; margin-top: 2px; }
+      /* ===================================== */
+      /*           COIN TOSS UI                */
+      /* ===================================== */
+      .hao-inputs {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .hao-row {
+        display: grid;
+        grid-template-columns: 80px auto 1fr;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.7rem 1rem;
+        border-radius: var(--r-md);
+        background: var(--bg);
+        border: 1px solid var(--border-1);
+        transition: background 0.2s;
+      }
+      .hao-row:hover {
+        background: var(--surface-2);
+      }
+      .hao-row.selected {
+        background: var(--surface-2);
+        border-color: var(--purple);
+      }
+      .hao-row > label {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1.3;
+      }
+      .hao-row > label small {
+        display: block;
+        font-size: 0.65rem;
+        font-weight: 500;
+        color: var(--cyan);
+        text-transform: uppercase;
+        margin-top: 2px;
+      }
 
-.coin-group { display: flex; gap: 0.9rem; }
-.coin {
-  width: 48px; height: 48px; border-radius: 50%; cursor: pointer;
-  background-image: url('matsap.png'); background-size: cover; background-position: center;
-  border: 2px solid var(--border-2);
-  transition: transform 0.3s ease, border-color 0.2s;
-  user-select: none; position: relative;
-}
-.coin::after {
-  content: 'S'; position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%);
-  font-size: 0.6rem; font-weight: 700; color: var(--text-3);
-}
-.coin:hover { transform: scale(1.1); border-color: var(--border-3); }
-.coin.ngua {
-  background-image: url('matngua.png');
-  border-color: var(--gold);
-}
-.coin.ngua::after { content: 'N'; color: var(--gold); }
-.coin:active { transform: scale(0.9); }
-@keyframes coin-flip {
-  0%   { transform: rotateY(0); }
-  50%  { transform: rotateY(180deg); }
-  100% { transform: rotateY(360deg); }
-}
-.coin.flipping { animation: coin-flip 0.5s ease; pointer-events: none; }
+      .coin-group {
+        display: flex;
+        gap: 0.9rem;
+        perspective: 1000px;
+      }
+      .coin {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        cursor: pointer;
+        background-image: url("matsap.png");
+        background-size: cover;
+        background-position: center;
+        border: 2px solid var(--border-2);
+        transition:
+          transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+          border-color 0.2s,
+          box-shadow 0.3s;
+        user-select: none;
+        position: relative;
+        transform-style: preserve-3d;
+      }
+      .coin::after {
+        content: "S";
+        position: absolute;
+        bottom: -18px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.6rem;
+        font-weight: 700;
+        color: var(--text-3);
+      }
+      .coin:hover {
+        transform: scale(1.1);
+        border-color: var(--border-3);
+      }
+      .coin.ngua {
+        background-image: url("matngua.png");
+        border-color: var(--gold);
+      }
+      .coin.ngua::after {
+        content: "N";
+        color: var(--gold);
+      }
+      .coin:active {
+        transform: scale(0.9);
+      }
+      @keyframes coin-flip {
+        0% {
+          transform: rotateY(0) scale(1);
+        }
+        50% {
+          transform: rotateY(180deg) scale(1.15);
+          box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+        }
+        100% {
+          transform: rotateY(360deg) scale(1);
+        }
+      }
+      .coin.flipping {
+        animation: coin-flip 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+      }
 
-.hao-result { display: flex; align-items: center; gap: 0.5rem; justify-content: flex-end; }
-.result-score { font-weight: 700; color: #fff; background: var(--surface-3); padding: 3px 10px; border-radius: 6px; font-size: 0.9rem; border: 1px solid var(--border-2); }
-.result-symbol { font-family: monospace; font-size: 1.1rem; color: #fff; letter-spacing: 2px; }
-.result-label { font-size: 0.78rem; color: var(--text-2); min-width: 70px; text-align: right; font-weight: 500; }
+      .hao-result {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        justify-content: flex-end;
+      }
+      .result-score {
+        font-weight: 700;
+        color: #fff;
+        background: var(--surface-3);
+        padding: 3px 10px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        border: 1px solid var(--border-2);
+      }
+      .result-symbol {
+        font-family: monospace;
+        font-size: 1.1rem;
+        color: #fff;
+        letter-spacing: 2px;
+      }
+      .result-label {
+        font-size: 0.78rem;
+        color: var(--text-2);
+        min-width: 70px;
+        text-align: right;
+        font-weight: 500;
+      }
 
-/* ===================================== */
-/*       RESULTS AREA (hidden first)     */
-/* ===================================== */
-.results-area { display: flex; flex-direction: column; gap: 1.5rem; }
+      /* ===================================== */
+      /*       RESULTS AREA (hidden first)     */
+      /* ===================================== */
+      .results-area {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
 
-/* ===================================== */
-/*             QUẺ TABLE                 */
-/* ===================================== */
-.que-header { text-align: center; margin-bottom: 1.5rem; }
-.que-title {
-  font-family: 'Noto Serif SC', serif; font-size: 1.8rem; font-weight: 700; color: #fff;
-  margin-bottom: 0.5rem;
-}
-.que-meta { display: flex; gap: 2.5rem; justify-content: center; font-size: 1rem; color: var(--text-2); }
-.que-meta strong { color: var(--cyan); font-weight: 700; }
+      /* ===================================== */
+      /*             QUẺ TABLE                 */
+      /* ===================================== */
+      .que-header {
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+      .que-title {
+        font-family: "Noto Serif SC", serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 0.5rem;
+      }
+      .que-meta {
+        display: flex;
+        gap: 2.5rem;
+        justify-content: center;
+        font-size: 1rem;
+        color: var(--text-2);
+      }
+      .que-meta strong {
+        color: var(--cyan);
+        font-weight: 700;
+      }
 
-.bang-que { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
-.bang-que th {
-  padding: 0 1rem 0.8rem; font-size: 0.72rem; font-weight: 700; color: var(--text-3);
-  text-transform: uppercase; letter-spacing: 0.12em; text-align: center;
-  border-bottom: none;
-}
-.bang-que tbody tr {
-  background: var(--bg); border-radius: var(--r-md);
-  transition: background 0.2s;
-  cursor: pointer;
-}
-.bang-que tbody tr:hover { background: var(--surface-2); }
-.bang-que td {
-  padding: 1rem; text-align: center; vertical-align: middle;
-  border-top: 1px solid rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.02);
-}
-.bang-que td:first-child { border-radius: var(--r-md) 0 0 var(--r-md); border-left: 1px solid rgba(255,255,255,0.04); font-weight: 800; font-size: 0.9rem; }
-.bang-que td:last-child  { border-radius: 0 var(--r-md) var(--r-md) 0; border-right: 1px solid rgba(255,255,255,0.04); text-align: left; }
-.bang-que tr.noi-ngoai-border td { border-top: 2px solid rgba(255,255,255,0.1); }
+      .bang-que {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 8px;
+      }
+      .bang-que th {
+        padding: 0 1rem 0.8rem;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--text-3);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        text-align: center;
+        border-bottom: none;
+      }
+      .bang-que tbody tr {
+        background: var(--bg);
+        border-radius: var(--r-md);
+        transition: background 0.2s;
+        cursor: pointer;
+      }
+      .bang-que tbody tr:hover {
+        background: var(--surface-2);
+      }
+      .bang-que td {
+        padding: 1rem;
+        text-align: center;
+        vertical-align: middle;
+        border-top: 1px solid rgba(255, 255, 255, 0.03);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+      }
+      .bang-que td:first-child {
+        border-radius: var(--r-md) 0 0 var(--r-md);
+        border-left: 1px solid rgba(255, 255, 255, 0.04);
+        font-weight: 800;
+        font-size: 0.9rem;
+      }
+      .bang-que td:last-child {
+        border-radius: 0 var(--r-md) var(--r-md) 0;
+        border-right: 1px solid rgba(255, 255, 255, 0.04);
+        text-align: left;
+      }
+      .bang-que tr.noi-ngoai-border td {
+        border-top: 2px solid rgba(255, 255, 255, 0.1);
+      }
 
-/* Table Row Highlights */
-.bang-que tr.row-the td     { background: rgba(212,168,67,0.08); }
-.bang-que tr.row-ung td     { background: rgba(6,182,212,0.08); }
-.bang-que tr.row-dong td    { font-weight: 700; }
-.bang-que tr.row-tuan-khong { opacity: 0.5; }
-.bang-que tr.row-nhap-mo td:first-child { box-shadow: inset 4px 0 0 var(--gold); }
-.bang-que tr.row-dung-than td   { background: rgba(244,63,94,0.12); }
-.bang-que tr.row-nguyen-than td { background: rgba(34,197,94,0.1); }
-.bang-que tr.row-ky-than td     { background: rgba(239,68,68,0.1); }
-.bang-que tr.row-cuu-than td    { background: rgba(245,158,11,0.1); }
+      /* Table Row Highlights */
+      .bang-que tr.row-the td {
+        background: rgba(212, 168, 67, 0.08);
+      }
+      .bang-que tr.row-ung td {
+        background: rgba(6, 182, 212, 0.08);
+      }
+      .bang-que tr.row-dong td {
+        font-weight: 700;
+      }
+      .bang-que tr.row-tuan-khong {
+        opacity: 0.5;
+      }
+      .bang-que tr.row-nhap-mo td:first-child {
+        box-shadow: inset 4px 0 0 var(--gold);
+      }
+      .bang-que tr.row-dung-than td {
+        background: rgba(244, 63, 94, 0.12);
+      }
+      .bang-que tr.row-nguyen-than td {
+        background: rgba(34, 197, 94, 0.1);
+      }
+      .bang-que tr.row-ky-than td {
+        background: rgba(239, 68, 68, 0.1);
+      }
+      .bang-que tr.row-cuu-than td {
+        background: rgba(245, 158, 11, 0.1);
+      }
 
-/* Lục Thần Colors — bright, no glow */
-.lt-tu-ton  { color: #4ade80; font-weight: 700; }
-.lt-the-tai { color: #facc15; font-weight: 700; }
-.lt-quan-quy{ color: #fb7185; font-weight: 700; }
-.lt-phu-mau { color: #38bdf8; font-weight: 700; }
-.lt-huynh-de{ color: #c084fc; font-weight: 700; }
-.hao-symbol { font-family: monospace; font-size: 1.3rem; letter-spacing: 3px; white-space: nowrap; margin-top: 6px; }
+      /* Lục Thần Colors — bright, no glow */
+      .lt-tu-ton {
+        color: #4ade80;
+        font-weight: 700;
+      }
+      .lt-the-tai {
+        color: #facc15;
+        font-weight: 700;
+      }
+      .lt-quan-quy {
+        color: #fb7185;
+        font-weight: 700;
+      }
+      .lt-phu-mau {
+        color: #38bdf8;
+        font-weight: 700;
+      }
+      .lt-huynh-de {
+        color: #c084fc;
+        font-weight: 700;
+      }
+      .hao-symbol {
+        font-family: monospace;
+        font-size: 1.3rem;
+        letter-spacing: 3px;
+        white-space: nowrap;
+        margin-top: 6px;
+      }
 
-/* Badges */
-.badge { display: inline-block; border-radius: 4px; padding: 2px 8px; font-size: 0.68rem; font-weight: 700; margin: 0 3px; letter-spacing: 0.04em; }
-.bdg-the    { background: rgba(212,168,67,0.2);  color: var(--gold); border: 1px solid var(--gold); }
-.bdg-ung    { background: rgba(6,182,212,0.2);   color: var(--cyan); border: 1px solid var(--cyan); }
-.bdg-tk     { background: var(--surface-3); color: var(--text-2); border: 1px solid var(--border-2); }
-.bdg-tk-g   { background: rgba(74,222,128,0.15); color: #86efac; border: 1px solid rgba(74,222,128,0.5); font-style: italic; }
-.bdg-mo     { background: rgba(139,69,19,0.25);  color: #fcd34d; border: 1px solid #b45309; }
-.bdg-mo-v   { background: rgba(74,222,128,0.15); color: #86efac; border: 1px solid rgba(74,222,128,0.5); font-style: italic; }
-.bdg-am     { background: rgba(139,92,246,0.25); color: #e9d5ff; border: 1px solid var(--purple); }
-.bdg-pha    { background: rgba(239,68,68,0.2); color: #fca5a5; border: 1px solid #ef4444; }
-.legend { display: flex; flex-wrap: wrap; gap: 1.2rem; margin-top: 2rem; font-size: 0.85rem; color: var(--text-2); justify-content: center; }
+      /* Badges */
+      .badge {
+        display: inline-block;
+        border-radius: 4px;
+        padding: 2px 8px;
+        font-size: 0.68rem;
+        font-weight: 700;
+        margin: 0 3px;
+        letter-spacing: 0.04em;
+      }
+      .bdg-the {
+        background: rgba(212, 168, 67, 0.2);
+        color: var(--gold);
+        border: 1px solid var(--gold);
+      }
+      .bdg-ung {
+        background: rgba(6, 182, 212, 0.2);
+        color: var(--cyan);
+        border: 1px solid var(--cyan);
+      }
+      .bdg-tk {
+        background: var(--surface-3);
+        color: var(--text-2);
+        border: 1px solid var(--border-2);
+      }
+      .bdg-tk-g {
+        background: rgba(74, 222, 128, 0.15);
+        color: #86efac;
+        border: 1px solid rgba(74, 222, 128, 0.5);
+        font-style: italic;
+      }
+      .bdg-mo {
+        background: rgba(139, 69, 19, 0.25);
+        color: #fcd34d;
+        border: 1px solid #b45309;
+      }
+      .bdg-mo-v {
+        background: rgba(74, 222, 128, 0.15);
+        color: #86efac;
+        border: 1px solid rgba(74, 222, 128, 0.5);
+        font-style: italic;
+      }
+      .bdg-am {
+        background: rgba(139, 92, 246, 0.25);
+        color: #e9d5ff;
+        border: 1px solid var(--purple);
+      }
+      .bdg-pha {
+        background: rgba(239, 68, 68, 0.2);
+        color: #fca5a5;
+        border: 1px solid #ef4444;
+      }
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.2rem;
+        margin-top: 2rem;
+        font-size: 0.85rem;
+        color: var(--text-2);
+        justify-content: center;
+      }
 
-/* Vượng Suy */
-.vuong-suy { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 4px; font-size: 0.78rem; font-weight: 700; }
-.vs-cuc-vuong { background: rgba(249,115,22,0.2); color: #fdba74; border: 1px solid #f97316; }
-.vs-vuong     { background: rgba(34,197,94,0.2);  color: #86efac; border: 1px solid #22c55e; }
-.vs-binh-hoa  { background: var(--surface-3); color: var(--text-2); border: 1px solid var(--border-2); }
-.vs-hoi-suy   { background: rgba(234,179,8,0.2);  color: #fde047; border: 1px solid #eab308; }
-.vs-suy       { background: rgba(239,68,68,0.2);  color: #fca5a5; border: 1px solid #ef4444; }
-.vs-cuc-suy   { background: rgba(185,28,28,0.25); color: #f87171; border: 1px solid #dc2626; }
+      /* Vượng Suy */
+      .vuong-suy {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+      .vs-cuc-vuong {
+        background: rgba(249, 115, 22, 0.2);
+        color: #fdba74;
+        border: 1px solid #f97316;
+      }
+      .vs-vuong {
+        background: rgba(34, 197, 94, 0.2);
+        color: #86efac;
+        border: 1px solid #22c55e;
+      }
+      .vs-binh-hoa {
+        background: var(--surface-3);
+        color: var(--text-2);
+        border: 1px solid var(--border-2);
+      }
+      .vs-hoi-suy {
+        background: rgba(234, 179, 8, 0.2);
+        color: #fde047;
+        border: 1px solid #eab308;
+      }
+      .vs-suy {
+        background: rgba(239, 68, 68, 0.2);
+        color: #fca5a5;
+        border: 1px solid #ef4444;
+      }
+      .vs-cuc-suy {
+        background: rgba(185, 28, 28, 0.25);
+        color: #f87171;
+        border: 1px solid #dc2626;
+      }
 
-/* ===================================== */
-/*          ANALYSIS BENTO GRID          */
-/* ===================================== */
-.bento {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 1.5rem;
-}
-.bento > .g { min-height: 0; }
+      /* ===================================== */
+      /*          ANALYSIS BENTO GRID          */
+      /* ===================================== */
+      .bento {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 1.5rem;
+      }
+      .bento > .g {
+        min-height: 0;
+      }
 
-/* Spans for cards */
-.span-full  { grid-column: span 12; }
-.span-7     { grid-column: span 7; }
-.span-5     { grid-column: span 5; }
-.span-6     { grid-column: span 6; }
-.span-4     { grid-column: span 4; }
-.span-8     { grid-column: span 8; }
+      /* Spans for cards */
+      .span-full {
+        grid-column: span 12;
+      }
+      .span-7 {
+        grid-column: span 7;
+      }
+      .span-5 {
+        grid-column: span 5;
+      }
+      .span-6 {
+        grid-column: span 6;
+      }
+      .span-4 {
+        grid-column: span 4;
+      }
+      .span-8 {
+        grid-column: span 8;
+      }
 
-/* --- Cát Hung Hero --- */
-.hero-cathung {
-  display: flex; align-items: center; justify-content: center; text-align: center;
-  min-height: 160px;
-}
-.cat-hung-result { text-align: center; width: 100%; }
-.cat-hung-result .cat-label {
-  font-size: 2.5rem; font-weight: 800; color: #fff;
-  letter-spacing: 0.03em; margin-bottom: 0.5rem;
-}
-.cat-hung-result.hung .cat-label { color: #fca5a5; }
-.cat-hung-result .cat-note { font-size: 1rem; color: var(--text-2); font-weight: 500; }
+      /* --- Cát Hung Hero --- */
+      .hero-cathung {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        min-height: 160px;
+      }
+      .cat-hung-result {
+        text-align: center;
+        width: 100%;
+      }
+      .cat-hung-result .cat-label {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: 0.03em;
+        margin-bottom: 0.5rem;
+      }
+      .cat-hung-result.hung .cat-label {
+        color: #fca5a5;
+      }
+      .cat-hung-result .cat-note {
+        font-size: 1rem;
+        color: var(--text-2);
+        font-weight: 500;
+      }
 
-/* --- Vuong Suy Bar --- */
-.section-head { font-size: 0.85rem; font-weight: 700; color: #fff; margin-bottom: 1rem; display: flex; align-items: center; gap: 6px; }
-.vuong-suy-bar {
-  background: var(--bg); border-radius: 6px; height: 12px;
-  overflow: hidden; border: 1px solid var(--border-1);
-  margin: 0.8rem 0;
-}
-.bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
-#vuong-suy-text { font-size: 0.95rem; margin-top: 0.8rem; }
-#vuong-suy-detail { list-style: none; font-size: 0.85rem; color: var(--text-2); margin-top: 0.6rem; line-height: 1.8; }
+      /* --- Vuong Suy Bar --- */
+      .section-head {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .vuong-suy-bar {
+        background: var(--bg);
+        border-radius: 6px;
+        height: 12px;
+        overflow: hidden;
+        border: 1px solid var(--border-1);
+        margin: 0.8rem 0;
+      }
+      .bar-fill {
+        height: 100%;
+        border-radius: 4px;
+        transition: width 0.6s ease;
+      }
+      #vuong-suy-text {
+        font-size: 0.95rem;
+        margin-top: 0.8rem;
+      }
+      #vuong-suy-detail {
+        list-style: none;
+        font-size: 0.85rem;
+        color: var(--text-2);
+        margin-top: 0.6rem;
+        line-height: 1.8;
+      }
 
-/* NKC */
-.nkc-item { display: flex; align-items: center; gap: 0.8rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--border-1); font-size: 0.9rem; }
-.nkc-item:last-child { border-bottom: none; }
-.nkc-label { padding: 3px 10px; border-radius: 5px; font-size: 0.72rem; font-weight: 800; }
-.nkc-nguyen { background: rgba(34,197,94,0.15); color: #86efac; border: 1px solid #22c55e; }
-.nkc-ky    { background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid #ef4444; }
-.nkc-cuu   { background: rgba(245,158,11,0.15); color: #fcd34d; border: 1px solid #f59e0b; }
-.nkc-dung  { background: rgba(139,92,246,0.15); color: #e9d5ff; border: 1px solid #c084fc; }
-.nkc-tiet  { background: rgba(238,153,102,0.15); color: #fdba74; border: 1px solid #ee9966; }
+      /* NKC */
+      .nkc-item {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.5rem 0;
+        border-bottom: 1px dashed var(--border-1);
+        font-size: 0.9rem;
+      }
+      .nkc-item:last-child {
+        border-bottom: none;
+      }
+      .nkc-label {
+        padding: 3px 10px;
+        border-radius: 5px;
+        font-size: 0.72rem;
+        font-weight: 800;
+      }
+      .nkc-nguyen {
+        background: rgba(34, 197, 94, 0.15);
+        color: #86efac;
+        border: 1px solid #22c55e;
+      }
+      .nkc-ky {
+        background: rgba(239, 68, 68, 0.15);
+        color: #fca5a5;
+        border: 1px solid #ef4444;
+      }
+      .nkc-cuu {
+        background: rgba(245, 158, 11, 0.15);
+        color: #fcd34d;
+        border: 1px solid #f59e0b;
+      }
+      .nkc-dung {
+        background: rgba(139, 92, 246, 0.15);
+        color: #e9d5ff;
+        border: 1px solid #c084fc;
+      }
+      .nkc-tiet {
+        background: rgba(238, 153, 102, 0.15);
+        color: #fdba74;
+        border: 1px solid #ee9966;
+      }
 
-/* Badges trạng thái Dụng-Kỵ-Nguyên-Cừu */
-.badge-voluc   { display:inline-block; background:rgba(136,0,0,0.3); color:#ff6b6b; border:1px solid #882222; padding:1px 6px; border-radius:4px; font-size:0.6rem; font-weight:700; margin-left:4px; }
-.badge-huudung { display:inline-block; background:rgba(10,30,10,0.3); color:#57c255; border:1px solid #399837; padding:1px 6px; border-radius:4px; font-size:0.6rem; font-weight:700; margin-left:4px; }
+      /* Badges trạng thái Dụng-Kỵ-Nguyên-Cừu */
+      .badge-voluc {
+        display: inline-block;
+        background: rgba(136, 0, 0, 0.3);
+        color: #ff6b6b;
+        border: 1px solid #882222;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.6rem;
+        font-weight: 700;
+        margin-left: 4px;
+      }
+      .badge-huudung {
+        display: inline-block;
+        background: rgba(10, 30, 10, 0.3);
+        color: #57c255;
+        border: 1px solid #399837;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.6rem;
+        font-weight: 700;
+        margin-left: 4px;
+      }
 
-/* Chi tiết phân tích Cát/Hung */
-.cat-hung-chitiet { list-style:none; padding:0; margin-top:0.6rem; text-align:left; max-width:600px; margin-left:auto; margin-right:auto; }
-.cat-hung-chitiet li { padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:0.72rem; color:#8090a8; line-height:1.5; }
-.cat-hung-chitiet li:last-child { border-bottom:none; }
+      /* Chi tiết phân tích Cát/Hung */
+      .cat-hung-chitiet {
+        list-style: none;
+        padding: 0;
+        margin-top: 0.6rem;
+        text-align: left;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .cat-hung-chitiet li {
+        padding: 4px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        font-size: 0.72rem;
+        color: #8090a8;
+        line-height: 1.5;
+      }
+      .cat-hung-chitiet li:last-child {
+        border-bottom: none;
+      }
 
-/* Thủ Tượng */
-.thu-tuong-line { padding:0.5rem 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:0.88rem; color:var(--text-2); line-height:1.7; }
-.thu-tuong-line:last-child { border-bottom:none; }
-.thu-tuong-line:first-child { padding-top:0; }
+      /* Thủ Tượng */
+      .thu-tuong-line {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        font-size: 0.88rem;
+        color: var(--text-2);
+        line-height: 1.7;
+      }
+      .thu-tuong-line:last-child {
+        border-bottom: none;
+      }
+      .thu-tuong-line:first-child {
+        padding-top: 0;
+      }
 
-/* Cảnh báo */
-.canh-bao-item {
-  display: flex; align-items: center; gap: 0.8rem;
-  padding: 1rem 1.2rem; border-radius: var(--r-md); margin-bottom: 0.8rem;
-  font-size: 0.9rem; line-height: 1.5; font-weight: 500;
-  background: rgba(0,0,0,0.3); border: 1px solid var(--border-1);
+      /* Cảnh báo */
+      .canh-bao-item {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 1rem 1.2rem;
+        border-radius: var(--r-md);
+        margin-bottom: 0.8rem;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        font-weight: 500;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--border-1);
+      }
 
-}
+      .canh-bao-item.danger {
+        border-left: 4px solid #ef4444;
+        background: linear-gradient(
+          90deg,
+          rgba(239, 68, 68, 0.08),
+          transparent
+        );
+      }
+      .canh-bao-item.warning {
+        border-left: 4px solid #f59e0b;
+        background: linear-gradient(
+          90deg,
+          rgba(245, 158, 11, 0.08),
+          transparent
+        );
+      }
+      .canh-bao-item.success {
+        border-left: 4px solid #10b981;
+      }
+      .canh-bao-item.info {
+        border-left: 4px solid #3b82f6;
+      }
 
-.canh-bao-item.danger  { border-left: 4px solid #ef4444; background: linear-gradient(90deg, rgba(239,68,68,0.08), transparent); }
-.canh-bao-item.warning { border-left: 4px solid #f59e0b; background: linear-gradient(90deg, rgba(245,158,11,0.08), transparent); }
-.canh-bao-item.success { border-left: 4px solid #10b981; }
-.canh-bao-item.info    { border-left: 4px solid #3b82f6; }
+      /* Thời điểm */
+      .thoi-diem-item {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--border-1);
+        border-radius: var(--r-md);
+        padding: 1rem 1.2rem;
+        margin-bottom: 0.8rem;
+        transition: 0.3s;
+      }
+      .thoi-diem-item:hover {
+        border-color: var(--border-2);
+      }
+      .thoi-diem-item .td-ly {
+        font-size: 0.78rem;
+        color: var(--text-3);
+        font-weight: 600;
+      }
+      .thoi-diem-item .td-val {
+        font-size: 1.1rem;
+        color: #fff;
+        font-weight: 700;
+        margin-top: 0.4rem;
+      }
+      .thoi-diem-item .td-note {
+        font-size: 0.8rem;
+        color: var(--purple);
+        margin-top: 0.3rem;
+        font-style: italic;
+      }
 
-/* Thời điểm */
-.thoi-diem-item {
-  background: rgba(0,0,0,0.3); border: 1px solid var(--border-1); border-radius: var(--r-md);
-  padding: 1rem 1.2rem; margin-bottom: 0.8rem; transition: 0.3s;
-}
-.thoi-diem-item:hover { border-color: var(--border-2); }
-.thoi-diem-item .td-ly { font-size: 0.78rem; color: var(--text-3); font-weight: 600; }
-.thoi-diem-item .td-val { font-size: 1.1rem; color: #fff; font-weight: 700; margin-top: 0.4rem; }
-.thoi-diem-item .td-note { font-size: 0.8rem; color: var(--purple); margin-top: 0.3rem; font-style: italic; }
+      /* Hào Động */
+      .dong-item {
+        padding: 0.6rem 0;
+        border-bottom: 1px solid var(--border-1);
+        font-size: 0.9rem;
+      }
+      .dong-item:last-child {
+        border-bottom: none;
+      }
+      .dong-item .d-head {
+        color: var(--gold);
+        font-weight: 800;
+      }
 
-/* Hào Động */
-.dong-item { padding: 0.6rem 0; border-bottom: 1px solid var(--border-1); font-size: 0.9rem; }
-.dong-item:last-child { border-bottom: none; }
-.dong-item .d-head { color: var(--gold); font-weight: 800; }
+      /* ===================================== */
+      /*    DỤNG THẦN + GHI CHÚ SIDEBAR       */
+      /* ===================================== */
+      .sidebar-strip {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
 
-/* ===================================== */
-/*    DỤNG THẦN + GHI CHÚ SIDEBAR       */
-/* ===================================== */
-.sidebar-strip {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
-}
+      .goi-y-box {
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--border-1);
+        border-radius: var(--r-md);
+        padding: 1rem;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+      }
+      .goi-y-box .lt-name,
+      .goi-y-box .luc-than-name {
+        color: var(--purple);
+        font-weight: 800;
+        text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+      }
+      .selected-dt-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(212, 168, 67, 0.4);
+        border-radius: var(--r-md);
+        padding: 1rem;
+        font-size: 0.9rem;
+        box-shadow: 0 0 20px rgba(212, 168, 67, 0.1);
+      }
+      .selected-dt-box strong {
+        color: var(--gold);
+      }
+      .selected-dt-box button {
+        background: rgba(244, 63, 94, 0.15);
+        color: #fda4af;
+        border: 1px solid rgba(244, 63, 94, 0.4);
+        border-radius: 6px;
+        padding: 4px 10px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 0.8rem;
+        transition: 0.2s;
+      }
+      .selected-dt-box button:hover {
+        background: rgba(244, 63, 94, 0.3);
+      }
 
-.goi-y-box {
-  background: rgba(0,0,0,0.4); border: 1px solid var(--border-1); border-radius: var(--r-md);
-  padding: 1rem; font-size: 0.9rem; margin-bottom: 1rem;
-}
-.goi-y-box .lt-name, .goi-y-box .luc-than-name { color: var(--purple); font-weight: 800; text-shadow: 0 0 10px rgba(139,92,246,0.5); }
-.selected-dt-box {
-  display: flex; justify-content: space-between; align-items: center;
-  background: rgba(0,0,0,0.4); border: 1px solid rgba(212,168,67,0.4); border-radius: var(--r-md);
-  padding: 1rem; font-size: 0.9rem; box-shadow: 0 0 20px rgba(212,168,67,0.1);
-}
-.selected-dt-box strong { color: var(--gold); }
-.selected-dt-box button {
-  background: rgba(244,63,94,0.15); color: #fda4af; border: 1px solid rgba(244,63,94,0.4); border-radius: 6px;
-  padding: 4px 10px; cursor: pointer; font-weight: 700; font-size: 0.8rem; transition: 0.2s;
-}
-.selected-dt-box button:hover { background: rgba(244,63,94,0.3); }
+      .chon-dt-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+      .chon-dt-btn {
+        background: var(--surface-2);
+        border: 1px solid var(--border-1);
+        border-radius: var(--r-sm);
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text);
+        transition: 0.2s;
+        font-family: inherit;
+      }
+      .chon-dt-btn:hover {
+        background: var(--surface-3);
+        border-color: var(--border-3);
+        transform: translateY(-2px);
+      }
+      .chon-dt-btn.active {
+        background: rgba(6, 182, 212, 0.2);
+        border-color: var(--cyan);
+        color: #fff;
+        font-weight: 700;
+        box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+      }
 
-.chon-dt-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
-.chon-dt-btn {
-  background: var(--surface-2); border: 1px solid var(--border-1); border-radius: var(--r-sm);
-  padding: 0.5rem 1rem; cursor: pointer; font-size: 0.85rem; font-weight: 500; color: var(--text);
-  transition: 0.2s; font-family: inherit;
-}
-.chon-dt-btn:hover { background: var(--surface-3); border-color: var(--border-3); transform: translateY(-2px); }
-.chon-dt-btn.active { background: rgba(6,182,212,0.2); border-color: var(--cyan); color: #fff; font-weight: 700; box-shadow: 0 0 15px rgba(6,182,212,0.3); }
+      textarea#ghi-chu {
+        width: 100%;
+        min-height: 100px;
+        resize: vertical;
+        background: rgba(0, 0, 0, 0.4);
+        color: #fff;
+        border: 1px solid var(--border-1);
+        border-radius: var(--r-sm);
+        padding: 0.8rem;
+        font-family: inherit;
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+      textarea#ghi-chu:focus {
+        outline: none;
+        border-color: var(--cyan);
+        box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+      }
 
-textarea#ghi-chu {
-  width: 100%; min-height: 100px; resize: vertical;
-  background: rgba(0,0,0,0.4); color: #fff; border: 1px solid var(--border-1); border-radius: var(--r-sm);
-  padding: 0.8rem; font-family: inherit; font-size: 0.9rem; line-height: 1.6;
-}
-textarea#ghi-chu:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(6,182,212,0.15); }
+      .action-row {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.2rem;
+      }
+      .action-row button {
+        flex: 1;
+        padding: 0.8rem;
+        background: var(--surface-2);
+        color: #fff;
+        font-weight: 700;
+        border: 1px solid var(--border-2);
+        border-radius: var(--r-sm);
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-family: inherit;
+      }
+      .action-row button:hover {
+        background: var(--surface-3);
+        border-color: #fff;
+        box-shadow: 0 5px 20px rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+      }
 
-.action-row { display: flex; gap: 1rem; margin-top: 1.2rem; }
-.action-row button {
-  flex: 1; padding: 0.8rem; background: var(--surface-2); color: #fff; font-weight: 700;
-  border: 1px solid var(--border-2); border-radius: var(--r-sm); font-size: 0.9rem; cursor: pointer;
-  transition: 0.2s; text-transform: uppercase; letter-spacing: 0.06em; font-family: inherit;
-}
-.action-row button:hover { background: var(--surface-3); border-color: #fff; box-shadow: 0 5px 20px rgba(255,255,255,0.1); transform: translateY(-2px); }
+      /* ===================================== */
+      /*            PLACEHOLDER                */
+      /* ===================================== */
+      .center-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 6rem 2rem;
+        gap: 1.5rem;
+      }
+      .center-placeholder .ph-icon {
+        font-size: 8rem;
+        opacity: 0.06;
+        filter: drop-shadow(0 0 40px var(--purple));
+        animation: slow-spin 40s linear infinite;
+      }
+      @keyframes slow-spin {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .center-placeholder .ph-text {
+        font-size: 1rem;
+        color: var(--text-3);
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
 
-/* ===================================== */
-/*            PLACEHOLDER                */
-/* ===================================== */
-.center-placeholder {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 6rem 2rem; gap: 1.5rem;
-}
-.center-placeholder .ph-icon { font-size: 8rem; opacity: 0.06; filter: drop-shadow(0 0 40px var(--purple)); animation: slow-spin 40s linear infinite; }
-@keyframes slow-spin { 100% { transform: rotate(360deg); } }
-.center-placeholder .ph-text { font-size: 1rem; color: var(--text-3); font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+      /* ===================================== */
+      /*            RESPONSIVE                 */
+      /* ===================================== */
+      @media (max-width: 1200px) {
+        .setup-strip {
+          grid-template-columns: 1fr;
+        }
+        .sidebar-strip {
+          grid-template-columns: 1fr;
+        }
+        .bento > * {
+          grid-column: span 12 !important;
+        }
+      }
+      @media (max-width: 768px) {
+        html {
+          font-size: 13px;
+        }
+        .topbar {
+          padding: 0 1rem;
+          gap: 1rem;
+          height: 60px;
+        }
+        .topbar-pills {
+          display: none;
+        }
+        .page {
+          padding: 1rem;
+          gap: 1.2rem;
+        }
+        .g {
+          padding: 1.2rem;
+          border-radius: var(--r-md);
+        }
+        .hao-row {
+          grid-template-columns: 60px auto 1fr;
+          gap: 0.5rem;
+          padding: 0.5rem;
+        }
+        .coin {
+          width: 40px;
+          height: 40px;
+        }
+        .que-title {
+          font-size: 1.3rem;
+        }
+        .aurora .blob {
+          display: none;
+        }
+      }
 
-/* ===================================== */
-/*            RESPONSIVE                 */
-/* ===================================== */
-@media (max-width: 1200px) {
-  .setup-strip { grid-template-columns: 1fr; }
-  .sidebar-strip { grid-template-columns: 1fr; }
-  .bento > * { grid-column: span 12 !important; }
-}
-@media (max-width: 768px) {
-  html { font-size: 13px; }
-  .topbar { padding: 0 1rem; gap: 1rem; height: 60px; }
-  .topbar-pills { display: none; }
-  .page { padding: 1rem; gap: 1.2rem; }
-  .g { padding: 1.2rem; border-radius: var(--r-md); }
-  .hao-row { grid-template-columns: 60px auto 1fr; gap: 0.5rem; padding: 0.5rem; }
-  .coin { width: 40px; height: 40px; }
-  .que-title { font-size: 1.3rem; }
-  .aurora .blob { display: none; }
-}
-
-@media print {
-  body { background: #fff; color: #000; }
-  .aurora, body::after, .topbar { display: none !important; }
-  .page { max-width: 100%; padding: 0; }
-  .g { background: none; border: 1px solid #ddd; box-shadow: none; backdrop-filter: none; }
-  .g::before { display: none; }
-  .bang-que td, .bang-que th { border: 1px solid #ccc; color: #000; background: none !important; }
-  .que-title { color: #000; text-shadow: none; }
-  .vuong-suy, .badge { color: #333; border-color: #999; background: none !important; box-shadow: none !important; text-shadow: none !important; }
-  #step-1, #step-2, #step-4, #step-8, .center-placeholder, .legend { display: none !important; }
-}
-</style>
-</head>
-<body>
-
-<div class="aurora">
-  <div class="blob b1"></div>
-  <div class="blob b2"></div>
-  <div class="blob b3"></div>
-</div>
-
-<!-- ===== TOPBAR ===== -->
-<header class="topbar">
-  <div class="brand">
-    <span class="brand-icon">☯</span>
-    <div style="display:flex; flex-direction:column;">
-      <h1 style="margin-bottom: 2px;">Luận quẻ Kinh dịch</h1>
-      <span style="font-size: 0.7rem; color: var(--text-3); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;">By KhanhDev</span>
+      @media print {
+        body {
+          background: #fff;
+          color: #000;
+        }
+        .aurora,
+        body::after,
+        .topbar {
+          display: none !important;
+        }
+        .page {
+          max-width: 100%;
+          padding: 0;
+        }
+        .g {
+          background: none;
+          border: 1px solid #ddd;
+          box-shadow: none;
+          backdrop-filter: none;
+        }
+        .g::before {
+          display: none;
+        }
+        .bang-que td,
+        .bang-que th {
+          border: 1px solid #ccc;
+          color: #000;
+          background: none !important;
+        }
+        .que-title {
+          color: #000;
+          text-shadow: none;
+        }
+        .vuong-suy,
+        .badge {
+          color: #333;
+          border-color: #999;
+          background: none !important;
+          box-shadow: none !important;
+          text-shadow: none !important;
+        }
+        #step-1,
+        #step-2,
+        #step-4,
+        #step-8,
+        .center-placeholder,
+        .legend {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="aurora">
+      <div class="blob b1"></div>
+      <div class="blob b2"></div>
+      <div class="blob b3"></div>
     </div>
-  </div>
-  <div class="topbar-pills" id="topbar-meta">
-    <div class="chip"><span>Nguyệt Kiến <strong id="nguyet-kien">—</strong></span></div>
-    <div class="chip"><span>Nhật Thần <strong id="nhat-than">—</strong></span></div>
-    <div class="chip danger"><span>Tuần Không <strong id="tuan-khong">—</strong></span></div>
-    <div class="chip"><span>Lục Thần <strong id="luc-than-start">—</strong></span></div>
-  </div>
-  <!-- Tab nav -->
-  <div style="display:flex;gap:0.4rem;margin-left:auto;">
-    <button id="tab-luan-que" onclick="switchTab('luan-que')" style="padding:6px 18px;border-radius:100px;font-size:0.82rem;font-weight:700;cursor:pointer;border:1px solid var(--cyan);background:rgba(6,182,212,0.15);color:#38bdf8;font-family:inherit;transition:0.2s;">&#128302; Luận Quẻ</button>
-    <button id="tab-tac-gia" onclick="switchTab('tac-gia')" style="padding:6px 18px;border-radius:100px;font-size:0.82rem;font-weight:700;cursor:pointer;border:1px solid var(--border-2);background:transparent;color:var(--text-2);font-family:inherit;transition:0.2s;">&#128100; Tác Giả</button>
-  </div>
-</header>
 
-<!-- ===== PAGE ===== -->
-<div class="page" id="page-luan-que">
-
-  <!-- ════════════ SETUP STRIP ════════════ -->
-  <div class="setup-strip">
-
-    <!-- Thời gian -->
-    <div class="g" id="step-1">
-      <div class="g-title"><span class="ico">⏰</span> Thiết Lập Thời Gian</div>
-      <div class="form-row">
-        <label>Dương lịch</label>
-        <input type="date" id="duong-lich" class="ctrl">
-        <button class="btn-convert" onclick="convertToAmLich()">→ Lấy Can Chi</button>
-      </div>
-      <div class="divider">— hoặc nhập thủ công —</div>
-      <div class="form-row">
-        <label>Tháng</label>
-        <select id="thang-can" class="ctrl"></select>
-        <select id="thang-chi" class="ctrl"></select>
-      </div>
-      <div class="form-row">
-        <label>Ngày</label>
-        <select id="ngay-can" class="ctrl"></select>
-        <select id="ngay-chi" class="ctrl"></select>
-      </div>
-    </div>
-
-    <!-- Gieo xu -->
-    <div class="g" id="step-2">
-      <div class="g-title"><span class="ico">🪙</span> Gieo Hào</div>
-      <p class="hint">Click vào đồng xu để lật <strong style="color:var(--gold)">Ngửa</strong> / Sấp. Hào 1 (Sơ) ở dưới cùng, Hào 6 (Thượng) ở trên.</p>
-      <div class="hao-inputs" id="hao-inputs"></div>
-      <button class="btn-primary" onclick="anQue()" id="btn-anque" disabled>🔮 Lên Quẻ</button>
-    </div>
-  </div>
-
-  <!-- ════════════ PLACEHOLDER ════════════ -->
-  <div id="center-placeholder" class="center-placeholder">
-    <div class="ph-icon">☯</div>
-    <div class="ph-text">Nhập thời gian · Gieo xu · Bấm lên quẻ</div>
-  </div>
-
-  <!-- ════════════ RESULTS ════════════ -->
-  <div class="results-area">
-
-    <!-- Bảng Quẻ -->
-    <div class="g" id="step-3" style="display:none; padding: 2.5rem;">
-      <div class="que-header">
-        <div class="que-title">
-          <span id="ban-que-name">—</span>
-          <span style="color:var(--text-3); margin: 0 1rem;">→</span>
-          <span id="chi-que-name">—</span>
-        </div>
-        <div class="que-meta">
-          <span>Cung <strong id="cung-que">—</strong></span>
-          <span>Hành <strong id="hanh-cung">—</strong></span>
+    <!-- ===== TOPBAR ===== -->
+    <header class="topbar">
+      <div class="brand" onclick="switchTab('luan-que')">
+        <span class="brand-icon">☯</span>
+        <div style="display: flex; flex-direction: column">
+          <h1>LẬP QUẺ DỊCH</h1>
+          <div class="author-badge">By KhanhDev</div>
         </div>
       </div>
-      <table class="bang-que" id="bang-que">
-        <thead><tr>
-          <th>Hào</th>
-          <th>Lục Thần</th>
-          <th>Quái Tĩnh</th>
-          <th>Quái Động</th>
-          <th>Thế · Ứng · Phục</th>
-          <th>Vượng Suy</th>
-        </tr></thead>
-        <tbody id="tbody-que"></tbody>
-      </table>
-      <div class="legend">
-        <span><span class="badge bdg-the">Thế</span> Bản thân</span>
-        <span><span class="badge bdg-ung">Ứng</span> Đối tượng</span>
-        <span><span class="badge bdg-tk">TK</span> Tuần Không</span>
-        <span><span class="badge bdg-mo">Mộ</span> Nhập Mộ</span>
-        <span><span class="badge bdg-am">ÁĐ</span> Ám Động</span>
-        <span><span class="badge bdg-tk-g">TKg</span> Giả Không</span>
-        <span><span class="badge bdg-mo-v">Mv</span> Mộ Vượng</span>
-      </div>
-    </div>
-
-    <!-- Dụng Thần + Ghi chú strip -->
-    <div class="sidebar-strip">
-      <div class="g" id="step-4" style="display:none">
-        <div class="g-title"><span class="ico">🎯</span> Tìm Dụng Thần</div>
-        <div class="form-row">
-          <label>Câu hỏi</label>
-          <select id="loai-viec" class="ctrl" onchange="goiYDungThan()">
-            <option value="">— Chọn mục đích —</option>
-            <option value="tai-loc">💰 Tài lộc / Tiền bạc</option>
-            <option value="cong-danh-nam">🏆 Công danh (Nam)</option>
-            <option value="cong-danh-nu">🏆 Công danh (Nữ)</option>
-            <option value="hon-nhan-nam">❤️ Hôn nhân (Nam hỏi)</option>
-            <option value="hon-nhan-nu">❤️ Hôn nhân (Nữ hỏi)</option>
-            <option value="con-cai">👶 Con cái / Thai sản</option>
-            <option value="benh-tat">🏥 Bệnh tật</option>
-            <option value="kien-tung">⚖️ Kiện tụng</option>
-            <option value="van-thu">📄 Văn thư / Thi cử</option>
-            <option value="xuat-hanh">✈️ Xuất hành</option>
-            <option value="tim-nguoi">🔍 Tìm người</option>
-            <option value="nha-cua">🏠 Nhà cửa / BĐS</option>
-          </select>
+      <div class="topbar-pills" id="topbar-meta">
+        <div class="chip">
+          <span>Nguyệt Kiến <strong id="nguyet-kien">—</strong></span>
         </div>
-        <div id="goi-y-dung-than" class="goi-y-box" style="display:none"></div>
-        <p class="hint" style="text-align: center; color: var(--purple); font-weight: 600;">Click dòng trong Bảng Quẻ để chốt Dụng Thần</p>
-        <div id="chon-dung-than-buttons" class="chon-dt-buttons"></div>
-        <div id="dung-than-selected" class="selected-dt-box" style="display:none">
-          <span>Dụng Thần: <strong id="dt-name">—</strong> (<span id="dt-dia-chi">—</span> <span id="dt-hanh">—</span>)</span>
-          <button onclick="resetDungThan()">✕</button>
+        <div class="chip">
+          <span>Nhật Thần <strong id="nhat-than">—</strong></span>
+        </div>
+        <div class="chip danger">
+          <span>Tuần Không <strong id="tuan-khong">—</strong></span>
+        </div>
+        <div class="chip">
+          <span>Lục Thần <strong id="luc-than-start">—</strong></span>
         </div>
       </div>
-
-      <div class="g" id="step-8" style="display:none">
-        <div class="g-title"><span class="ico">✍️</span> Ghi Chú Luận Quẻ</div>
-        <textarea id="ghi-chu" placeholder="Ghi chú diễn giải..."></textarea>
-        <div class="action-row">
-          <button onclick="xuatPrompt()" style="background:var(--purple);color:#fff">📋 Xuất Prompt</button>
-          <button onclick="luuQue()">💾 Lưu Quẻ</button>
-        </div>
+      <!-- Tab nav -->
+      <div style="display: flex; gap: 0.6rem; margin-left: auto">
+        <button
+          id="tab-luan-que"
+          class="tab-btn active-luan"
+          onclick="switchTab('luan-que')"
+        >
+          🔮 Luận Quẻ
+        </button>
+        <button id="tab-tac-gia" class="tab-btn" onclick="switchTab('tac-gia')">
+          👤 Tác Giả
+        </button>
       </div>
-    </div>
+    </header>
 
-    <!-- ════════════ BENTO ANALYSIS ════════════ -->
-    <div class="bento">
-
-      <!-- Cát Hung Hero -->
-      <div class="g span-full hero-cathung" id="step-cat-hung" style="display:none">
-        <div id="cat-hung-result"></div>
-      </div>
-
-      <!-- Vượng Suy -->
-      <div class="g span-7" id="step-5" style="display:none">
-        <div class="g-title"><span class="ico">🌡️</span> Lực Dụng Thần</div>
-        <div class="vuong-suy-bar"><div class="bar-fill" id="vuong-suy-bar"></div></div>
-        <div id="vuong-suy-text"></div>
-        <ul id="vuong-suy-detail"></ul>
-        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px dotted var(--border-1);">
-          <div class="section-head">⚔️ Nguyên — Kỵ — Cừu Thần</div>
-          <div id="nkc-than-list"></div>
-        </div>
-        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px dotted var(--border-1);" id="section-dong-hao">
-          <div class="section-head">💥 Hào Động & Biến Hào</div>
-          <div id="dong-hao-analysis"></div>
-        </div>
-      </div>
-
-      <!-- Cảnh Báo -->
-      <div class="g span-5" id="step-6" style="display:none">
-        <div class="g-title"><span class="ico">⚠️</span> Cảnh Báo</div>
-        <div id="canh-bao-list"></div>
-      </div>
-
-      <!-- Thời điểm — 2 cột LXM vs Dã Hạc -->
-      <div class="g span-full" id="step-7" style="display:none">
-        <div class="g-title"><span class="ico">⏳</span> Ứng Kỳ — So Sánh 2 Phương Pháp</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;">
-          <!-- Cột Lưu Xương Minh -->
-          <div>
-            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.9rem;padding-bottom:0.5rem;border-bottom:2px solid rgba(6,182,212,0.4);">
-              <span style="font-size:1.1rem">📘</span>
-              <span style="font-size:0.78rem;font-weight:800;color:#38bdf8;text-transform:uppercase;letter-spacing:0.1em;">TH1</span>
-            </div>
-            <div id="thoi-diem-lxm"></div>
+    <!-- ===== PAGE ===== -->
+    <div class="page" id="page-luan-que">
+      <!-- ════════════ SETUP STRIP ════════════ -->
+      <div class="setup-strip">
+        <!-- Thời gian -->
+        <div class="g" id="step-1">
+          <div class="g-title">
+            <span class="ico">⏰</span> Thiết Lập Thời Gian
           </div>
-          <!-- Cột Dã Hạc -->
-          <div>
-            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.9rem;padding-bottom:0.5rem;border-bottom:2px solid rgba(212,168,67,0.4);">
-              <span style="font-size:1.1rem">📙</span>
-              <span style="font-size:0.78rem;font-weight:800;color:#d4a843;text-transform:uppercase;letter-spacing:0.1em;">TH2</span>
+          <div class="form-row">
+            <label>Dương lịch</label>
+            <input type="date" id="duong-lich" class="ctrl" />
+            <button class="btn-convert" onclick="convertToAmLich()">
+              → Lấy Can Chi
+            </button>
+          </div>
+          <div class="divider">— hoặc nhập thủ công —</div>
+          <div class="form-row">
+            <label>Tháng</label>
+            <select id="thang-can" class="ctrl"></select>
+            <select id="thang-chi" class="ctrl"></select>
+          </div>
+          <div class="form-row">
+            <label>Ngày</label>
+            <select id="ngay-can" class="ctrl"></select>
+            <select id="ngay-chi" class="ctrl"></select>
+          </div>
+        </div>
+
+        <!-- Gieo xu -->
+        <div class="g" id="step-2">
+          <div class="g-title"><span class="ico">🪙</span> Gieo Hào</div>
+          <p class="hint">
+            Click vào đồng xu để lật
+            <strong style="color: var(--gold)">Ngửa</strong> / Sấp. Hào 1 (Sơ) ở
+            dưới cùng, Hào 6 (Thượng) ở trên.
+          </p>
+          <div class="hao-inputs" id="hao-inputs"></div>
+          <button class="btn-primary" onclick="anQue()" id="btn-anque" disabled>
+            🔮 Lên Quẻ
+          </button>
+        </div>
+      </div>
+
+      <!-- ════════════ PLACEHOLDER ════════════ -->
+      <div id="center-placeholder" class="center-placeholder">
+        <div class="ph-icon">☯</div>
+        <div class="ph-text">Nhập thời gian · Gieo xu · Bấm lên quẻ</div>
+      </div>
+
+      <!-- ════════════ RESULTS ════════════ -->
+      <div class="results-area">
+        <!-- Bảng Quẻ -->
+        <div class="g" id="step-3" style="display: none; padding: 2.5rem">
+          <div class="que-header">
+            <div class="que-title">
+              <span id="ban-que-name">—</span>
+              <span style="color: var(--text-3); margin: 0 1rem">→</span>
+              <span id="chi-que-name">—</span>
             </div>
-            <div id="thoi-diem-dahac"></div>
+            <div class="que-meta">
+              <span>Cung <strong id="cung-que">—</strong></span>
+              <span>Hành <strong id="hanh-cung">—</strong></span>
+            </div>
+          </div>
+          <table class="bang-que" id="bang-que">
+            <thead>
+              <tr>
+                <th style="width: 80px">Hào</th>
+                <th style="width: 70px">Lục Thân</th>
+                <th style="width: 140px">Quẻ Chủ</th>
+                <th style="width: 150px">Vượng Suy & Phục</th>
+                <th style="width: 140px">Quẻ Biến</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-que"></tbody>
+          </table>
+          <div class="legend">
+            <span><span class="badge bdg-the">Thế</span> Bản thân</span>
+            <span><span class="badge bdg-ung">Ứng</span> Đối tượng</span>
+            <span><span class="badge bdg-tk">TK</span> Tuần Không</span>
+            <span><span class="badge bdg-mo">Mộ</span> Nhập Mộ</span>
+            <span><span class="badge bdg-am">ÁĐ</span> Ám Động</span>
+            <span><span class="badge bdg-tk-g">TKg</span> Giả Không</span>
+            <span><span class="badge bdg-mo-v">Mv</span> Mộ Vượng</span>
+          </div>
+        </div>
+
+        <!-- Dụng Thần + Ghi chú strip -->
+        <div class="sidebar-strip">
+          <div class="g" id="step-4" style="display: none">
+            <div class="g-title"><span class="ico">🎯</span> Tìm Dụng Thần</div>
+            <div class="form-row">
+              <label>Câu hỏi</label>
+              <select id="loai-viec" class="ctrl" onchange="goiYDungThan()">
+                <option value="">— Chọn mục đích —</option>
+                <option value="tai-loc">💰 Tài lộc / Tiền bạc</option>
+                <option value="cong-danh-nam">🏆 Công danh (Nam)</option>
+                <option value="cong-danh-nu">🏆 Công danh (Nữ)</option>
+                <option value="hon-nhan-nam">❤️ Hôn nhân (Nam hỏi)</option>
+                <option value="hon-nhan-nu">❤️ Hôn nhân (Nữ hỏi)</option>
+                <option value="con-cai">👶 Con cái / Thai sản</option>
+                <option value="benh-tat">🏥 Bệnh tật</option>
+                <option value="kien-tung">⚖️ Kiện tụng</option>
+                <option value="van-thu">📄 Văn thư / Thi cử</option>
+                <option value="xuat-hanh">✈️ Xuất hành</option>
+                <option value="tim-nguoi">🔍 Tìm người</option>
+                <option value="nha-cua">🏠 Nhà cửa / BĐS</option>
+              </select>
+            </div>
+            <div
+              id="goi-y-dung-than"
+              class="goi-y-box"
+              style="display: none"
+            ></div>
+            <p
+              class="hint"
+              style="text-align: center; color: var(--purple); font-weight: 600"
+            >
+              Click dòng trong Bảng Quẻ để chốt Dụng Thần
+            </p>
+            <div id="chon-dung-than-buttons" class="chon-dt-buttons"></div>
+            <div
+              id="dung-than-selected"
+              class="selected-dt-box"
+              style="display: none"
+            >
+              <span
+                >Dụng Thần: <strong id="dt-name">—</strong> (<span
+                  id="dt-dia-chi"
+                  >—</span
+                >
+                <span id="dt-hanh">—</span>)</span
+              >
+              <button onclick="resetDungThan()">✕</button>
+            </div>
+          </div>
+
+          <div class="g" id="step-8" style="display: none">
+            <div class="g-title">
+              <span class="ico">✍️</span> Ghi Chú Luận Quẻ
+            </div>
+            <textarea
+              id="ghi-chu"
+              placeholder="Ghi chú diễn giải..."
+            ></textarea>
+            <div class="action-row">
+              <button
+                onclick="xuatPrompt()"
+                style="background: var(--purple); color: #fff"
+              >
+                📋 Xuất Prompt
+              </button>
+              <button onclick="luuQue()">💾 Lưu Quẻ</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════════════ BENTO ANALYSIS ════════════ -->
+        <div class="bento">
+          <!-- Cát Hung Hero -->
+          <div
+            class="g span-full hero-cathung"
+            id="step-cat-hung"
+            style="display: none"
+          >
+            <div id="cat-hung-result"></div>
+          </div>
+
+          <!-- Vượng Suy -->
+          <div class="g span-7" id="step-5" style="display: none">
+            <div class="g-title"><span class="ico">🌡️</span> Lực Dụng Thần</div>
+            <div class="vuong-suy-bar">
+              <div class="bar-fill" id="vuong-suy-bar"></div>
+            </div>
+            <div id="vuong-suy-text"></div>
+            <ul id="vuong-suy-detail"></ul>
+            <div
+              style="
+                margin-top: 1.5rem;
+                padding-top: 1rem;
+                border-top: 1px dotted var(--border-1);
+              "
+            >
+              <div class="section-head">⚔️ Nguyên — Kỵ — Cừu Thần</div>
+              <div id="nkc-than-list"></div>
+            </div>
+            <div
+              style="
+                margin-top: 1.5rem;
+                padding-top: 1rem;
+                border-top: 1px dotted var(--border-1);
+              "
+              id="section-dong-hao"
+            >
+              <div class="section-head">💥 Hào Động & Biến Hào</div>
+              <div id="dong-hao-analysis"></div>
+            </div>
+          </div>
+
+          <!-- Cảnh Báo -->
+          <div class="g span-5" id="step-6" style="display: none">
+            <div class="g-title"><span class="ico">⚠️</span> Cảnh Báo</div>
+            <div id="canh-bao-list"></div>
+          </div>
+
+          <!-- Thời điểm — 2 cột LXM vs Dã Hạc -->
+          <div class="g span-full" id="step-7" style="display: none">
+            <div class="g-title">
+              <span class="ico">⏳</span> Ứng Kỳ — So Sánh 2 Phương Pháp
+            </div>
+            <div
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem"
+            >
+              <!-- Cột Lưu Xương Minh -->
+              <div>
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    margin-bottom: 0.9rem;
+                    padding-bottom: 0.5rem;
+                    border-bottom: 2px solid rgba(6, 182, 212, 0.4);
+                  "
+                >
+                  <span style="font-size: 1.1rem">📘</span>
+                  <span
+                    style="
+                      font-size: 0.78rem;
+                      font-weight: 800;
+                      color: #38bdf8;
+                      text-transform: uppercase;
+                      letter-spacing: 0.1em;
+                    "
+                    >TH1</span
+                  >
+                </div>
+                <div id="thoi-diem-lxm"></div>
+              </div>
+              <!-- Cột Dã Hạc -->
+              <div>
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    margin-bottom: 0.9rem;
+                    padding-bottom: 0.5rem;
+                    border-bottom: 2px solid rgba(212, 168, 67, 0.4);
+                  "
+                >
+                  <span style="font-size: 1.1rem">📙</span>
+                  <span
+                    style="
+                      font-size: 0.78rem;
+                      font-weight: 800;
+                      color: #d4a843;
+                      text-transform: uppercase;
+                      letter-spacing: 0.1em;
+                    "
+                    >TH2</span
+                  >
+                </div>
+                <div id="thoi-diem-dahac"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lục Thần -->
+          <div class="g span-6" id="step-luc-than" style="display: none">
+            <div class="g-title">
+              <span class="ico">🌟</span> Lục Thần Toàn Quẻ
+            </div>
+            <div id="luc-than-analysis"></div>
+          </div>
+
+          <!-- Phi Phục -->
+          <div class="g span-full" id="step-phi-phuc" style="display: none">
+            <div class="g-title">
+              <span class="ico">👻</span> Phi Thần — Phục Thần
+            </div>
+            <div id="phi-phuc-analysis"></div>
+          </div>
+
+          <!-- Thủ Tượng — Luận Nghĩa Tự Động -->
+          <div class="g span-full" id="step-thu-tuong" style="display: none">
+            <div class="g-title">
+              <span class="ico">📖</span> Thủ Tượng — Luận Nghĩa Quẻ
+            </div>
+            <div id="thu-tuong-result"></div>
+          </div>
+        </div>
+        <!-- end bento -->
+      </div>
+      <!-- end results-area -->
+
+      <!-- Footer cho trang Luận Quẻ -->
+      <footer
+        style="
+          margin-top: auto;
+          padding: 0.4rem 0;
+          border-top: 1px solid var(--border-1);
+          text-align: center;
+        "
+      >
+        <div
+          style="
+            font-size: 0.75rem;
+            color: var(--text-2);
+            margin-bottom: 0.2rem;
+          "
+        >
+          Thiết kế & Phát triển bởi
+          <strong style="color: #fff">KhanhDev</strong>
+        </div>
+        <div style="font-size: 0.65rem; color: var(--text-3)">
+          Email:
+          <a
+            href="mailto:dinhquockhanh.neu.vnu@gmail.com"
+            style="color: var(--cyan); text-decoration: none"
+            >dinhquockhanh.neu.vnu@gmail.com</a
+          >
+        </div>
+        <div
+          style="
+            margin-top: 0.4rem;
+            font-size: 0.6rem;
+            color: var(--text-3);
+            opacity: 0.6;
+          "
+        >
+          © 2026 LẬP QUẺ DỊCH · v2.0
+        </div>
+      </footer>
+    </div>
+    <!-- end page -->
+
+    <!-- ===== ABOUT PAGE ===== -->
+    <div
+      id="page-tac-gia"
+      style="
+        display: none;
+        position: relative;
+        z-index: 2;
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 2rem 2rem 0;
+        min-height: calc(100vh - 84px);
+        flex-direction: column;
+      "
+    >
+      <!-- Hero card -->
+      <div
+        style="
+          background: var(--surface-1);
+          border: 1px solid var(--border-1);
+          border-radius: 20px;
+          padding: 3rem;
+          text-align: center;
+          margin-bottom: 1.5rem;
+          position: relative;
+          overflow: hidden;
+        "
+      >
+        <div
+          style="
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+              ellipse at 50% 0%,
+              rgba(139, 92, 246, 0.12) 0%,
+              transparent 70%
+            );
+            pointer-events: none;
+          "
+        ></div>
+        <!-- Avatar -->
+        <div
+          style="
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--cyan));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            margin: 0 auto 1.2rem;
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.4);
+          "
+        >
+          👨‍💻
+        </div>
+        <div
+          style="
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 0.02em;
+            margin-bottom: 0.3rem;
+          "
+        >
+          KhanhDev
+        </div>
+        <div
+          style="
+            font-size: 0.95rem;
+            color: var(--text-2);
+            margin-bottom: 1.4rem;
+          "
+        >
+          Lập trình viên · Nghiên cứu Dịch Lý
+        </div>
+        <!-- Email pill -->
+        <a
+          href="mailto:dinhquockhanh.neu.vnu@gmail.com"
+          style="
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 8px 20px;
+            border-radius: 100px;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            color: #e9d5ff;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.2s;
+          "
+          onmouseover="this.style.background = 'rgba(139,92,246,0.3)'"
+          onmouseout="this.style.background = 'rgba(139,92,246,0.15)'"
+        >
+          ✉️ dinhquockhanh.neu.vnu@gmail.com
+        </a>
+      </div>
+
+      <!-- Về dự án -->
+      <div
+        style="
+          background: var(--surface-1);
+          border: 1px solid var(--border-1);
+          border-radius: 16px;
+          padding: 2rem;
+          margin-bottom: 1.5rem;
+        "
+      >
+        <div
+          style="
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--cyan);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 1rem;
+          "
+        >
+          ⚡ Về Dự Án
+        </div>
+        <p
+          style="
+            color: var(--text-2);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 0.8rem;
+          "
+        >
+          <strong style="color: #fff">Lục Hào Kinh Dịch</strong> là công cụ luận
+          quẻ Lục Hào chuyên nghiệp, được xây dựng dựa trên hệ thống lý luận của
+          <strong style="color: var(--cyan)">Lưu Xương Minh</strong> và bổ sung
+          các quy tắc nâng cao từ
+          <strong style="color: var(--gold)">Dã Hạc</strong>.
+        </p>
+        <p style="color: var(--text-2); font-size: 0.95rem; line-height: 1.8">
+          Ứng dụng tự động tính toán Vượng Suy, Nguyên Kỵ Cừu Thần, phân tích
+          Ứng Kỳ theo 2 phương pháp — giúp người học có công cụ đối chiếu và
+          kiểm chứng theo từng trường phái.
+        </p>
+      </div>
+
+      <!-- Tính năng -->
+      <div
+        style="
+          background: var(--surface-1);
+          border: 1px solid var(--border-1);
+          border-radius: 16px;
+          padding: 2rem;
+          margin-bottom: 1.5rem;
+        "
+      >
+        <div
+          style="
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 1rem;
+          "
+        >
+          ✨ Tính Năng Chính
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem">
+          <div
+            style="
+              background: var(--bg);
+              border: 1px solid var(--border-1);
+              border-radius: 10px;
+              padding: 0.9rem 1rem;
+              display: flex;
+              gap: 0.7rem;
+              align-items: flex-start;
+            "
+          >
+            <span style="font-size: 1.3rem; line-height: 1">🎴</span>
+            <div>
+              <div style="font-weight: 700; color: #fff; font-size: 0.88rem">
+                Tự động lên 64 Quẻ
+              </div>
+              <div
+                style="
+                  font-size: 0.75rem;
+                  color: var(--text-3);
+                  margin-top: 2px;
+                "
+              >
+                khớp địa chi, lục thần, thế ứng
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              background: var(--bg);
+              border: 1px solid var(--border-1);
+              border-radius: 10px;
+              padding: 0.9rem 1rem;
+              display: flex;
+              gap: 0.7rem;
+              align-items: flex-start;
+            "
+          >
+            <span style="font-size: 1.3rem; line-height: 1">🌡️</span>
+            <div>
+              <div style="font-weight: 700; color: #fff; font-size: 0.88rem">
+                Tính Vượng Suy
+              </div>
+              <div
+                style="
+                  font-size: 0.75rem;
+                  color: var(--text-3);
+                  margin-top: 2px;
+                "
+              >
+                Nhật/Nguyệt/Hào Động toàn diện
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              background: var(--bg);
+              border: 1px solid var(--border-1);
+              border-radius: 10px;
+              padding: 0.9rem 1rem;
+              display: flex;
+              gap: 0.7rem;
+              align-items: flex-start;
+            "
+          >
+            <span style="font-size: 1.3rem; line-height: 1">⚔️</span>
+            <div>
+              <div style="font-weight: 700; color: #fff; font-size: 0.88rem">
+                Nguyên Kỵ Cừu Thần
+              </div>
+              <div
+                style="
+                  font-size: 0.75rem;
+                  color: var(--text-3);
+                  margin-top: 2px;
+                "
+              >
+                phân loại vai trò từng hào
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              background: var(--bg);
+              border: 1px solid var(--border-1);
+              border-radius: 10px;
+              padding: 0.9rem 1rem;
+              display: flex;
+              gap: 0.7rem;
+              align-items: flex-start;
+            "
+          >
+            <span style="font-size: 1.3rem; line-height: 1">⏳</span>
+            <div>
+              <div style="font-weight: 700; color: #fff; font-size: 0.88rem">
+                Ứng Kỳ TH1 + TH2
+              </div>
+              <div
+                style="
+                  font-size: 0.75rem;
+                  color: var(--text-3);
+                  margin-top: 2px;
+                "
+              >
+                so sánh LXM và Dã Hạc song song
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              background: var(--bg);
+              border: 1px solid var(--border-1);
+              border-radius: 10px;
+              padding: 0.9rem 1rem;
+              display: flex;
+              gap: 0.7rem;
+              align-items: flex-start;
+            "
+          >
+            <span style="font-size: 1.3rem; line-height: 1">👻</span>
+            <div>
+              <div style="font-weight: 700; color: #fff; font-size: 0.88rem">
+                Phục Tàng
+              </div>
+              <div
+                style="
+                  font-size: 0.75rem;
+                  color: var(--text-3);
+                  margin-top: 2px;
+                "
+              >
+                tự động tìm và phân tích phục thần
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              background: var(--bg);
+              border: 1px solid var(--border-1);
+              border-radius: 10px;
+              padding: 0.9rem 1rem;
+              display: flex;
+              gap: 0.7rem;
+              align-items: flex-start;
+            "
+          >
+            <span style="font-size: 1.3rem; line-height: 1">📖</span>
+            <div>
+              <div style="font-weight: 700; color: #fff; font-size: 0.88rem">
+                Thủ Tượng
+              </div>
+              <div
+                style="
+                  font-size: 0.75rem;
+                  color: var(--text-3);
+                  margin-top: 2px;
+                "
+              >
+                tự sinh luận nghĩa theo tượng quẻ
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              background: var(--bg);
+              border: 1px solid var(--border-1);
+              border-radius: 10px;
+              padding: 0.9rem 1rem;
+              display: flex;
+              gap: 0.7rem;
+              align-items: flex-start;
+            "
+          >
+            <span style="font-size: 1.3rem; line-height: 1">🔗</span>
+            <div>
+              <div style="font-weight: 700; color: #fff; font-size: 0.88rem">
+                Hóa Quẩn Chân
+              </div>
+              <div
+                style="
+                  font-size: 0.75rem;
+                  color: var(--text-3);
+                  margin-top: 2px;
+                "
+              >
+                nhận diện ứng kỳ trễ theo Dã Hạc
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              background: var(--bg);
+              border: 1px solid var(--border-1);
+              border-radius: 10px;
+              padding: 0.9rem 1rem;
+              display: flex;
+              gap: 0.7rem;
+              align-items: flex-start;
+            "
+          >
+            <span style="font-size: 1.3rem; line-height: 1">📋</span>
+            <div>
+              <div style="font-weight: 700; color: #fff; font-size: 0.88rem">
+                Xuất Prompt AI
+              </div>
+              <div
+                style="
+                  font-size: 0.75rem;
+                  color: var(--text-3);
+                  margin-top: 2px;
+                "
+              >
+                đưa dữ liệu sang AI để luận giải
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-
-      <!-- Lục Thần -->
-      <div class="g span-6" id="step-luc-than" style="display:none">
-        <div class="g-title"><span class="ico">🌟</span> Lục Thần Toàn Quẻ</div>
-        <div id="luc-than-analysis"></div>
+      <!-- Phiên bản -->
+      <div
+        style="
+          margin-top: auto;
+          text-align: center;
+          color: var(--text-3);
+          font-size: 0.78rem;
+          padding: 1rem 0;
+        "
+      >
+        v2.0 · Tháng 3/2026 · Built with ❤️ by KhanhDev
       </div>
-
-      <!-- Phi Phục -->
-      <div class="g span-full" id="step-phi-phuc" style="display:none">
-        <div class="g-title"><span class="ico">👻</span> Phi Thần — Phục Thần</div>
-        <div id="phi-phuc-analysis"></div>
-      </div>
-
-      <!-- Thủ Tượng — Luận Nghĩa Tự Động -->
-      <div class="g span-full" id="step-thu-tuong" style="display:none">
-        <div class="g-title"><span class="ico">📖</span> Thủ Tượng — Luận Nghĩa Quẻ</div>
-        <div id="thu-tuong-result"></div>
-      </div>
-
-    </div><!-- end bento -->
-  </div><!-- end results-area -->
-
-  <!-- Footer cho trang Luận Quẻ -->
-  <footer style="margin-top: 4rem; padding: 2rem 0; border-top: 1px solid var(--border-1); text-align: center;">
-    <div style="font-size: 0.85rem; color: var(--text-2); margin-bottom: 0.5rem;">
-      Thiết kế & Phát triển bởi <strong style="color: #fff;">KhanhDev</strong>
     </div>
-    <div style="font-size: 0.75rem; color: var(--text-3);">
-      Email: <a href="mailto:dinhquockhanh.neu.vnu@gmail.com" style="color: var(--cyan); text-decoration: none;">dinhquockhanh.neu.vnu@gmail.com</a>
-    </div>
-    <div style="margin-top: 1rem; font-size: 0.7rem; color: var(--text-3); opacity: 0.6;">
-      © 2026 Luận quẻ Kinh dịch · v2.0
-    </div>
-  </footer>
-</div><!-- end page -->
+    <!-- end about page -->
 
-<!-- ===== ABOUT PAGE ===== -->
-<div id="page-tac-gia" style="display:none; position:relative; z-index:2; max-width:860px; margin:4rem auto; padding:0 2rem 5rem;">
+    <script>
+      function switchTab(tab) {
+        const isLuan = tab === "luan-que";
+        document.getElementById("page-luan-que").style.display = isLuan
+          ? ""
+          : "none";
+        document.getElementById("page-tac-gia").style.display = isLuan
+          ? "none"
+          : "";
 
-  <!-- Hero card -->
-  <div style="background:var(--surface-1);border:1px solid var(--border-1);border-radius:20px;padding:3rem;text-align:center;margin-bottom:1.5rem;position:relative;overflow:hidden;">
-    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.12) 0%, transparent 70%);pointer-events:none;"></div>
-    <!-- Avatar -->
-    <div style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:2.4rem;margin:0 auto 1.2rem;box-shadow:0 0 40px rgba(139,92,246,0.4);">👨‍💻</div>
-    <div style="font-size:1.8rem;font-weight:800;color:#fff;letter-spacing:0.02em;margin-bottom:0.3rem;">KhanhDev</div>
-    <div style="font-size:0.95rem;color:var(--text-2);margin-bottom:1.4rem;">Lập trình viên · Nghiên cứu Dịch Lý</div>
-    <!-- Email pill -->
-    <a href="mailto:dinhquockhanh.neu.vnu@gmail.com" style="display:inline-flex;align-items:center;gap:0.5rem;padding:8px 20px;border-radius:100px;background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.5);color:#e9d5ff;font-size:0.88rem;font-weight:600;text-decoration:none;transition:0.2s;" onmouseover="this.style.background='rgba(139,92,246,0.3)'" onmouseout="this.style.background='rgba(139,92,246,0.15)'">
-      ✉️ dinhquockhanh.neu.vnu@gmail.com
-    </a>
-  </div>
+        const btnLuan = document.getElementById("tab-luan-que");
+        const btnTac = document.getElementById("tab-tac-gia");
 
-  <!-- Về dự án -->
-  <div style="background:var(--surface-1);border:1px solid var(--border-1);border-radius:16px;padding:2rem;margin-bottom:1.5rem;">
-    <div style="font-size:0.75rem;font-weight:800;color:var(--cyan);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:1rem;">⚡ Về Dự Án</div>
-    <p style="color:var(--text-2);font-size:0.95rem;line-height:1.8;margin-bottom:0.8rem;">
-      <strong style="color:#fff">Lục Hào Kinh Dịch</strong> là công cụ luận quẻ Lục Hào chuyên nghiệp, được xây dựng dựa trên hệ thống lý luận của
-      <strong style="color:var(--cyan)">Lưu Xương Minh</strong> và bổ sung các quy tắc nâng cao từ <strong style="color:var(--gold)">Dã Hạc</strong>.
-    </p>
-    <p style="color:var(--text-2);font-size:0.95rem;line-height:1.8;">
-      Ứng dụng tự động tính toán Vượng Suy, Nguyên Kỵ Cừu Thần, phân tích Ứng Kỳ theo 2 phương pháp — giúp người học có công cụ đối chiếu và kiểm chứng theo từng trường phái.
-    </p>
-  </div>
+        if (isLuan) {
+          btnLuan.classList.add("active-luan");
+          btnTac.classList.remove("active-tacgia");
+        } else {
+          btnLuan.classList.remove("active-luan");
+          btnTac.classList.add("active-tacgia");
+        }
+      }
+    </script>
 
-  <!-- Tính năng -->
-  <div style="background:var(--surface-1);border:1px solid var(--border-1);border-radius:16px;padding:2rem;margin-bottom:1.5rem;">
-    <div style="font-size:0.75rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:1rem;">✨ Tính Năng Chính</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;">
-      <div style="background:var(--bg);border:1px solid var(--border-1);border-radius:10px;padding:0.9rem 1rem;display:flex;gap:0.7rem;align-items:flex-start;"><span style="font-size:1.3rem;line-height:1">🎴</span><div><div style="font-weight:700;color:#fff;font-size:0.88rem">Tự động lên 64 Quẻ</div><div style="font-size:0.75rem;color:var(--text-3);margin-top:2px">khớp địa chi, lục thần, thế ứng</div></div></div>
-      <div style="background:var(--bg);border:1px solid var(--border-1);border-radius:10px;padding:0.9rem 1rem;display:flex;gap:0.7rem;align-items:flex-start;"><span style="font-size:1.3rem;line-height:1">🌡️</span><div><div style="font-weight:700;color:#fff;font-size:0.88rem">Tính Vượng Suy</div><div style="font-size:0.75rem;color:var(--text-3);margin-top:2px">Nhật/Nguyệt/Hào Động toàn diện</div></div></div>
-      <div style="background:var(--bg);border:1px solid var(--border-1);border-radius:10px;padding:0.9rem 1rem;display:flex;gap:0.7rem;align-items:flex-start;"><span style="font-size:1.3rem;line-height:1">⚔️</span><div><div style="font-weight:700;color:#fff;font-size:0.88rem">Nguyên Kỵ Cừu Thần</div><div style="font-size:0.75rem;color:var(--text-3);margin-top:2px">phân loại vai trò từng hào</div></div></div>
-      <div style="background:var(--bg);border:1px solid var(--border-1);border-radius:10px;padding:0.9rem 1rem;display:flex;gap:0.7rem;align-items:flex-start;"><span style="font-size:1.3rem;line-height:1">⏳</span><div><div style="font-weight:700;color:#fff;font-size:0.88rem">Ứng Kỳ TH1 + TH2</div><div style="font-size:0.75rem;color:var(--text-3);margin-top:2px">so sánh LXM và Dã Hạc song song</div></div></div>
-      <div style="background:var(--bg);border:1px solid var(--border-1);border-radius:10px;padding:0.9rem 1rem;display:flex;gap:0.7rem;align-items:flex-start;"><span style="font-size:1.3rem;line-height:1">👻</span><div><div style="font-weight:700;color:#fff;font-size:0.88rem">Phục Tàng</div><div style="font-size:0.75rem;color:var(--text-3);margin-top:2px">tự động tìm và phân tích phục thần</div></div></div>
-      <div style="background:var(--bg);border:1px solid var(--border-1);border-radius:10px;padding:0.9rem 1rem;display:flex;gap:0.7rem;align-items:flex-start;"><span style="font-size:1.3rem;line-height:1">📖</span><div><div style="font-weight:700;color:#fff;font-size:0.88rem">Thủ Tượng</div><div style="font-size:0.75rem;color:var(--text-3);margin-top:2px">tự sinh luận nghĩa theo tượng quẻ</div></div></div>
-      <div style="background:var(--bg);border:1px solid var(--border-1);border-radius:10px;padding:0.9rem 1rem;display:flex;gap:0.7rem;align-items:flex-start;"><span style="font-size:1.3rem;line-height:1">🔗</span><div><div style="font-weight:700;color:#fff;font-size:0.88rem">Hóa Quẩn Chân</div><div style="font-size:0.75rem;color:var(--text-3);margin-top:2px">nhận diện ứng kỳ trễ theo Dã Hạc</div></div></div>
-      <div style="background:var(--bg);border:1px solid var(--border-1);border-radius:10px;padding:0.9rem 1rem;display:flex;gap:0.7rem;align-items:flex-start;"><span style="font-size:1.3rem;line-height:1">📋</span><div><div style="font-weight:700;color:#fff;font-size:0.88rem">Xuất Prompt AI</div><div style="font-size:0.75rem;color:var(--text-3);margin-top:2px">đưa dữ liệu sang AI để luận giải</div></div></div>
-    </div>
-  </div>
-
-  <!-- Phiên bản -->
-  <div style="text-align:center;color:var(--text-3);font-size:0.78rem;padding-top:1rem;">
-    v2.0 · Tháng 3/2026 · Built with ❤️ by KhanhDev
-  </div>
-
-</div><!-- end about page -->
-
-<script>
-function switchTab(tab) {
-  const isLuan = tab === 'luan-que';
-  document.getElementById('page-luan-que').style.display   = isLuan ? '' : 'none';
-  document.getElementById('page-tac-gia').style.display    = isLuan ? 'none' : '';
-  // Style active tab
-  const btnLuan = document.getElementById('tab-luan-que');
-  const btnTac  = document.getElementById('tab-tac-gia');
-  btnLuan.style.background    = isLuan ? 'rgba(6,182,212,0.15)' : 'transparent';
-  btnLuan.style.borderColor   = isLuan ? 'var(--cyan)'   : 'var(--border-2)';
-  btnLuan.style.color         = isLuan ? '#38bdf8'        : 'var(--text-2)';
-  btnTac.style.background     = isLuan ? 'transparent'   : 'rgba(212,168,67,0.15)';
-  btnTac.style.borderColor    = isLuan ? 'var(--border-2)': 'var(--gold)';
-  btnTac.style.color          = isLuan ? 'var(--text-2)'  : 'var(--gold)';
-}
-</script>
-
-<script src="data.js"></script>
-<script src="js/state.js"></script>
-<script src="js/logic.js"></script>
-<script src="js/thuTuong.js"></script>
-<script src="js/render.js"></script>
-<script src="app.js"></script>
-</body>
+    <script src="data.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/logic.js"></script>
+    <script src="js/thuTuong.js"></script>
+    <script src="js/render.js"></script>
+    <script src="app.js"></script>
+  </body>
 </html>

@@ -93,7 +93,7 @@ function renderBangQue() {
     const vsDetailHtml = hao.vuongSuy.nhanXet.length > 0 ? `<ul style="list-style:none;padding:0;margin-top:3px;text-align:left">${hao.vuongSuy.nhanXet.map(x=>`<li style="font-size:0.62rem;color:#6b7a94;padding:1px 0">• ${x}</li>`).join('')}</ul>` : '';
     const vsHtml = `<span class="vuong-suy ${hao.vuongSuy.cssClass}">${hao.vuongSuy.mucDo} <span style="opacity:0.6">(${hao.vuongSuy.diem}đ)</span></span>${vsDetailHtml}`;
 
-    row.innerHTML = `<td style="font-weight:700;color:#4a5a70;font-size:0.75rem">H${hao.viTri}</td><td style="font-size:0.7rem;color:#6b7a94">${hao.lucThanTen}</td><td>${banQuaiHtml}</td><td>${bienQuaiHtml}</td><td style="text-align:center">${theUngHtml}${phucThanHtml}</td><td style="vertical-align:top;text-align:left;padding:0.3rem">${vsHtml}</td>`;
+    row.innerHTML = `<td style="font-weight:700;color:#4a5a70;font-size:0.75rem">H${hao.viTri} ${theUngHtml}</td><td style="font-size:0.7rem;color:#6b7a94">${hao.lucThanTen}</td><td>${banQuaiHtml}</td><td style="vertical-align:top;text-align:left;padding:0.3rem">${vsHtml}${phucThanHtml}</td><td>${bienQuaiHtml}</td>`;
     row.style.cursor = 'pointer';
     row.onclick = () => chonDungThan(i);
     tbody.appendChild(row);

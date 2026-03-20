@@ -34,7 +34,7 @@ function toggleCoin(hao, idx, el) {
 
   // Flip animation
   el.classList.add('flipping');
-  setTimeout(() => el.classList.remove('flipping'), 300);
+  setTimeout(() => el.classList.remove('flipping'), 600);
 
   // Update visual
   if (next === 3) {
