@@ -9,11 +9,25 @@ function renderHaoInputs() {
 
     html += `<div class="hao-row selected" id="hao-row-${h}">
       <label>Hào ${h}<br><small>(${label})</small></label>
-      <div class="coin-group">
+      
+      <div class="coin-group" id="group-coin-${h}">
         <div class="coin" id="coin-${h}-0" onclick="toggleCoin(${h},0,this)" title="Click để lật xu"></div>
         <div class="coin" id="coin-${h}-1" onclick="toggleCoin(${h},1,this)" title="Click để lật xu"></div>
         <div class="coin" id="coin-${h}-2" onclick="toggleCoin(${h},2,this)" title="Click để lật xu"></div>
       </div>
+
+      <div class="direct-group" id="group-direct-${h}" style="display:none; flex:1; align-items:center; gap:1.2rem;">
+         <label style="cursor:pointer; display:flex; align-items:center; gap:0.3rem">
+            <input type="radio" name="am_duong_${h}" id="rad-am-${h}" value="am" checked onchange="updateDirect(${h})"> Âm
+         </label>
+         <label style="cursor:pointer; display:flex; align-items:center; gap:0.3rem">
+            <input type="radio" name="am_duong_${h}" id="rad-duong-${h}" value="duong" onchange="updateDirect(${h})"> Dương
+         </label>
+         <label style="cursor:pointer; display:flex; align-items:center; gap:0.3rem; margin-left:auto; color:var(--text); font-weight:700">
+            <input type="checkbox" id="chk-dong-${h}" checked onchange="updateDirect(${h})"> Động
+         </label>
+      </div>
+
       <div class="hao-result" id="result-${h}">
         <span class="result-score">${total}</span>
         <span class="result-symbol">${info.symbol}</span>
@@ -94,7 +108,15 @@ function renderBangQue() {
     const vsDetailHtml = hao.vuongSuy.nhanXet.length > 0 ? `<ul style="list-style:none;padding:0;margin-top:3px;text-align:left">${hao.vuongSuy.nhanXet.map(x=>`<li style="font-size:0.62rem;color:var(--text-3);padding:1px 0">• ${x}</li>`).join('')}</ul>` : '';
     const vsHtml = `<span class="vuong-suy ${hao.vuongSuy.cssClass}">${hao.vuongSuy.mucDo} <span style="opacity:0.6">(${hao.vuongSuy.diem}đ)</span></span>${vsDetailHtml}`;
 
-    row.innerHTML = `<td style="font-weight:700;color:var(--text-3);font-size:0.75rem">H${hao.viTri} ${theUngHtml}</td><td style="font-size:0.7rem;color:var(--text-3)">${hao.lucThanTen}</td><td>${banQuaiHtml}</td><td style="vertical-align:top;text-align:left;padding:0.3rem 0.6rem">${vsHtml}</td><td>${bienQuaiHtml}</td>`;
+    // Cột Động (X)
+    let dongCellHtml = '';
+    if (hao.laDong) {
+      dongCellHtml = '<span style="font-size:1.1rem;font-weight:900;color:var(--gold)">✕</span>';
+    } else if (hao.laAmDong) {
+      dongCellHtml = '<span style="font-size:0.7rem;font-weight:700;color:var(--purple)">ÁĐ</span>';
+    }
+
+    row.innerHTML = `<td style="font-weight:700;color:var(--text-3);font-size:0.75rem">H${hao.viTri} ${theUngHtml}</td><td style="font-size:0.7rem;color:var(--text-3)">${hao.lucThanTen}</td><td>${banQuaiHtml}</td><td style="text-align:center">${dongCellHtml}</td><td style="vertical-align:top;text-align:left;padding:0.3rem 0.6rem">${vsHtml}</td><td>${bienQuaiHtml}</td>`;
     row.style.cursor = 'pointer';
     row.onclick = () => chonDungThan(i);
     tbody.appendChild(row);

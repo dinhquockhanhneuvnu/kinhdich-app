@@ -63,6 +63,89 @@ function toggleCoin(hao, idx, el) {
   } else {
     row.classList.remove('selected');
   }
+
+  // Sync back to Direct Input UI
+  const radAm = document.getElementById(`rad-am-${hao}`);
+  const radDuong = document.getElementById(`rad-duong-${hao}`);
+  const chkDong = document.getElementById(`chk-dong-${hao}`);
+  if (radAm && radDuong && chkDong) {
+    if (total === 6) { radAm.checked = true; chkDong.checked = true; }
+    else if (total === 8) { radAm.checked = true; chkDong.checked = false; }
+    else if (total === 7) { radDuong.checked = true; chkDong.checked = false; }
+    else if (total === 9) { radDuong.checked = true; chkDong.checked = true; }
+  }
+}
+
+// === DIRECT INPUT METHOD ===
+function toggleInputMethod() {
+  const methodOptions = document.getElementsByName('input_method');
+  let isDirect = false;
+  for (let r of methodOptions) {
+    if (r.checked && r.value === 'direct') {
+      isDirect = true;
+      break;
+    }
+  }
+  
+  document.getElementById('hint-coin').style.display = isDirect ? 'none' : 'block';
+  document.getElementById('hint-direct').style.display = isDirect ? 'block' : 'none';
+  
+  for (let h = 1; h <= 6; h++) {
+    const cg = document.getElementById(`group-coin-${h}`);
+    const dg = document.getElementById(`group-direct-${h}`);
+    if (cg) cg.style.display = isDirect ? 'none' : 'flex';
+    if (dg) dg.style.display = isDirect ? 'flex' : 'none';
+  }
+}
+
+function updateDirect(hao) {
+  const amRad = document.getElementById(`rad-am-${hao}`);
+  const dongChk = document.getElementById(`chk-dong-${hao}`);
+  if (!amRad || !dongChk) return;
+  
+  const isAm = amRad.checked;
+  const isDong = dongChk.checked;
+  
+  let total;
+  if (isAm && isDong) total = 6;      // Lão Âm (3 sấp) -> [2, 2, 2]
+  else if (isAm && !isDong) total = 8; // Thiếu Âm (2 ngửa 1 sấp) -> [3, 3, 2]
+  else if (!isAm && !isDong) total = 7;// Thiếu Dương (1 ngửa 2 sấp) -> [3, 2, 2]
+  else if (!isAm && isDong) total = 9; // Lão Dương (3 ngửa) -> [3, 3, 3]
+
+  // Update coinStates for backward compatibility
+  if (total === 6) coinStates[hao] = [2, 2, 2];
+  else if (total === 8) coinStates[hao] = [3, 3, 2];
+  else if (total === 7) coinStates[hao] = [3, 2, 2];
+  else if (total === 9) coinStates[hao] = [3, 3, 3];
+
+  // Update visual coins
+  for (let i = 0; i < 3; i++) {
+    const el = document.getElementById(`coin-${hao}-${i}`);
+    if (!el) continue;
+    if (coinStates[hao][i] === 3) el.classList.add('ngua');
+    else el.classList.remove('ngua');
+  }
+
+  // Save new score
+  state.haoScores[hao - 1] = total;
+  
+  // Update result label
+  const info = getScoreInfo(total);
+  const resultEl = document.getElementById(`result-${hao}`);
+  if (resultEl) {
+    resultEl.innerHTML = `
+      <span class="result-score">${total}</span>
+      <span class="result-symbol">${info.symbol}</span>
+      <span class="result-label">${info.label}</span>
+    `;
+  }
+
+  // Highlight row
+  const row = document.getElementById(`hao-row-${hao}`);
+  if (row) {
+    if (total === 6 || total === 9) row.classList.add('selected');
+    else row.classList.remove('selected');
+  }
 }
 
 function convertToAmLich() {

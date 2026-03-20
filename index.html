@@ -25,7 +25,7 @@
         padding: 0;
       }
       html {
-        font-size: 15px;
+        font-size: 17px;
         scroll-behavior: smooth;
       }
 
@@ -75,43 +75,43 @@
 
       /* ======================== LIGHT MODE ======================== */
       [data-theme="light"] {
-        --bg: #f5f5f0;
+        --bg: #faf9f6;
         --surface-1: #ffffff;
-        --surface-2: #f0efe8;
-        --surface-3: #e8e6de;
-        --border-1: #d5d3c8;
-        --border-2: #c0bdb0;
-        --border-3: #a8a498;
-        /* Accent — slightly deeper for light bg */
-        --purple: #7c3aed;
-        --cyan: #0891b2;
-        --gold: #b8860b;
-        --rose: #e11d48;
-        /* Text — dark for readability */
-        --text: #1a1a1a;
-        --text-2: #4a4a4a;
-        --text-3: #7a7a7a;
+        --surface-2: #f3f2ed;
+        --surface-3: #e9e8e2;
+        --border-1: #ccc9be;
+        --border-2: #b5b1a5;
+        --border-3: #9a9689;
+        /* Accent — vivid for light bg */
+        --purple: #6d28d9;
+        --cyan: #0e7490;
+        --gold: #a16207;
+        --rose: #be123c;
+        /* Text — high contrast on light */
+        --text: #111111;
+        --text-2: #3a3a3a;
+        --text-3: #666666;
         /* Theme-aware */
-        --topbar-bg: rgba(255, 255, 255, 0.85);
-        --topbar-border: rgba(0, 0, 0, 0.08);
-        --card-hover-bg: rgba(0, 0, 0, 0.02);
-        --chip-bg: rgba(0, 0, 0, 0.03);
-        --chip-border: rgba(0, 0, 0, 0.08);
-        --chip-hover-bg: rgba(0, 0, 0, 0.06);
-        --heading-color: #1a1a1a;
-        --row-border-top: rgba(0, 0, 0, 0.05);
-        --row-border-bottom: rgba(0, 0, 0, 0.03);
-        --row-border-side: rgba(0, 0, 0, 0.06);
-        --noi-ngoai-border: rgba(0, 0, 0, 0.12);
-        --ctrl-bg: #fff;
-        --ctrl-color: #1a1a1a;
+        --topbar-bg: rgba(255, 255, 255, 0.92);
+        --topbar-border: rgba(0, 0, 0, 0.1);
+        --card-hover-bg: rgba(0, 0, 0, 0.03);
+        --chip-bg: rgba(0, 0, 0, 0.04);
+        --chip-border: rgba(0, 0, 0, 0.1);
+        --chip-hover-bg: rgba(0, 0, 0, 0.07);
+        --heading-color: #111111;
+        --row-border-top: rgba(0, 0, 0, 0.07);
+        --row-border-bottom: rgba(0, 0, 0, 0.04);
+        --row-border-side: rgba(0, 0, 0, 0.08);
+        --noi-ngoai-border: rgba(0, 0, 0, 0.15);
+        --ctrl-bg: #ffffff;
+        --ctrl-color: #111111;
         --ctrl-option-bg: #fff;
-        --canh-bao-bg: rgba(0, 0, 0, 0.02);
-        --textarea-bg: #fff;
-        --goi-y-bg: rgba(0, 0, 0, 0.02);
-        --selected-dt-bg: rgba(212, 168, 67, 0.06);
-        --thoi-diem-bg: rgba(0, 0, 0, 0.02);
-        --phuc-bg: #f8f7f2;
+        --canh-bao-bg: rgba(0, 0, 0, 0.03);
+        --textarea-bg: #ffffff;
+        --goi-y-bg: rgba(0, 0, 0, 0.03);
+        --selected-dt-bg: rgba(161, 98, 7, 0.08);
+        --thoi-diem-bg: rgba(0, 0, 0, 0.03);
+        --phuc-bg: #f0efe8;
       }
       [data-theme="light"] body {
         background: var(--bg);
@@ -158,11 +158,11 @@
       [data-theme="light"] .chon-dt-btn { color: var(--text); }
       [data-theme="light"] .chon-dt-btn.active { color: var(--text); }
       /* Light mode: Lục Thần still colorful but deeper */
-      [data-theme="light"] .lt-tu-ton { color: #15803d; }
-      [data-theme="light"] .lt-the-tai { color: #a16207; }
-      [data-theme="light"] .lt-quan-quy { color: #be123c; }
-      [data-theme="light"] .lt-phu-mau { color: #0369a1; }
-      [data-theme="light"] .lt-huynh-de { color: #7e22ce; }
+      [data-theme="light"] .lt-tu-ton { color: #166534; }
+      [data-theme="light"] .lt-the-tai { color: #92400e; }
+      [data-theme="light"] .lt-quan-quy { color: #9f1239; }
+      [data-theme="light"] .lt-phu-mau { color: #075985; }
+      [data-theme="light"] .lt-huynh-de { color: #6b21a8; }
       /* Toggle switch */
       .theme-toggle {
         display: flex;
@@ -1545,12 +1545,28 @@
 
         <!-- Gieo xu -->
         <div class="g" id="step-2">
-          <div class="g-title"><span class="ico">🪙</span> Gieo Hào</div>
-          <p class="hint">
+          <div class="g-title"><span class="ico">🪙</span> Lập Quẻ</div>
+          
+          <div class="method-toggle" style="margin-bottom:1rem; display:flex; gap:1.5rem; border-bottom:1px solid var(--border-1); padding-bottom:0.8rem">
+            <label style="cursor:pointer; display:flex; align-items:center; gap:0.4rem; font-weight:600">
+              <input type="radio" name="input_method" value="coin" checked onchange="toggleInputMethod()"> 
+              Gieo Xu
+            </label>
+            <label style="cursor:pointer; display:flex; align-items:center; gap:0.4rem; font-weight:600">
+              <input type="radio" name="input_method" value="direct" onchange="toggleInputMethod()"> 
+              Chọn Trực Tiếp
+            </label>
+          </div>
+
+          <p class="hint" id="hint-coin">
             Click vào đồng xu để lật
             <strong style="color: var(--gold)">Ngửa</strong> / Sấp. Hào 1 (Sơ) ở
             dưới cùng, Hào 6 (Thượng) ở trên.
           </p>
+          <p class="hint" id="hint-direct" style="display:none">
+            Chọn Âm/Dương và tích vào ô Động. Đồng xu và điểm số sẽ tự động đồng bộ.
+          </p>
+          
           <div class="hao-inputs" id="hao-inputs"></div>
           <button class="btn-primary" onclick="anQue()" id="btn-anque" disabled>
             🔮 Lên Quẻ
@@ -1582,11 +1598,12 @@
           <table class="bang-que" id="bang-que">
             <thead>
               <tr>
-                <th style="width: 80px">Hào</th>
-                <th style="width: 70px">Lục Thân</th>
-                <th style="width: 150px">Quẻ Chủ & Phục</th>
-                <th style="width: 180px; text-align: left; padding-left: 0.6rem">Vượng Suy</th>
-                <th style="width: 130px">Quẻ Biến</th>
+                <th style="width: 70px">Hào</th>
+                <th style="width: 60px">Lục Thân</th>
+                <th style="width: 140px">Quẻ Chủ & Phục</th>
+                <th style="width: 40px">Động</th>
+                <th style="width: 170px; text-align: left; padding-left: 0.6rem">Vượng Suy</th>
+                <th style="width: 120px">Quẻ Biến</th>
               </tr>
             </thead>
             <tbody id="tbody-que"></tbody>
