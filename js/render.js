@@ -44,8 +44,8 @@ function renderHaoInputs() {
 function renderHaoSymbol(score) {
   if (score === 7) return '<span style="color:var(--gold)">━━━━━</span>';
   if (score === 8) return '<span style="color:var(--text-3)">━━ ━━</span>';
-  if (score === 9) return '<span style="color:var(--gold)">━━━━━</span> <span style="color:var(--rose)">○</span>';
-  if (score === 6) return '<span style="color:var(--text-3)">━━ ━━</span> <span style="color:var(--rose)">✕</span>';
+  if (score === 9) return '<span style="color:var(--gold)">━━━━━</span>';
+  if (score === 6) return '<span style="color:var(--text-3)">━━ ━━</span>';
   return '—';
 }
 
@@ -81,8 +81,8 @@ function renderBangQue() {
     const theUngHtml = theUng ? `<span class="badge ${isThe ? 'bdg-the' : 'bdg-ung'}">${theUng}</span> ` : '';
     
     // Phục thần HTML (nay tích hợp vào Quẻ Chủ)
-    const phucThanHtml = hao.phucThan ? `<div style="margin-top:6px; font-size:0.85rem; padding:4px; border:1px dashed var(--gold); border-radius:4px; background:var(--phuc-bg)">
-      <span style="color:var(--gold); font-size:0.75rem">Phục Thần</span><br>
+    const phucThanHtml = hao.phucThan ? `<div style="margin-top:6px; font-size:0.95rem; padding:4px; border:1px dashed var(--gold); border-radius:4px; background:var(--phuc-bg)">
+      <span style="color:var(--gold); font-size:0.85rem">Phục Thần</span><br>
       <span class="${getLucThanClass(hao.phucThan.lucThan)}" style="font-weight:bold">${hao.phucThan.lucThan}</span><br>
       <span style="color:var(--text-2)">${hao.phucThan.diaChi} ${hao.phucThan.hanh}</span>
     </div>` : '';
@@ -98,25 +98,25 @@ function renderBangQue() {
     const tienBadge = hao.laTienThan ? ' <span class="badge bdg-tien">Tiến</span>' : ""; 
     const thoaiBadge = hao.laThoaiThan ? ' <span class="badge bdg-thoai">Thoái</span>' : ""; 
 
-    const banQuaiHtml = `<div class="${getLucThanClass(hao.lucThan)}" style="font-weight:700;font-size:0.78rem;margin-bottom:2px">${hao.lucThan}</div><div style="font-size:0.73rem">${hao.diaChi} <span style="color:var(--text-3)">${hao.hanh}</span>${tkBadge}${moBadge}${nmBadge}${amBadge}${phaBadge}${qcBadge}</div><div class="hao-symbol" style="margin-top:3px">${renderHaoSymbol(state.haoScores[i])}</div>${phucThanHtml}`;
+    const banQuaiHtml = `<div class="${getLucThanClass(hao.lucThan)}" style="font-weight:700;font-size:0.85rem;margin-bottom:2px">${hao.lucThan}</div><div style="font-size:0.8rem">${hao.diaChi} <span style="color:var(--text-3)">${hao.hanh}</span>${tkBadge}${moBadge}${nmBadge}${amBadge}${phaBadge}${qcBadge}</div><div class="hao-symbol" style="margin-top:3px">${renderHaoSymbol(state.haoScores[i])}</div>${phucThanHtml}`;
 
-    let bienQuaiHtml = '<div style="color:var(--text-3);font-size:0.78rem">—</div>';
+    let bienQuaiHtml = '<div style="color:var(--text-3);font-size:0.85rem">—</div>';
     if (hao.laDong) {
-       bienQuaiHtml = `<div class="${getLucThanClass(hao.bienLucThan)}" style="font-weight:700;font-size:0.78rem;margin-bottom:2px">${hao.bienLucThan}</div><div style="font-size:0.73rem;color:var(--text-2)">${hao.bienDC} ${hao.bienHanh}${tienBadge}${thoaiBadge}</div><div class="hao-symbol" style="margin-top:3px">${renderHaoSymbol(hao.bienScore)}</div>`;
+       bienQuaiHtml = `<div class="${getLucThanClass(hao.bienLucThan)}" style="font-weight:700;font-size:0.85rem;margin-bottom:2px">${hao.bienLucThan}</div><div style="font-size:0.8rem;color:var(--text-2)">${hao.bienDC} ${hao.bienHanh}${tienBadge}${thoaiBadge}</div><div class="hao-symbol" style="margin-top:3px">${renderHaoSymbol(hao.bienScore)}</div>`;
     }
 
-    const vsDetailHtml = hao.vuongSuy.nhanXet.length > 0 ? `<ul style="list-style:none;padding:0;margin-top:3px;text-align:left">${hao.vuongSuy.nhanXet.map(x=>`<li style="font-size:0.62rem;color:var(--text-3);padding:1px 0">• ${x}</li>`).join('')}</ul>` : '';
+    const vsDetailHtml = hao.vuongSuy.nhanXet.length > 0 ? `<ul style="list-style:none;padding:0;margin-top:3px;text-align:left">${hao.vuongSuy.nhanXet.map(x=>`<li style="font-size:0.75rem;color:var(--text-3);padding:1px 0">• ${x}</li>`).join('')}</ul>` : '';
     const vsHtml = `<span class="vuong-suy ${hao.vuongSuy.cssClass}">${hao.vuongSuy.mucDo} <span style="opacity:0.6">(${hao.vuongSuy.diem}đ)</span></span>${vsDetailHtml}`;
 
     // Cột Động (X)
     let dongCellHtml = '';
     if (hao.laDong) {
-      dongCellHtml = '<span style="font-size:1.1rem;font-weight:900;color:var(--gold)">✕</span>';
+      dongCellHtml = '<span style="font-size:1.3rem;font-weight:900;color:var(--gold)">✕</span>';
     } else if (hao.laAmDong) {
-      dongCellHtml = '<span style="font-size:0.7rem;font-weight:700;color:var(--purple)">ÁĐ</span>';
+      dongCellHtml = '<span style="font-size:0.85rem;font-weight:700;color:var(--purple)">ÁĐ</span>';
     }
 
-    row.innerHTML = `<td style="font-weight:700;color:var(--text-3);font-size:0.75rem">H${hao.viTri} ${theUngHtml}</td><td style="font-size:0.7rem;color:var(--text-3)">${hao.lucThanTen}</td><td>${banQuaiHtml}</td><td style="text-align:center">${dongCellHtml}</td><td style="vertical-align:top;text-align:left;padding:0.3rem 0.6rem">${vsHtml}</td><td>${bienQuaiHtml}</td>`;
+    row.innerHTML = `<td style="font-weight:700;color:var(--text-3);font-size:0.85rem">H${hao.viTri} ${theUngHtml}</td><td style="font-size:0.8rem;color:var(--text-3)">${hao.lucThanTen}</td><td>${banQuaiHtml}</td><td style="text-align:center">${dongCellHtml}</td><td style="vertical-align:top;text-align:left;padding:0.3rem 0.6rem">${vsHtml}</td><td>${bienQuaiHtml}</td>`;
     row.style.cursor = 'pointer';
     row.onclick = () => chonDungThan(i);
     tbody.appendChild(row);
@@ -165,7 +165,7 @@ function renderVuongSuy(vs) {
 
 function renderNKCThan(haoVaiTro) {
   const el = document.getElementById('nkc-than-list');
-  el.innerHTML = haoVaiTro.filter(h => h.vaiTro).map(h => {
+  el.innerHTML = [...haoVaiTro].reverse().filter(h => h.vaiTro).map(h => {
     const clsMap = {'Dụng Thần':'nkc-dung','Nguyên Thần':'nkc-nguyen','Kỵ Thần':'nkc-ky','Cừu Thần':'nkc-cuu','Tiết Thần':'nkc-tiet'};
     const cls = clsMap[h.vaiTro] || 'nkc-cuu';
     // Badge trạng thái cho Nguyên/Kỵ/Cừu/Tiết
@@ -182,7 +182,7 @@ function renderNKCThan(haoVaiTro) {
 
 function renderDongHao() {
   const el = document.getElementById('dong-hao-analysis');
-  const allDong = state.hao6.filter(h => h.laDong || h.laAmDong);
+  const allDong = [...state.hao6].reverse().filter(h => h.laDong || h.laAmDong);
   if (allDong.length === 0) { el.innerHTML = '<p style="color:var(--text-3,#475569);font-size:0.85rem">Không có hào động</p>'; return; }
   el.innerHTML = allDong.map(h => {
     const hd = h.bienDC ? kiemTraHoiDau(h.diaChi, h.bienDC) : null;

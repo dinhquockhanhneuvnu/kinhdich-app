@@ -191,6 +191,9 @@
       [data-theme="light"] .thoi-diem-item .td-val { color: var(--text); }
       [data-theme="light"] .dong-item { border-bottom-color: var(--border-1); }
       [data-theme="light"] .dong-item .d-head { color: var(--gold); }
+      [data-theme="light"] .badge-voluc { background: rgba(225, 29, 72, 0.1); }
+      [data-theme="light"] .badge-huudung { background: rgba(22, 163, 74, 0.1); }
+      [data-theme="light"] .bang-que tr.row-tuan-khong { opacity: 0.7; }
       [data-theme="light"] textarea#ghi-chu { background: var(--textarea-bg); color: var(--text); }
       [data-theme="light"] .goi-y-box { background: var(--goi-y-bg); }
       [data-theme="light"] .selected-dt-box { background: var(--selected-dt-bg); }
@@ -200,12 +203,6 @@
       [data-theme="light"] .btn-convert:hover { background: var(--surface-3); }
       [data-theme="light"] .chon-dt-btn { color: var(--text); }
       [data-theme="light"] .chon-dt-btn.active { color: var(--text); }
-      /* Light mode: Lục Thần still colorful but deeper */
-      [data-theme="light"] .lt-tu-ton { color: #166534; }
-      [data-theme="light"] .lt-the-tai { color: #92400e; }
-      [data-theme="light"] .lt-quan-quy { color: #9f1239; }
-      [data-theme="light"] .lt-phu-mau { color: #075985; }
-      [data-theme="light"] .lt-huynh-de { color: #6b21a8; }
       /* Toggle switch */
       .theme-toggle {
         display: flex;
@@ -657,12 +654,13 @@
       .coin::after {
         content: "S";
         position: absolute;
-        bottom: -18px;
+        bottom: 5px;
         left: 50%;
         transform: translateX(-50%);
-        font-size: 0.6rem;
-        font-weight: 700;
-        color: var(--text-3);
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: rgba(255, 255, 255, 0.85);
+        text-shadow: 0 1px 3px rgba(0,0,0,0.8);
       }
       .coin:hover {
         transform: scale(1.1);
@@ -674,7 +672,8 @@
       }
       .coin.ngua::after {
         content: "N";
-        color: var(--gold);
+        color: rgba(0, 0, 0, 0.7);
+        text-shadow: 0 1px 1px rgba(255,255,255,0.5);
       }
       .coin:active {
         transform: scale(0.9);
@@ -837,23 +836,23 @@
 
       /* Lục Thần Colors — bright, no glow */
       .lt-tu-ton {
-        color: #4ade80;
+        color: var(--green);
         font-weight: 700;
       }
       .lt-the-tai {
-        color: #facc15;
+        color: var(--gold);
         font-weight: 700;
       }
       .lt-quan-quy {
-        color: #fb7185;
+        color: var(--rose);
         font-weight: 700;
       }
       .lt-phu-mau {
-        color: #38bdf8;
+        color: var(--cyan);
         font-weight: 700;
       }
       .lt-huynh-de {
-        color: #c084fc;
+        color: var(--purple);
         font-weight: 700;
       }
       .hao-symbol {
@@ -1129,8 +1128,8 @@
       .badge-voluc {
         display: inline-block;
         background: rgba(136, 0, 0, 0.3);
-        color: #ff6b6b;
-        border: 1px solid #882222;
+        color: var(--red);
+        border: 1px solid var(--red);
         padding: 1px 6px;
         border-radius: 4px;
         font-size: 0.6rem;
@@ -1140,8 +1139,8 @@
       .badge-huudung {
         display: inline-block;
         background: rgba(10, 30, 10, 0.3);
-        color: #57c255;
-        border: 1px solid #399837;
+        color: var(--green);
+        border: 1px solid var(--green);
         padding: 1px 6px;
         border-radius: 4px;
         font-size: 0.6rem;
@@ -1903,15 +1902,15 @@
       >
         <div
           style="
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             color: var(--text-2);
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.3rem;
           "
         >
           Thiết kế & Phát triển bởi
-          <strong style="color: #fff">KhanhDev</strong>
+          <strong style="color: var(--heading-color)">KhanhDev</strong>
         </div>
-        <div style="font-size: 0.65rem; color: var(--text-3)">
+        <div style="font-size: 0.75rem; color: var(--text-3)">
           Email:
           <a
             href="mailto:dinhquockhanh.neu.vnu@gmail.com"
