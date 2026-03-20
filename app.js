@@ -463,7 +463,7 @@ function runPhanTichPhuc(phiHao, phuc) {
     tr.classList.remove('row-dung-than','row-nguyen-than','row-ky-than','row-cuu-than');
   });
 
-  ['step-5','step-6','step-7','step-cat-hung','step-phi-phuc','step-luc-than','step-thu-tuong'].forEach(id => {
+  ['step-5','step-6','step-7','step-cat-hung','step-phi-phuc','step-luc-than','step-thu-tuong','step-prompt'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = 'block';
   });
@@ -522,7 +522,7 @@ function runPhanTich(haoIndex) {
   renderLucThanPanel();
   renderThuTuong(dt, haoVaiTro, vs);
   highlightBangQue(haoVaiTro);
-  ['step-5','step-6','step-7','step-cat-hung','step-phi-phuc','step-luc-than','step-thu-tuong'].forEach(id => {
+  ['step-5','step-6','step-7','step-cat-hung','step-phi-phuc','step-luc-than','step-thu-tuong','step-prompt'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = 'block';
   });

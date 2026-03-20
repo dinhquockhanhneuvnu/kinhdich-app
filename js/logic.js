@@ -232,7 +232,7 @@ function anQue() {
   renderBangQue();
   document.getElementById('step-3').style.display = 'block';
   document.getElementById('step-4').style.display = 'block';
-  document.getElementById('step-8').style.display = 'block';
+  document.getElementById('step-prompt').style.display = 'block';
   const placeholder = document.getElementById('center-placeholder');
   if (placeholder) placeholder.style.display = 'none';
   renderDungThanButtons();
