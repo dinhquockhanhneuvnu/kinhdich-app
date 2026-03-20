@@ -103,12 +103,12 @@ function renderBangQue() {
     </div>` : '';
 
     const isGK = hao.laTuanKhong && !hao.laAmDong && hao.nhanXetVS && hao.nhanXetVS.some(x=>x.includes("Giả Không")); 
-    const tkBadge = (hao.laTuanKhong && !hao.laAmDong) ? (isGK ? ' <span class="badge bdg-tk-g">Giả Không</span>' : ' <span class="badge bdg-tk">Tuần Không</span>') : "";
+    const tkBadge = (hao.laTuanKhong && !hao.laAmDong) ? (isGK ? ' <span class="badge bdg-tk-g">TKg</span>' : ' <span class="badge bdg-tk">TK</span>') : "";
     const isVM = hao.laNhapMo && hao.nhanXetVS && hao.nhanXetVS.some(x=>x.includes("Vượng Mộ")); 
-    const moBadge = hao.laNhapMo ? (isVM ? ' <span class="badge bdg-mo-v">Vượng Mộ</span>' : ' <span class="badge bdg-mo">Nhập Mộ</span>') : "";
-    const nmBadge = hao.laNguyetMo ? ' <span class="badge bdg-nm" title="Nguyệt Mộ — chỉ mô tả trạng thái">Nguyệt Mộ</span>' : "";
-    const qcBadge = hao.laQuanChan ? ' <span class="badge bdg-qc" title="Hóa Quẩn Chân — ứng kỳ trễ">Quẩn Chân</span>' : "";
-    const amBadge = hao.laAmDong ? ' <span class="badge bdg-am">Ám Động</span>' : "";
+    const moBadge = hao.laNhapMo ? (isVM ? ' <span class="badge bdg-mo-v">Mv</span>' : ' <span class="badge bdg-mo">Mộ</span>') : "";
+    const nmBadge = hao.laNguyetMo ? ' <span class="badge bdg-nm" title="Nguyệt Mộ — chỉ mô tả trạng thái">NM</span>' : "";
+    const qcBadge = hao.laQuanChan ? ' <span class="badge bdg-qc" title="Hóa Quẩn Chân — ứng kỳ trễ">QC</span>' : "";
+    const amBadge = hao.laAmDong ? ' <span class="badge bdg-am">ÁĐ</span>' : "";
     const phaBadge = hao.laNhatPha ? ' <span class="badge bdg-pha">Phá</span>' : "";
     const tienBadge = hao.laTienThan ? ' <span class="badge bdg-tien">Tiến</span>' : ""; 
     const thoaiBadge = hao.laThoaiThan ? ' <span class="badge bdg-thoai">Thoái</span>' : ""; 
@@ -131,7 +131,7 @@ function renderBangQue() {
       dongCellHtml = '<span style="font-size:0.85rem;font-weight:700;color:var(--purple)">ÁĐ</span>';
     }
 
-    row.innerHTML = `<td style="font-weight:700;color:var(--text-3);font-size:0.85rem">Hào ${hao.viTri} ${theUngHtml}</td><td style="font-size:0.8rem;color:var(--text-3)">${hao.lucThanTen}</td><td>${banQuaiHtml}</td><td style="text-align:center">${dongCellHtml}</td><td style="vertical-align:top;text-align:left;padding:0.3rem 0.6rem">${vsHtml}</td><td>${bienQuaiHtml}</td>`;
+    row.innerHTML = `<td style="font-weight:700;color:var(--text-3);font-size:0.85rem">H${hao.viTri} ${theUngHtml}</td><td style="font-size:0.8rem;color:var(--text-3)">${hao.lucThanTen}</td><td>${banQuaiHtml}</td><td style="text-align:center">${dongCellHtml}</td><td style="vertical-align:top;text-align:left;padding:0.3rem 0.6rem">${vsHtml}</td><td>${bienQuaiHtml}</td>`;
     row.style.cursor = 'pointer';
     row.onclick = () => chonDungThan(i);
     tbody.appendChild(row);
@@ -161,7 +161,7 @@ function renderDungThanButtons() {
       btn.className = 'chon-dt-btn';
       btn.style.borderStyle = 'dashed';
       btn.style.opacity = '0.8';
-      btn.textContent = `👻 Hào ${h.viTri}: ${h.phucThan.lucThan} (${h.phucThan.diaChi}) [Phục]`;
+      btn.textContent = `👻 H${h.viTri}: ${h.phucThan.lucThan} (${h.phucThan.diaChi}) [Phục]`;
       btn.onclick = () => chonPhucThanDT(h);
       container.appendChild(btn);
     });
@@ -191,7 +191,7 @@ function renderNKCThan(haoVaiTro) {
       else if (tt.huuDung) ttBadge = ' <span class="badge-huudung">Hữu dụng</span>';
       else if (!tt.huuTu) ttBadge = ' <span class="badge-huudung">Vượng</span>';
     }
-    return `<div class="nkc-item"><span class="nkc-label ${cls}">${h.vaiTro}</span> Hào ${h.viTri}: <span class="${getLucThanClass(h.lucThan)}">${h.lucThan}</span> (${h.diaChi} ${h.hanh}) — <span class="vuong-suy ${h.vuongSuy.cssClass}">${h.vuongSuy.mucDo}</span>${ttBadge}</div>`;
+    return `<div class="nkc-item"><span class="nkc-label ${cls}">${h.vaiTro}</span> H${h.viTri}: <span class="${getLucThanClass(h.lucThan)}">${h.lucThan}</span> (${h.diaChi} ${h.hanh}) — <span class="vuong-suy ${h.vuongSuy.cssClass}">${h.vuongSuy.mucDo}</span>${ttBadge}</div>`;
   }).join('');
 }
 
@@ -204,7 +204,7 @@ function renderDongHao() {
     const label = h.laAmDong ? '<span class="badge bdg-am">Ám Động</span>' : '<span style="color:var(--gold);font-size:0.62rem;font-weight:700">● Động</span>';
     const tiPhu = h.laTienThan ? ' <span style="color:var(--green)">→ Tiến Thần</span>' : h.laThoaiThan ? ' <span style="color:var(--red)">→ Thoái Thần</span>' : '';
     const hdLabel = hd ? `<span style="color:${hd.loai.includes('sinh') ? 'var(--green)' : 'var(--red)'};font-size:0.65rem"> [${hd.loai}]</span>` : '';
-    return `<div class="dong-item"><span class="d-head">Hào ${h.viTri}</span> ${label} ${h.diaChi}→${h.bienDC||'?'}${tiPhu}${hdLabel}</div>`;
+    return `<div class="dong-item"><span class="d-head">H${h.viTri}</span> ${label} ${h.diaChi}→${h.bienDC||'?'}${tiPhu}${hdLabel}</div>`;
   }).join('');
 }
 
@@ -376,8 +376,8 @@ function renderThoiDiem(list) {
         <div class="td-note">💡 ${td.ghi_chu}</div>
       </div>`).join('');
 
-  const lxmItems   = list.filter(td => td.source === 'Lưu Xương Minh' || !td.source);
-  const daHacItems = list.filter(td => td.source === 'Dã Hạc');
+  const lxmItems   = list.filter(td => td.source === 'LXM' || !td.source);
+  const daHacItems = list.filter(td => td.source === 'DaHac');
 
   const lxmEl   = document.getElementById('thoi-diem-lxm');
   const daHacEl = document.getElementById('thoi-diem-dahac');

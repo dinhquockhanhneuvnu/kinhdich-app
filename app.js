@@ -612,13 +612,13 @@ function xuatPrompt() {
     const reason = i.querySelector('.td-reason')?.innerText || '';
     const when = i.querySelector('.td-when')?.innerText || '';
     return `• ${reason}: ${when}`;
-  }).join('\\n') : 'Không có gợi ý Ứng kỳ theo Dã Hạc Toàn Thư.';
+  }).join('\\n') : 'Không có gợi ý Ứng kỳ theo Dã Hạc.';
 
   // 5. Thủ Tượng
   const thuTuongEl = document.getElementById('thu-tuong-result');
   const thuTuongText = thuTuongEl ? Array.from(thuTuongEl.querySelectorAll('.thu-tuong-line')).map(l => l.innerText).join('\\n') : 'Không có thủ tượng phân tích.';
 
-  const text = `Tôi cần bạn đóng vai một chuyên gia Dịch Lý Lục Hào (theo trường phái Lưu Xương Minh & Dã Hạc Toàn Thư) để luận giải chi tiết quẻ sau:
+  const text = `Tôi cần bạn đóng vai một chuyên gia Dịch Lý Lục Hào (theo trường phái Lưu Xương Minh & Dã Hạc) để luận giải chi tiết quẻ sau:
 
 1. THÔNG TIN CƠ BẢN:
 - Câu hỏi sự việc: ${cauHoi}
@@ -626,8 +626,8 @@ function xuatPrompt() {
 - Thời gian: Ngày ${state.chiNgay} (${DC_HANH[state.chiNgay]}), Tháng ${state.chiThang} (${DC_HANH[state.chiThang]})
 - Quẻ chính: ${state.banQue.ten} (Cung ${state.banQue.cung})
 - Quẻ biến: ${state.chiQue ? state.chiQue.ten : 'Quẻ tĩnh'}
-- Hào Thế: Hào ${state.banQue.the_hao} | Hào Ứng: Hào ${state.banQue.ung_hao}
-- Tuần Không: ${state.tuanKhong.join(', ')} | Lục Thần khởi tại Hào 1: ${document.getElementById('luc-than-start').textContent}
+- Hào Thể: H${state.banQue.the_hao} | Ứng: H${state.banQue.ung_hao}
+- Tuần Không: ${state.tuanKhong.join(', ')} | Lục Thần khởi: ${document.getElementById('luc-than-start').textContent}
 
 2. CẤU TRÚC 6 HÀO (Chi tiết Vượng Suy & Trạng thái):
 ${haos}
