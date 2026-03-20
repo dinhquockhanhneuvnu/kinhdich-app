@@ -87,6 +87,9 @@
         --cyan: #0e7490;
         --gold: #a16207;
         --rose: #be123c;
+        --green: #16a34a;
+        --red: #e11d48;
+        --orange: #ea580c;
         /* Text — high contrast on light */
         --text: #111111;
         --text-2: #3a3a3a;
@@ -168,6 +171,20 @@
       [data-theme="light"] .bdg-qc { color: #b45309; border-color: #b45309; background: rgba(180, 83, 9, 0.1); }
       [data-theme="light"] .bdg-tien { color: #15803d; border-color: #15803d; background: rgba(21, 128, 61, 0.1); }
       [data-theme="light"] .bdg-thoai { color: #be123c; border-color: #be123c; background: rgba(190, 18, 60, 0.1); }
+      
+      /* Vượng Suy & NKC */
+      [data-theme="light"] .vs-cuc-vuong { color: #d97706; border-color: #d97706; background: rgba(217, 119, 6, 0.1); }
+      [data-theme="light"] .vs-vuong { color: #16a34a; border-color: #16a34a; background: rgba(22, 163, 74, 0.1); }
+      [data-theme="light"] .vs-hoi-suy { color: #ca8a04; border-color: #ca8a04; background: rgba(202, 138, 4, 0.1); }
+      [data-theme="light"] .vs-suy { color: #e11d48; border-color: #e11d48; background: rgba(225, 29, 72, 0.1); }
+      [data-theme="light"] .vs-cuc-suy { color: #be123c; border-color: #be123c; background: rgba(190, 18, 60, 0.1); }
+      
+      [data-theme="light"] .nkc-nguyen { color: #16a34a; border-color: #16a34a; background: rgba(22, 163, 74, 0.1); }
+      [data-theme="light"] .nkc-ky { color: #e11d48; border-color: #e11d48; background: rgba(225, 29, 72, 0.1); }
+      [data-theme="light"] .nkc-cuu { color: #d97706; border-color: #d97706; background: rgba(217, 119, 6, 0.1); }
+      [data-theme="light"] .nkc-dung { color: #9333ea; border-color: #9333ea; background: rgba(147, 51, 234, 0.1); }
+      [data-theme="light"] .nkc-tiet { color: #ea580c; border-color: #ea580c; background: rgba(234, 88, 12, 0.1); }
+      
       [data-theme="light"] .thu-tuong-line { border-bottom-color: rgba(0,0,0,0.06); }
       [data-theme="light"] .canh-bao-item { background: var(--canh-bao-bg); border-color: var(--border-1); }
       [data-theme="light"] .thoi-diem-item { background: var(--thoi-diem-bg); border-color: var(--border-1); }
@@ -327,6 +344,7 @@
         line-height: 1;
         background: linear-gradient(135deg, var(--cyan), var(--purple));
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
         filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.4));
       }

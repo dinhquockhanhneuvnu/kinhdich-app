@@ -42,10 +42,10 @@ function renderHaoInputs() {
 }
 
 function renderHaoSymbol(score) {
-  if (score === 7) return '<span style="color:#ffd700">━━━━━</span>';
-  if (score === 8) return '<span style="color:#aaa">━━ ━━</span>';
-  if (score === 9) return '<span style="color:#ffd700">━━━━━</span> <span style="color:#ff6b6b">○</span>';
-  if (score === 6) return '<span style="color:#aaa">━━ ━━</span> <span style="color:#ff6b6b">✕</span>';
+  if (score === 7) return '<span style="color:var(--gold)">━━━━━</span>';
+  if (score === 8) return '<span style="color:var(--text-3)">━━ ━━</span>';
+  if (score === 9) return '<span style="color:var(--gold)">━━━━━</span> <span style="color:var(--rose)">○</span>';
+  if (score === 6) return '<span style="color:var(--text-3)">━━ ━━</span> <span style="color:var(--rose)">✕</span>';
   return '—';
 }
 
@@ -138,7 +138,7 @@ function renderDungThanButtons() {
   const phucHaos = state.hao6.filter(h => h.phucThan);
   if (phucHaos.length > 0) {
     const sep = document.createElement('div');
-    sep.style.cssText = 'width:100%;font-size:0.7rem;color:#6b7a94;margin:0.3rem 0;text-align:center;';
+    sep.style.cssText = 'width:100%;font-size:0.7rem;color:var(--text-3);margin:0.3rem 0;text-align:center;';
     sep.textContent = '— Phục Thần (ẩn dưới Phi Thần) —';
     container.appendChild(sep);
     phucHaos.forEach(h => {
@@ -186,9 +186,9 @@ function renderDongHao() {
   if (allDong.length === 0) { el.innerHTML = '<p style="color:var(--text-3,#475569);font-size:0.85rem">Không có hào động</p>'; return; }
   el.innerHTML = allDong.map(h => {
     const hd = h.bienDC ? kiemTraHoiDau(h.diaChi, h.bienDC) : null;
-    const label = h.laAmDong ? '<span class="badge bdg-am">Ám Động</span>' : '<span style="color:#ffcc00;font-size:0.62rem;font-weight:700">● Động</span>';
-    const tiPhu = h.laTienThan ? ' <span style="color:#57c255">→ Tiến Thần</span>' : h.laThoaiThan ? ' <span style="color:#cc4444">→ Thoái Thần</span>' : '';
-    const hdLabel = hd ? `<span style="color:${hd.loai.includes('sinh') ? '#57c255' : '#cc4444'};font-size:0.65rem"> [${hd.loai}]</span>` : '';
+    const label = h.laAmDong ? '<span class="badge bdg-am">Ám Động</span>' : '<span style="color:var(--gold);font-size:0.62rem;font-weight:700">● Động</span>';
+    const tiPhu = h.laTienThan ? ' <span style="color:var(--green)">→ Tiến Thần</span>' : h.laThoaiThan ? ' <span style="color:var(--red)">→ Thoái Thần</span>' : '';
+    const hdLabel = hd ? `<span style="color:${hd.loai.includes('sinh') ? 'var(--green)' : 'var(--red)'};font-size:0.65rem"> [${hd.loai}]</span>` : '';
     return `<div class="dong-item"><span class="d-head">H${h.viTri}</span> ${label} ${h.diaChi}→${h.bienDC||'?'}${tiPhu}${hdLabel}</div>`;
   }).join('');
 }
@@ -321,12 +321,12 @@ function renderPhiPhuc() {
     const phuc = h.phucThan;
     const phiHanh = h.hanh, phucHanh = phuc.hanh;
     let tuongTac = '';
-    if (NGU_HANH_SINH[phiHanh] === phucHanh) tuongTac = '<span style="color:#57c255">Phi Sinh Phục ✓ (Phục có lực)</span>';
-    else if (NGU_HANH_KHAC[phiHanh] === phucHanh) tuongTac = '<span style="color:#cc4444">Phi Khắc Phục ✗ (Phục bị giam)</span>';
-    else if (NGU_HANH_SINH[phucHanh] === phiHanh) tuongTac = '<span style="color:#ee9966">Phục Tiết Phi</span>';
-    else tuongTac = '<span style="color:#6b7a94">Bình thường</span>';
-    return `<div style="border:1px solid #c9a84c22;border-radius:5px;padding:0.4rem;margin-bottom:0.3rem;background:#0c1020">
-      <div style="font-size:0.7rem;color:#6b7a94">Vị trí H${h.viTri}</div>
+    if (NGU_HANH_SINH[phiHanh] === phucHanh) tuongTac = '<span style="color:var(--green)">Phi Sinh Phục ✓ (Phục có lực)</span>';
+    else if (NGU_HANH_KHAC[phiHanh] === phucHanh) tuongTac = '<span style="color:var(--red)">Phi Khắc Phục ✗ (Phục bị giam)</span>';
+    else if (NGU_HANH_SINH[phucHanh] === phiHanh) tuongTac = '<span style="color:var(--orange)">Phục Tiết Phi</span>';
+    else tuongTac = '<span style="color:var(--text-3)">Bình thường</span>';
+    return `<div style="border:1px solid var(--border-2);border-radius:5px;padding:0.4rem;margin-bottom:0.3rem;background:var(--surface-2)">
+      <div style="font-size:0.7rem;color:var(--text-3)">Vị trí H${h.viTri}</div>
       <div style="font-size:0.72rem">Phi: <span class="${getLucThanClass(h.lucThan)}">${h.lucThan}</span> (${h.diaChi} ${h.hanh}) | Phục: <span class="${getLucThanClass(phuc.lucThan)}">${phuc.lucThan}</span> (${phuc.diaChi} ${phuc.hanh})</div>
       <div style="font-size:0.67rem;margin-top:0.15rem">${tuongTac}</div>
     </div>`;
@@ -337,18 +337,18 @@ function renderLucThanPanel() {
   const el = document.getElementById('luc-than-analysis');
   if (!el) return;
   const lucThanMap = {
-    'Tử Tôn': {color:'#4caf50', y:'Con cái, sức khỏe, khắc Quỷ'},
-    'Thê Tài': {color:'#ffd700', y:'Tài lộc, vợ (nam hỏi), khắc Phụ'},
-    'Quan Quỷ': {color:'#ff6b6b', y:'Quan chức, bệnh tật (nữ: chồng)'},
-    'Phụ Mẫu': {color:'#87ceeb', y:'Cha mẹ, văn thư, khắc Tử'},
-    'Huynh Đệ': {color:'#dda0dd', y:'Anh em, cạnh tranh tài lộc'}
+    'Tử Tôn': {color:'var(--green)', y:'Con cái, sức khỏe, khắc Quỷ'},
+    'Thê Tài': {color:'var(--gold)', y:'Tài lộc, vợ (nam hỏi), khắc Phụ'},
+    'Quan Quỷ': {color:'var(--rose)', y:'Quan chức, bệnh tật (nữ: chồng)'},
+    'Phụ Mẫu': {color:'var(--cyan)', y:'Cha mẹ, văn thư, khắc Tử'},
+    'Huynh Đệ': {color:'var(--purple)', y:'Anh em, cạnh tranh tài lộc'}
   };
   const grouped = {};
   state.hao6.forEach(h => { if (!grouped[h.lucThan]) grouped[h.lucThan] = []; grouped[h.lucThan].push(h); });
   el.innerHTML = Object.entries(lucThanMap).map(([lt, info]) => {
     const haos = grouped[lt] || [];
-    const haosStr = haos.length ? haos.map(h => `H${h.viTri}(${h.diaChi})`).join(', ') : '<span style="color:#3a4a60">Phục Tàng</span>';
-    return `<div style="border-bottom:1px solid #1e2a40;padding:0.2rem 0"><span style="color:${info.color};font-weight:700;font-size:0.72rem">${lt}</span> <span style="color:#4a5a70;font-size:0.66rem">${haosStr}</span><div style="font-size:0.6rem;color:#3a4a60">${info.y}</div></div>`;
+    const haosStr = haos.length ? haos.map(h => `H${h.viTri}(${h.diaChi})`).join(', ') : '<span style="color:var(--text-3)">Phục Tàng</span>';
+    return `<div style="border-bottom:1px solid var(--border-1);padding:0.2rem 0"><span style="color:${info.color};font-weight:700;font-size:0.72rem">${lt}</span> <span style="color:var(--text-2);font-size:0.66rem">${haosStr}</span><div style="font-size:0.6rem;color:var(--text-3)">${info.y}</div></div>`;
   }).join('');
 }
 
@@ -401,7 +401,7 @@ function renderThuTuong(dt, haoVaiTro, vs) {
   const doan = sinhLuanNghia(dt, haoVaiTro, vs);
   el.innerHTML = doan.map(d => {
     // Bold **text**
-    const formatted = d.replace(/\*\*(.+?)\*\*/g, '<strong style="color:#fff">$1</strong>');
+    const formatted = d.replace(/\*\*(.+?)\*\*/g, '<strong style="color:var(--heading-color)">$1</strong>');
     return `<div class="thu-tuong-line">${formatted}</div>`;
   }).join('');
 }

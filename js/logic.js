@@ -1,10 +1,10 @@
 function getScoreInfo(total) {
   switch(total) {
-    case 6: return { symbol: '━━ ━━ ✕', label: 'Âm động', color: '#ff6b6b' };
-    case 7: return { symbol: '━━━━━', label: 'Dương tĩnh', color: '#ffd700' };
-    case 8: return { symbol: '━━ ━━', label: 'Âm tĩnh', color: '#aaa' };
-    case 9: return { symbol: '━━━━━ ○', label: 'Dương động', color: '#ff6b6b' };
-    default: return { symbol: '—', label: '', color: '#555' };
+    case 6: return { symbol: '━━ ━━ ✕', label: 'Âm động', color: 'var(--red)' };
+    case 7: return { symbol: '━━━━━', label: 'Dương tĩnh', color: 'var(--gold)' };
+    case 8: return { symbol: '━━ ━━', label: 'Âm tĩnh', color: 'var(--text-3)' };
+    case 9: return { symbol: '━━━━━ ○', label: 'Dương động', color: 'var(--red)' };
+    default: return { symbol: '—', label: '', color: 'var(--text-2)' };
   }
 }
 
