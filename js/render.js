@@ -66,24 +66,25 @@ function renderBangQue() {
     const theUng = isThe ? 'Thế' : (isUng ? 'Ứng' : '');
     const theUngHtml = theUng ? `<span class="badge ${isThe ? 'bdg-the' : 'bdg-ung'}">${theUng}</span> ` : '';
     
-    // Phục thần HTML
+    // Phục thần HTML (nay tích hợp vào Quẻ Chủ)
     const phucThanHtml = hao.phucThan ? `<div style="margin-top:6px; font-size:0.85rem; padding:4px; border:1px dashed #c9a84c; border-radius:4px; background:#111">
       <span style="color:#c9a84c; font-size:0.75rem">Phục Thần</span><br>
       <span class="${getLucThanClass(hao.phucThan.lucThan)}" style="font-weight:bold">${hao.phucThan.lucThan}</span><br>
       <span style="color:#aaa">${hao.phucThan.diaChi} ${hao.phucThan.hanh}</span>
     </div>` : '';
 
-    const isGK = hao.laTuanKhong && !hao.laAmDong && hao.nhanXetVS && hao.nhanXetVS.some(x=>x.includes("Giả Không")); const tkBadge = (hao.laTuanKhong && !hao.laAmDong) ? (isGK ? ' <span class="badge bdg-tk-g">TKg</span>' : ' <span class="badge bdg-tk">TK</span>') : "";
-    const isVM = hao.laNhapMo && hao.nhanXetVS && hao.nhanXetVS.some(x=>x.includes("Vượng Mộ")); const moBadge = hao.laNhapMo ? (isVM ? ' <span class="badge bdg-mo-v">Mv</span>' : ' <span class="badge bdg-mo">Mộ</span>') : "";
-    // Dã Hạc: Nguyệt Mộ badge (chỉ mô tả, màu tím nhạt)
+    const isGK = hao.laTuanKhong && !hao.laAmDong && hao.nhanXetVS && hao.nhanXetVS.some(x=>x.includes("Giả Không")); 
+    const tkBadge = (hao.laTuanKhong && !hao.laAmDong) ? (isGK ? ' <span class="badge bdg-tk-g">TKg</span>' : ' <span class="badge bdg-tk">TK</span>') : "";
+    const isVM = hao.laNhapMo && hao.nhanXetVS && hao.nhanXetVS.some(x=>x.includes("Vượng Mộ")); 
+    const moBadge = hao.laNhapMo ? (isVM ? ' <span class="badge bdg-mo-v">Mv</span>' : ' <span class="badge bdg-mo">Mộ</span>') : "";
     const nmBadge = hao.laNguyetMo ? ' <span class="badge" style="background:#1a1230;color:#a78bfa;border:1px solid #6d28d9;font-size:0.58rem" title="Nguyệt Mộ — chỉ mô tả trạng thái">NM</span>' : "";
-    // Dã Hạc: Hóa Quẩn Chân badge (màu vàng amber)
     const qcBadge = hao.laQuanChan ? ' <span class="badge" style="background:#1a1500;color:#f59e0b;border:1px solid #b45309;font-size:0.58rem" title="Hóa Quẩn Chân — ứng kỳ trễ">QC</span>' : "";
     const amBadge = hao.laAmDong ? ' <span class="badge bdg-am">ÁĐ</span>' : "";
     const phaBadge = hao.laNhatPha ? ' <span class="badge bdg-pha">Phá</span>' : "";
     const tienBadge = hao.laTienThan ? ' <span class="badge" style="background:#0a1e0a;color:#57c255;border:1px solid #399837">Tiến</span>' : ""; 
     const thoaiBadge = hao.laThoaiThan ? ' <span class="badge" style="background:#1e0808;color:#cc4444;border:1px solid #882222">Thoái</span>' : ""; 
-    const banQuaiHtml = `<div class="${getLucThanClass(hao.lucThan)}" style="font-weight:700;font-size:0.78rem;margin-bottom:2px">${hao.lucThan}</div><div style="font-size:0.73rem">${hao.diaChi} <span style="color:#6b7a94">${hao.hanh}</span>${tkBadge}${moBadge}${nmBadge}${amBadge}${phaBadge}${qcBadge}</div><div class="hao-symbol" style="margin-top:3px">${renderHaoSymbol(state.haoScores[i])}</div>`;
+
+    const banQuaiHtml = `<div class="${getLucThanClass(hao.lucThan)}" style="font-weight:700;font-size:0.78rem;margin-bottom:2px">${hao.lucThan}</div><div style="font-size:0.73rem">${hao.diaChi} <span style="color:#6b7a94">${hao.hanh}</span>${tkBadge}${moBadge}${nmBadge}${amBadge}${phaBadge}${qcBadge}</div><div class="hao-symbol" style="margin-top:3px">${renderHaoSymbol(state.haoScores[i])}</div>${phucThanHtml}`;
 
     let bienQuaiHtml = '<div style="color:#2a3a55;font-size:0.78rem">—</div>';
     if (hao.laDong) {
@@ -93,7 +94,7 @@ function renderBangQue() {
     const vsDetailHtml = hao.vuongSuy.nhanXet.length > 0 ? `<ul style="list-style:none;padding:0;margin-top:3px;text-align:left">${hao.vuongSuy.nhanXet.map(x=>`<li style="font-size:0.62rem;color:#6b7a94;padding:1px 0">• ${x}</li>`).join('')}</ul>` : '';
     const vsHtml = `<span class="vuong-suy ${hao.vuongSuy.cssClass}">${hao.vuongSuy.mucDo} <span style="opacity:0.6">(${hao.vuongSuy.diem}đ)</span></span>${vsDetailHtml}`;
 
-    row.innerHTML = `<td style="font-weight:700;color:#4a5a70;font-size:0.75rem">H${hao.viTri} ${theUngHtml}</td><td style="font-size:0.7rem;color:#6b7a94">${hao.lucThanTen}</td><td>${banQuaiHtml}</td><td style="vertical-align:top;text-align:left;padding:0.3rem">${vsHtml}${phucThanHtml}</td><td>${bienQuaiHtml}</td>`;
+    row.innerHTML = `<td style="font-weight:700;color:#4a5a70;font-size:0.75rem">H${hao.viTri} ${theUngHtml}</td><td style="font-size:0.7rem;color:#6b7a94">${hao.lucThanTen}</td><td>${banQuaiHtml}</td><td style="vertical-align:top;text-align:left;padding:0.3rem">${vsHtml}</td><td>${bienQuaiHtml}</td>`;
     row.style.cursor = 'pointer';
     row.onclick = () => chonDungThan(i);
     tbody.appendChild(row);
