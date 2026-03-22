@@ -19,8 +19,55 @@ function init() {
   setMethod('coin');
   // Auto-update on select change
   ['thang-can','thang-chi','ngay-can','ngay-chi'].forEach(id => {
-    document.getElementById(id).addEventListener('change', updateStep1);
+    document.getElementById(id).addEventListener('change', () => {
+      const prefix = id.split('-')[0];
+      syncCanChi(prefix);
+      updateStep1();
+    });
   });
+  // Initial sync
+  syncCanChi('thang');
+  syncCanChi('ngay');
+}
+
+function syncCanChi(prefix) {
+  const canSel = document.getElementById(`${prefix}-can`);
+  const chiSel = document.getElementById(`${prefix}-chi`);
+  const canVal = canSel.value;
+  const chiVal = chiSel.value;
+
+  // Filter Chi options based on Can
+  if (canVal) {
+    const canIdx = CAN_LIST.indexOf(canVal);
+    const pol = canIdx % 2;
+    Array.from(chiSel.options).forEach(opt => {
+      if (!opt.value) return;
+      opt.disabled = (DC_LIST.indexOf(opt.value) % 2 !== pol);
+    });
+    // If current selected Chi is now disabled, reset it
+    if (chiVal && DC_LIST.indexOf(chiVal) % 2 !== pol) {
+      chiSel.value = "";
+    }
+  } else {
+    Array.from(chiSel.options).forEach(opt => opt.disabled = false);
+  }
+
+  // Filter Can options based on Chi
+  if (chiVal) {
+    const chiIdx = DC_LIST.indexOf(chiVal);
+    const pol = chiIdx % 2;
+    Array.from(canSel.options).forEach(opt => {
+      if (!opt.value) return;
+      opt.disabled = (CAN_LIST.indexOf(opt.value) % 2 !== pol);
+    });
+    // If current selected Can is now disabled, reset it
+    const newCanVal = canSel.value;
+    if (newCanVal && CAN_LIST.indexOf(newCanVal) % 2 !== pol) {
+      canSel.value = "";
+    }
+  } else {
+    Array.from(canSel.options).forEach(opt => opt.disabled = false);
+  }
 }
 
 // Trạng thái 3 xu cho mỗi hào (2=sấp, 3=ngửa)
@@ -191,6 +238,8 @@ function convertToAmLich() {
     document.getElementById('ngay-chi').value = chn;
     document.getElementById('thang-can').value = ct;
     document.getElementById('thang-chi').value = cht;
+    syncCanChi('ngay');
+    syncCanChi('thang');
     updateStep1();
   } catch (e) {
     console.error('Lỗi chuyển đổi âm lịch:', e);
@@ -203,6 +252,7 @@ function updateStep1() {
   const chiThang = document.getElementById('thang-chi').value;
   const canNgay = document.getElementById('ngay-can').value;
   const chiNgay = document.getElementById('ngay-chi').value;
+
   if (canThang && chiThang) {
     state.canThang = canThang; state.chiThang = chiThang;
     document.getElementById('nguyet-kien').textContent = canThang + ' ' + chiThang;
@@ -215,6 +265,18 @@ function updateStep1() {
     const ltStart = LUC_THAN_START[canNgay];
     if (ltStart !== undefined) {
       document.getElementById('luc-than-start').textContent = LUC_THAN_ORDER[ltStart];
+    }
+  }
+
+  // Auto-reanalyze if hexagram is already cast
+  if (state.banQue && state.haoScores.every(s => s >= 6 && s <= 9)) {
+    anQue();
+    if (state.dungThanHao !== null) {
+      if (typeof state.dungThanHao === 'number') {
+        runPhanTich(state.dungThanHao);
+      } else if (state.dungThanHao === 'phuc' && state.dungThanPhucData) {
+        runPhanTichPhuc(state.dungThanPhucData.phiHao, state.dungThanPhucData.phuc);
+      }
     }
   }
 }

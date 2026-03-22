@@ -22,7 +22,6 @@
       <div class="blob b3"></div>
     </div>
 
-    <!-- ===== TOPBAR ===== -->
     <header class="topbar">
       <div class="brand" onclick="switchTab('luan-que')">
         <span class="brand-icon">☯</span>
@@ -31,29 +30,8 @@
           <div class="author-badge">By KhanhDev</div>
         </div>
       </div>
-      <div class="topbar-pills" id="topbar-meta">
-        <div class="chip">
-          <span>Nguyệt Kiến <strong id="nguyet-kien">—</strong></span>
-        </div>
-        <div class="chip">
-          <span>Nhật Thần <strong id="nhat-than">—</strong></span>
-        </div>
-        <div class="chip danger">
-          <span>Tuần Không <strong id="tuan-khong">—</strong></span>
-        </div>
-        <div class="chip">
-          <span>Lục Thần <strong id="luc-than-start">—</strong></span>
-        </div>
-      </div>
       <!-- Tab nav + Theme Toggle -->
-      <div
-        style="
-          display: flex;
-          gap: 0.6rem;
-          margin-left: auto;
-          align-items: center;
-        "
-      >
+      <div class="topbar-actions">
         <button
           id="tab-luan-que"
           class="tab-btn active-luan"
@@ -71,6 +49,20 @@
         >
           <span class="toggle-icon" id="theme-icon">🌙</span>
           <div class="toggle-track"><div class="toggle-thumb"></div></div>
+        </div>
+      </div>
+      <div class="topbar-pills" id="topbar-meta">
+        <div class="chip">
+          <span>Nguyệt Kiến <strong id="nguyet-kien">—</strong></span>
+        </div>
+        <div class="chip">
+          <span>Nhật Thần <strong id="nhat-than">—</strong></span>
+        </div>
+        <div class="chip danger">
+          <span>Tuần Không <strong id="tuan-khong">—</strong></span>
+        </div>
+        <div class="chip">
+          <span>Lục Thần <strong id="luc-than-start">—</strong></span>
         </div>
       </div>
     </header>
@@ -93,14 +85,14 @@
           </div>
           <div class="divider">— hoặc nhập thủ công —</div>
           <div class="form-row">
-            <label>Tháng</label>
-            <select id="thang-can" class="ctrl"></select>
-            <select id="thang-chi" class="ctrl"></select>
-          </div>
-          <div class="form-row">
             <label>Ngày</label>
             <select id="ngay-can" class="ctrl"></select>
             <select id="ngay-chi" class="ctrl"></select>
+          </div>
+          <div class="form-row">
+            <label>Tháng</label>
+            <select id="thang-can" class="ctrl"></select>
+            <select id="thang-chi" class="ctrl"></select>
           </div>
 
           <!-- Tượng quẻ Mini (hiển thị khi Lên Quẻ) -->
@@ -204,23 +196,26 @@
               </div>
             </div>
           </div>
-          <table class="bang-que" id="bang-que">
-            <thead>
-              <tr>
-                <th style="width: 70px">Hào</th>
-                <th style="width: 60px">Lục Thân</th>
-                <th style="width: 140px">Quẻ Chủ & Phục</th>
-                <th style="width: 40px">Động</th>
-                <th
-                  style="width: 170px; text-align: left; padding-left: 0.6rem"
-                >
-                  Vượng Suy
-                </th>
-                <th style="width: 120px">Quẻ Biến</th>
-              </tr>
-            </thead>
-            <tbody id="tbody-que"></tbody>
-          </table>
+          <div class="table-wrapper">
+            <table class="bang-que" id="bang-que">
+              <thead>
+                <tr>
+                  <th class="desktop-only" style="width: 70px">Hào</th>
+                  <th class="mobile-only-col" style="width: 60px">Hào & Tượng</th>
+                  <th class="desktop-only" style="width: 60px">Lục Thần</th>
+                  <th style="width: 130px">Quẻ Chủ</th>
+                  <th class="desktop-only" style="width: 40px">Động</th>
+                  <th
+                    style="width: 160px; text-align: left; padding-left: 0.6rem"
+                  >
+                    Vượng Suy
+                  </th>
+                  <th style="width: 120px">Quẻ Biến</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-que"></tbody>
+            </table>
+          </div>
           <div class="legend">
             <span><span class="badge bdg-the">Thế</span> Bản thân</span>
             <span><span class="badge bdg-ung">Ứng</span> Đối tượng</span>
@@ -404,28 +399,12 @@
             <div class="g-title">
               <span class="ico">⏳</span> Ứng Kỳ — So Sánh 2 Phương Pháp
             </div>
-            <div
-              style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem"
-            >
+            <div class="compare-grid">
               <!-- Cột Lưu Xương Minh -->
               <div>
-                <div
-                  id="th1-container"
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    margin-bottom: 0.9rem;
-                    padding-bottom: 0.5rem;
-                    border-bottom: 2px solid rgba(6, 182, 212, 0.4);
-                  "
-                >
+                <div id="th1-container" class="th-header th1">
                   <span style="font-size: 1.1rem">📘</span>
-                  <span
-                    id="th1-label"
-                    style="
-                      font-size: 0.78rem;
-                      font-weight: 800;
+                  <span id="th1-label" class="th-label">
                       color: #38bdf8;
                       text-transform: uppercase;
                       letter-spacing: 0.1em;
@@ -437,29 +416,9 @@
               </div>
               <!-- Cột Dã Hạc -->
               <div>
-                <div
-                  id="th2-container"
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    margin-bottom: 0.9rem;
-                    padding-bottom: 0.5rem;
-                    border-bottom: 2px solid rgba(212, 168, 67, 0.4);
-                  "
-                >
+                <div id="th2-container" class="th-header th2">
                   <span style="font-size: 1.1rem">📙</span>
-                  <span
-                    id="th2-label"
-                    style="
-                      font-size: 0.78rem;
-                      font-weight: 800;
-                      color: #d4a843;
-                      text-transform: uppercase;
-                      letter-spacing: 0.1em;
-                    "
-                    >TH2: Dã Hạc</span
-                  >
+                  <span id="th2-label" class="th-label">TH2: Dã Hạc</span>
                 </div>
                 <div id="thoi-diem-dahac"></div>
               </div>

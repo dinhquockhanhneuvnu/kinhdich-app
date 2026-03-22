@@ -36,11 +36,6 @@ function renderHaoInputs() {
             <span class="checkbox-box"></span> Động
           </label>
         </div>
-
-        <div class="direct-preview">
-          <div class="direct-preview-symbol" id="preview-symbol-${h}">${renderHaoSymbol(total)}</div>
-          <div class="direct-preview-label" id="preview-label-${h}">${info.label}</div>
-        </div>
       </div>
 
       <div class="hao-result" id="result-${h}">
@@ -146,14 +141,22 @@ function renderBangQue() {
     const vsDetailHtml = hào.vuongSuy.nhanXet.length > 0 ? `<ul style="list-style:none;padding:0;margin-top:3px;text-align:left">${hào.vuongSuy.nhanXet.map(x=>`<li style="font-size:0.75rem;color:var(--text-3);padding:1px 0">• ${x}</li>`).join('')}</ul>` : '';
     const vsHtml = `<span class="vuong-suy ${hào.vuongSuy.cssClass}">${hào.vuongSuy.mucDo} <span style="color:var(--text-3); font-size:0.75rem">(${hào.vuongSuy.diem}đ)</span></span>${vsDetailHtml}`;
 
-    let dongCellHtml = '';
-    if (hào.laDong) {
-      dongCellHtml = '<span style="font-size:1.3rem;font-weight:900;color:var(--gold)">✕</span>';
-    } else if (hào.laAmDong) {
-      dongCellHtml = '<span style="font-size:0.85rem;font-weight:700;color:var(--purple)">ÁĐ</span>';
-    }
+    const dongSymbol = hào.laDong ? '<span style="color:var(--gold);font-weight:900">✕</span>' : (hào.laAmDong ? '<span style="color:var(--purple);font-size:0.75rem">ÁĐ</span>' : '');
+    const mobileMergedHtml = `
+      <div style="font-weight:800;font-size:0.85rem">H${hào.viTri} ${theUngHtml}</div>
+      <div class="${getLucThanClass(hào.lucThan)}" style="font-size:0.72rem;margin-top:2px">${hào.lucThanTen}</div>
+      <div style="margin-top:4px">${dongSymbol}</div>
+    `;
 
-    row.innerHTML = `<td style="font-weight:700;color:var(--text-3);font-size:0.85rem">H${hào.viTri} ${theUngHtml}</td><td style="font-size:0.8rem;color:var(--text-3)">${hào.lucThanTen}</td><td>${banQuaiHtml}</td><td style="text-align:center">${dongCellHtml}</td><td style="vertical-align:top;text-align:left;padding:0.3rem 0.6rem">${vsHtml}</td><td>${bienQuaiHtml}</td>`;
+    row.innerHTML = `
+      <td class="desktop-only" style="font-weight:700;color:var(--text-3);font-size:0.85rem">H${hào.viTri} ${theUngHtml}</td>
+      <td class="mobile-only-col" style="text-align:center;padding:0.5rem 0.3rem">${mobileMergedHtml}</td>
+      <td class="desktop-only" style="font-size:0.8rem;color:var(--text-3)">${hào.lucThanTen}</td>
+      <td>${banQuaiHtml}</td>
+      <td class="desktop-only" style="text-align:center">${dongSymbol}</td>
+      <td style="vertical-align:top;text-align:left;padding:0.3rem 0.6rem">${vsHtml}</td>
+      <td>${bienQuaiHtml}</td>
+    `;
     row.style.cursor = 'pointer';
     row.onclick = () => chonDungThan(i);
     tbody.appendChild(row);
@@ -507,66 +510,107 @@ function renderCatHung(dt, haoVaiTro, vs) {
   const tietThans = haoVaiTro.filter(h => h.vaiTro === 'Tiết Thần');
   const ntHuuDung = nguyenThans.filter(nt => danhGiaTrangThai(nt).huuDung);
 
+  // Tham số Động Năng Toán Học - Tỷ lệ chuyển hóa lực cơ bản
+  const k = 1 / 3;
+  const t = 1 / 6;
+
   nguyenThans.forEach(nt => {
     const tt = danhGiaTrangThai(nt);
     const dtDangDong = dt.laDong || dt.laAmDong;
     if (tt.huuDung && dtDangDong && LUC_HOP[nt.diaChi] === dt.diaChi) {
       chiTiet.push(`🔗 NT H${nt.viTri}: Tham Hợp Quên Sinh — ${nt.diaChi} hợp ${dt.diaChi}, cả 2 cùng động → NT quên sinh DT`);
-    } else if (tt.voLoc) chiTiet.push(`🔇 NT H${nt.viTri} (${nt.diaChi}): Vô lực → không sinh được DT`);
-    else if (tt.huuDung) {
-      const bonus = nt.diemVS >= 3 ? 2.0 : 1.5;
-      score += bonus;
-      chiTiet.push(`💪 NT H${nt.viTri} (${nt.diaChi}): Vượng động → sinh DT (+${bonus})`);
-    } else if (!tt.huuTu && !nt.laDong) {
-      score += 0.5;
-      chiTiet.push(`🤝 NT H${nt.viTri} (${nt.diaChi}): Vượng tĩnh → sinh nhẹ (+0.5)`);
+    } else if (tt.voLuc) {
+      chiTiet.push(`🔇 NT H${nt.viTri} (${nt.diaChi}): Vô lực (Hưu tù/Không/Mộ) → Không sinh được DT`);
+    } else if (tt.huuDung) {
+      const lucTruyen = nt.diemVS * k;
+      score += lucTruyen;
+      chiTiet.push(`💪 NT H${nt.viTri} (${nt.diaChi}): Vượng động (${nt.diemVS.toFixed(1)}đ) → Bơm cường lực cho DT (+${lucTruyen.toFixed(1)})`);
+    } else if (!tt.huuTu && !nt.laDong && !nt.laAmDong && nt.diemVS >= 1) {
+      const lucTruyen = (nt.diemVS * k) * 0.5;
+      score += lucTruyen;
+      chiTiet.push(`🤝 NT H${nt.viTri} (${nt.diaChi}): Vượng tĩnh (${nt.diemVS.toFixed(1)}đ) → Sinh mỏng manh nhẹ nhàng (+${lucTruyen.toFixed(1)})`);
     }
   });
 
   kyThans.forEach(ky => {
     const tt = danhGiaTrangThai(ky);
-    if ((ky.laDong || ky.laAmDong) && ntHuuDung.length > 0) chiTiet.push(`🔄 KT H${ky.viTri} (${ky.diaChi}): Tham Sinh Quên Khắc — KT + NT cùng động → KT bỏ khắc DT, chuyển sinh NT`);
-    else if (tt.voLoc) { score += 0.5; chiTiet.push(`✅ KT H${ky.viTri} (${ky.diaChi}): Vô lực → không hại được DT (+0.5)`); }
-    else if (tt.huuDung) {
-      const penalty = ky.diemVS >= 3 ? -2.5 : -1.5;
-      score += penalty;
-      chiTiet.push(`⚡ KT H${ky.viTri} (${ky.diaChi}): Vượng động → khắc DT (${penalty})`);
+    if ((ky.laDong || ky.laAmDong) && ntHuuDung.length > 0) {
+      chiTiet.push(`🔄 KT H${ky.viTri} (${ky.diaChi}): Tham Sinh Quên Khắc — KT + NT cùng động → KT bỏ Đao chém DT, chuyển sang sinh NT`);
+    } else if (tt.voLuc) {
+      chiTiet.push(`✅ KT H${ky.viTri} (${ky.diaChi}): Vô lực thoi thóp → Bất lực không hại được DT`);
+    } else if (tt.huuDung) {
+      const lucChiem = ky.diemVS * k;
+      score -= lucChiem;
+      chiTiet.push(`⚡ KT H${ky.viTri} (${ky.diaChi}): Vượng động (${ky.diemVS.toFixed(1)}đ) → Giáng thẳng đòn vào DT (-${lucChiem.toFixed(1)})`);
+    } else if (!tt.huuTu && !ky.laDong && !ky.laAmDong && ky.diemVS >= 1) {
+      const lucChiem = (ky.diemVS * k) * 0.5;
+      score -= lucChiem;
+      chiTiet.push(`⚠️ KT H${ky.viTri} (${ky.diaChi}): Vượng tĩnh (${ky.diemVS.toFixed(1)}đ) → Sát khí âm ỉ ăn mòn DT (-${lucChiem.toFixed(1)})`);
     }
   });
 
   cuuThans.forEach(cuu => {
     const tt = danhGiaTrangThai(cuu);
     if (tt.huuDung) {
+      const lucCuu = cuu.diemVS * k;
       const ntCoLuc = nguyenThans.some(nt => !danhGiaTrangThai(nt).voLuc);
-      if (ntCoLuc) { score -= 1.5; chiTiet.push(`💀 CT H${cuu.viTri} (${cuu.diaChi}): Động → khắc NT + sinh KT (-1.5)`); }
+      const ktCoLuc = kyThans.some(ky => !danhGiaTrangThai(ky).voLuc);
+      
+      let actions = [];
+      let totalPenalty = 0;
+      
+      if (ntCoLuc) {
+        actions.push('khắc đứt NT');
+        totalPenalty += lucCuu;
+      }
+      if (ktCoLuc) {
+        actions.push('sung lực cho KT');
+        totalPenalty += lucCuu;
+      }
+      
+      if (actions.length > 0) {
+        score -= totalPenalty;
+        chiTiet.push(`💀 CT H${cuu.viTri} (${cuu.diaChi}): Trùm Cuối Phát Động (${cuu.diemVS.toFixed(1)}đ) → ${actions.join(' & ')} (Ảnh hưởng gián tiếp DT: -${totalPenalty.toFixed(1)})`);
+      } else {
+        chiTiet.push(`💨 CT H${cuu.viTri} (${cuu.diaChi}): Động (${cuu.diemVS.toFixed(1)}đ) nhưng trống rỗng (Không có Kỵ/Nguyên trên sân tác động)`);
+      }
     }
   });
 
   tietThans.forEach(tiet => {
     const tt = danhGiaTrangThai(tiet);
-    if (tt.huuDung && tiet.diemVS >= 2) {
-      const drain = tiet.diemVS >= 4 ? -2.0 : -1.0;
-      score += drain;
-      chiTiet.push(`🩸 TiT H${tiet.viTri} (${tiet.diaChi}): Vì Sinh mà Thiệt — Tiết Thần vượng động rút khí DT (${drain})`);
+    // Tiết Thần cần Động và Có Lực
+    if (tt.huuDung && tiet.diemVS >= 1) {
+      let lucHut = tiet.diemVS * t;
+      score -= lucHut;
+      chiTiet.push(`🩸 TiT H${tiet.viTri} (${tiet.diaChi}): Phát động tiết khí (${tiet.diemVS.toFixed(1)}đ) → Rút sinh khí DT (-${lucHut.toFixed(1)})`);
+      
+      // Bạo Kích: Khắc Tiết Giao Gia
+      const ktHuuDung = kyThans.filter(ky => danhGiaTrangThai(ky).huuDung);
+      if (ktHuuDung.length > 0) {
+        score -= 1.0; 
+        chiTiet.push(`💥 Bạo Kích: Khắc Tiết Giao Gia — Kỵ Tiết cùng động, DT lâm tuyệt lộ, chịu thêm cực hình (-1.0)`);
+      }
     }
   });
 
   let catHung, detail;
   if (isPhuTang) { catHung = '⚠️ Phục Tàng'; detail = 'Dụng Thần bị ẩn'; }
-  else if (score >= 4) { catHung = '✅ Đại Cát'; detail = 'Dụng Thần vượng mạnh'; }
-  else if (score >= 2) { catHung = '🟢 Cát'; detail = 'Dụng Thần khá mạnh'; }
-  else if (score >= 0) { catHung = '🟡 Bình'; detail = 'Lực lượng cân bằng'; }
-  else if (score >= -2) { catHung = '🟠 Tiểu Hung'; detail = 'Dụng Thần suy nhược'; }
-  else { catHung = '🔴 Đại Hung'; detail = 'Dụng Thần cực suy'; }
+  else if (score >= 4) { catHung = '✅ Đại Cát'; detail = 'Dụng Thần vượng mạnh trọn vẹn'; }
+  else if (score >= 2) { catHung = '🟢 Cát'; detail = 'Dụng Thần mạnh mẽ đắc thế'; }
+  else if (score >= 0.5) { catHung = '🟡 Bình (Hơi Tốt)'; detail = 'Lực lượng nhỉnh hơn, có cơ may'; }
+  else if (score > -0.5) { catHung = '🟡 Bình Hòa'; detail = 'Tiến thoái lưỡng nan, cân sức'; }
+  else if (score >= -2) { catHung = '🟠 Tiểu Hung'; detail = 'Dụng Thần suy yếu, chịu tổn thất'; }
+  else { catHung = '🔴 Đại Hung'; detail = 'Dụng Thần cực suy, việc đổ vỡ'; }
 
   state.finalScore = score;
   state.finalCatHung = catHung;
-  const chiTietHtml = chiTiet.length > 0 ? `<ul class="cat-hung-chitiet">${chiTiet.map(c => `<li>• ${c}</li>`).join('')}</ul>` : '';
-  const cls = score >= 0.5 ? 'dai-cat' : score > 0 ? 'cat' : score === 0 ? 'binh-hoa' : score > -0.5 ? 'hung' : 'dai-hung';
+  const chiTietHtml = chiTiet.length > 0 ? `<ul class="cat-hung-chitiet">\n${chiTiet.map(c => `    <li>• ${c}</li>`).join('\n')}\n  </ul>` : '';
+  const cls = score >= 2 ? 'dai-cat' : score >= 0 ? 'cat' : score >= -2 ? 'hung' : 'dai-hung';
   el.innerHTML = `<div class="cat-hung-result ${cls}">
     <div class="cat-label">${catHung}</div>
     <div class="cat-note">${detail}</div>
-    <div style="font-size:0.75rem;color:var(--text-3);margin-top:0.3rem">Điểm tổng hợp: ${score.toFixed(1)}</div>
+    <div style="font-size:0.75rem;color:var(--text-3);margin-top:0.3rem">Năng lượng Dụng Thần tổng hợp: ${score.toFixed(1)}đ</div>
     ${chiTietHtml}
   </div>`;
 }
